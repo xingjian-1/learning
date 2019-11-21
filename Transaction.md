@@ -1,1 +1,63 @@
-原子性、一致性、隔离性、持久性
+1.事务本身持有四个属性， 即原子性(Atomicity)，一致性(Consistency)，隔离性(Isolation)以及持久性(Durability)，也就是事务的ACID属性。其中，数据的一致性（C）是最终目标，其它的特性都是为了达成这个目标。数据库的事务隔离级别主要包含4种，不同的隔离级别能够解决的数据并发问题的能力是不同的，如下所示：          隔离级别                 脏读                 不可重复读         幻读
+Read Uncommitted          允许                   允许              允许 
+Read Committed            不允许                 允许              允许
+Repeatable Read           不允许                 不允许            允许
+Serializable              不允许                 不允许            不允许
+mysql可以通过以下命令查看默认的系统级和会话级的事务隔离级别。
+select @@global.tx_isolation,@@tx_isolation;
+
+2.在Spring的事务管理抽象层主要包括3个接口，分别是TransactionDefinition、PlatformTransactionManager、TransactionStatus。它们各自的作用分别是：
+TransactionDefinition:定义事务属性接口，包括事务的的隔离级别、超时时间、事务传播规则等属性
+PlatformTransactionManager:管理事务的基本接口
+TransactionStatus:定义事务管理状态的接口
+Spring提供的事务管理方案可以分为编程式和声明式两类
+编程式事务管理:
+通过spring进行编程式事务管理有两种方式：PlatformTransactionManagerTransactionTemplate,Spring官方推荐使用TransactionTemplate进行事务管理，spring对TransactionTemplate提供了两个callback接口，TransactionCallback和TransactionCallbackWithoutResult，二者的唯一区别就是是否需要返回执行结果,使用TransactionTemplate进行事务操作的模板如下：
+wrsDumpTransactionTemplate.execute((TransactionStatus status) -> {
+                    //事务操作
+                            return null;
+                });
+在TransactionCallback的事务操作过程中如果发生异常需要让当前事务回滚，查看Spring对TransactionCallback接口的解释可以看出，在发生RuntimeException这种“unchecked exception”时，会触发事务的的回滚。
+public interface TransactionCallback<T> {
+    /**
+     * <p>Allows for returning a result object created within the transaction, i.e. a
+     * domain object or a collection of domain objects. A RuntimeException thrown by the
+     * callback is treated as application exception that enforces a rollback. Any such
+     * exception will be propagated to the caller of the template, unless there is a
+     * problem rolling back, in which case a TransactionException will be thrown.
+     */
+    T doInTransaction(TransactionStatus status);
+}
+如果在事务运行中发生了“checked exception”，若没有进行处理异常，TransactionTemplate模板不会对事务进行回滚。这时候如果需要进行回滚有两种方式：
+抛出“unchecked exception”，TransactionTemplate会为我们处理事务的回滚。可以先捕获异常，然后转译为“unchecked exception”后抛出。
+使用TransactionCallback接口暴露的TransactionStatus将事务标记为rollBackOnly，TransactionTemplate在提交事务的时候如果检测到rollBackOnly标志状态被设置，则会进行事务回滚，这是目前我们项目里用的最多的方式：
+wrsDumpTransactionTemplate.execute((TransactionStatus status) -> {
+            try {
+                wrsUserPriorityDetailManager.
+                        insertBatch(detailDTOListNeedToInsert);
+            } catch (Exception e) {
+                status.setRollbackOnly();
+            }
+            return null;
+        });
+TransactionTemplate继承了DefaultTransactionDefinition，DefaultTransactionDefinition拥有多个设置事务属性的方法，如setTimeout(设置事务超时时间)，setIsolationLevel(设置事务的隔离级别)。
+声明式事务管理
+基于注解的事务配置@Transactional实现对类和方法进行事务标注，修饰类表示对整个类起作用，修饰方法则仅对方法起作用。
+<context:annotation-config/>
+<tx:annotation-driven transaction-manager="wrsDumpTransactionManager"/>
+
+@Transactional(rollbackFor = Exception.class)
+    public void insertRecord() throws Exception{
+            WrsHistoryTaskDO wrsHistoryTaskDO = iniWrsHistoryTaskDO();
+            Long id = wrsHistoryTaskDAO.insert(wrsHistoryTaskDO);
+    }
+rollbackFor是注解的属性，上面的例子表示遇到Exception时回滚，@Transactional注解包含多个属性可以控制事务的属性：
+属性名                               说明
+propagation                     事务的传播行为
+isolation                       事务的隔离级别
+readOnly                        事务的读写性
+timeout                         超时时间
+rollbackFor                     一组异常类，遇到时进行回滚
+报错显示等待锁超时，但是打开DefaultTransactionDefinition发现事务隔离级别设置和超时设置分别设置为ISOLATION_DEFAULT和TIMEOUT_DEFAULT，这两个参数表示默认的事务隔离级别和默认的超时时间，但是TIMEOUT_DEFAULT的值为-1，所以Spring并没有启用事务超时时间，此时使用的超时时间是mysql的事务超时时间，查看mysql的事务超时时间的sql为：
+show variables like '%timeout%';
+其中innodb_lock_wait_timeout变量指明了innodb中行锁的等待超时时间，在idb中查看默认超时时间为5s。这里的解决方案是将大的事务进行拆分变成多个小事务，避免进行长时间的持有行锁。[mysql事务和锁]()
