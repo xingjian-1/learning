@@ -60,4 +60,4 @@ timeout                         超时时间
 rollbackFor                     一组异常类，遇到时进行回滚
 报错显示等待锁超时，但是打开DefaultTransactionDefinition发现事务隔离级别设置和超时设置分别设置为ISOLATION_DEFAULT和TIMEOUT_DEFAULT，这两个参数表示默认的事务隔离级别和默认的超时时间，但是TIMEOUT_DEFAULT的值为-1，所以Spring并没有启用事务超时时间，此时使用的超时时间是mysql的事务超时时间，查看mysql的事务超时时间的sql为：
 show variables like '%timeout%';
-其中innodb_lock_wait_timeout变量指明了innodb中行锁的等待超时时间，在idb中查看默认超时时间为5s。这里的解决方案是将大的事务进行拆分变成多个小事务，避免进行长时间的持有行锁。[mysql事务和锁]()
+其中innodb_lock_wait_timeout变量指明了innodb中行锁的等待超时时间，在idb中查看默认超时时间为5s。这里的解决方案是将大的事务进行拆分变成多个小事务，避免进行长时间的持有行锁。[mysql事务和锁](mysql锁)
