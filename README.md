@@ -140,33 +140,5 @@
 - [如何按照 query 的频度排序？](./docs/big-data/sort-the-query-strings-by-counts.md)
 - [如何找出排名前 500 的数？](./docs/big-data/find-rank-top-500-numbers.md)
 
----
-
-## 贡献者
-感谢以下所有朋友对本仓库做出的贡献。
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
-<a href="https://github.com/doocs/advanced-java/graphs/contributors"><img src="https://opencollective.com/advanced-java/contributors.svg?width=890&button=false" /></a>
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-## 公众号
-GitHub 技术社区 Doocs 旗下唯一公众号，欢迎关注，专注于分享有价值的文章；当然，也可以加我个人微信（备注：GitHub）。
-
-<table>
-    <tr>
-      <td align="center" style="width: 200px;">
-        <a href="https://github.com/doocs">
-          <img src="./images/qrcode-for-doocs.jpg" style="width: 400px;"><br>
-          <sub>公众平台</sub>
-        </a><br>
-      </td>
-      <td align="center" style="width: 200px;">
-        <a href="https://github.com/yanglbme">
-          <img src="./images/qrcode-for-yanglbme.jpg" style="width: 400px;"><br>
-          <sub>个人微信</sub>
-        </a><br>
-      </td>
-    </tr>
-</table>
+## Linux命令
+- [linux常用命令](./docs/big-data/linux.md)
