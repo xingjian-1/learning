@@ -141,4 +141,4 @@
 - [如何找出排名前 500 的数？](./docs/big-data/find-rank-top-500-numbers.md)
 
 ## Linux命令
-- [linux常用命令](./docs/big-data/linux.md)
+- [linux常用命令](docs/linux.md)
