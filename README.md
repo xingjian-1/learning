@@ -22,4 +22,4 @@
 - [如何从大量的 URL 中找出相同的 URL？](./docs/big-data/find-common-urls.md)
 
 ## Linux命令
-- [linux常用命令](tree/master/doc/linux.md)
+- [linux常用命令](./linux常用命令)
