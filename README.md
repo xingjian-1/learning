@@ -23,5 +23,10 @@
 ## 海量数据处理
 - [如何从大量的 URL 中找出相同的 URL？](./docs/big-data/find-common-urls.md)
 
+## 分布式架构
+- [分布式事务](./linux常用命令)
+- [分布式锁](./linux常用命令)
+- [分布式缓存](./linux常用命令)
+
 ## Linux命令
 - [linux常用命令](./linux常用命令)
