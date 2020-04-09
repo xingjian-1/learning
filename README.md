@@ -23,8 +23,8 @@
 - [MyBatis](./doc/MyBatis)
 
 ## 分布式系统
-- [消息队列](./doc/RabbitMQ)
-- [缓存](./doc/redis)
+- [消息队列](./doc/消息队列)
+- [缓存](./doc/缓存)
 - [分布式服务框架](./linux常用命令)
 - [分布式事务](./linux常用命令)
 - [分布式锁](./doc/zookeeper)
