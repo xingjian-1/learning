@@ -1,9 +1,64 @@
 ➤算法的定义
 算法研究的目的是为了更有效的处理数据，提高数据运算效率
 
-➤算法
+➤常用算法
   ➱冒泡排序
+    int a[] = { 6, 3, 4, 2, 10, 1 ,8,5,9};
+      for (int i = 0; i < a.length - 1; i++) {
+        for (int j = 0; j < a.length - 1 - i; j++) {
+          if (a[j] > a[j + 1]) {
+            int temp = a[j];
+            a[j] = a[j + 1];
+            a[j + 1] = temp;
+          }
+        }
+      }
   ➱选择排序
+      for (int i = 0; i < a.length - 1; i++) {
+        for (int j = i + 1; j < a.length; j++) {
+          if (a[i] > a[j]) {
+            int temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+          }
+        }
+      }
   ➱插入法排序
-  ➱二分查找法
+    // 插入排序
+      for (int i = 0; i < a.length - 1; i++) {
+        for (int j = i + 1; j > 0; j--) {
+          if (a[j] < a[j - 1]) {
+            int temp = a[j];
+            a[j] = a[j - 1];
+            a[j - 1] = temp;
+          }
+        }
+      }
+      
+      for (int b : a) {
+			System.out.print("" + b);
+		}
+  ➱二分查找法-比较次数少，查找速度快 但是排序的数组必须是已经排序的
+    public static int binarySearch(int a[], int key) {
+      int left = 0;
+      int right = a.length - 1;
+      int mid;
+      while (left <= right) {
+        mid = (left + right) / 2;
+        if (key == a[mid])
+          return mid;
+        if (key < a[mid])
+          right = mid - 1;// right = mid; 可能死循环
+        else
+          left = mid + 1;// left = mid; 可能死循环
+      }
+      return -1;
+    }
   ➱递归
+    public static int Add(int i) {
+      if (i <= 100) {
+        count += i;
+        Add(i + 1);
+      }
+      return count;
+    }
