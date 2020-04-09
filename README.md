@@ -1,32 +1,32 @@
 
 
 ## JAVA基础知识
-- [数据结构](./数据结构)
-- [算法](./算法)
-- [设计模式](./设计模式)
-- [JVM](./jvm)
-- [Java基础及集合](./Java基础及集合)
-- [多线程](./多线程)
-- [网络](./网络)
-- [IO](./IO)
-- [异常](./异常)
+- [数据结构](./doc/数据结构)
+- [算法](./doc/算法)
+- [设计模式](./doc/设计模式)
+- [JVM](./doc/jvm)
+- [Java基础及集合](./doc/Java基础及集合)
+- [多线程](./doc/多线程)
+- [网络](./doc/网络)
+- [IO](./doc/IO)
+- [异常](./doc/异常)
 
 ## 数据库
 - [Mysql](./mysql)
 
 ## 框架
-- [Spring](./Spring-SpringMVC)
-- [SpringMVC](./SpringMVC)
-- [SpringBoot](./SpringBoot)
-- [Hibernate](./Hibernate)
-- [MyBatis](./MyBatis)
+- [Spring](./doc/Spring-SpringMVC)
+- [SpringMVC](./doc/SpringMVC)
+- [SpringBoot](./doc/SpringBoot)
+- [Hibernate](./doc/Hibernate)
+- [MyBatis](./doc/MyBatis)
 
 ## 分布式系统
-- [消息队列](./RabbitMQ)
-- [缓存](./redis)
+- [消息队列](./doc/RabbitMQ)
+- [缓存](./doc/redis)
 - [分布式服务框架](./linux常用命令)
 - [分布式事务](./linux常用命令)
-- [分布式锁](./zookeeper)
+- [分布式锁](./doc/zookeeper)
 - [分布式会话](./linux常用命令)
 - [分库分表](./linux常用命令)
 - [读写分离](./linux常用命令)
