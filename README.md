@@ -15,7 +15,8 @@
 - [Mysql](./mysql)
 
 ## 框架
-- [Spring-SpringMVC](./Spring-SpringMVC)
+- [Spring](./Spring-SpringMVC)
+- [SpringMVC](./SpringMVC)
 - [SpringBoot](./SpringBoot)
 - [Hibernate](./Hibernate)
 - [MyBatis](./MyBatis)
