@@ -12,7 +12,7 @@
 - [异常](./doc/异常)
 
 ## 数据库
-- [Mysql](./doc/mysql)
+- [Mysql](./doc/mysql.md)
 
 ## 框架
 - [Spring](./doc/Spring-SpringMVC)
