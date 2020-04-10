@@ -11,6 +11,7 @@
 使用模糊查询，”%“在前面时索引不起作用 explain select * from table where type like '%动物'
 使用模糊查询，”%“在后面索引起作用 explain select * from table where type like '动物%'
 条件查询中使用or关键字时 索引不起作用 
+ > < between等这样的范围查询 索引不起作用
 ![add image](/img/B+树.png)
 
 ## 说一下MySQL的行锁和表锁
