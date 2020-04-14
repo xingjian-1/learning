@@ -7,6 +7,7 @@
 - [设计模式](./doc/设计模式.md)
 - [JVM](./doc/jvm.md)
 - [Java基础及集合](./doc/Java基础及集合.md)
+    - [HashMap底层实现和原理](./doc/HashMap底层实现和原理.md)
 - [多线程](./doc/多线程.md)
 - [事务](./doc/事务.md)
 - [网络](./doc/网络.md)
