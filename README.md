@@ -24,6 +24,8 @@
 
 ## 数据库
 - [Mysql](./doc/mysql.md)
+    - [Mysql悲观锁和乐观锁](./doc/悲观锁和乐观锁.md)
+    - [Mysql索引](./doc/mysql索引.md)
 
 ## 框架
 - [Spring](./doc/Spring.md)
