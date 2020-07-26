@@ -57,6 +57,8 @@
 
 ## Linux命令
 - [linux常用命令](./doc/linux.md)
+- [sqluldr.zip](./doc/sqluldr.zip)
+- [ksh](./doc/ksh-20120801-37.el6_9.x86_64.rpm)
 ## 系统性能相关
 - [性能测试](./doc/性能测试指标.md)
 ## 海量数据处理
