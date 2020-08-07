@@ -18,7 +18,7 @@
 ###### mkdir test --在当前目录下创建test文件夹，rm -rf test --删除文件夹，rm -r test --删除指定目录，cp test test.bak --备份test文件为test.bak。
 
 #### 编辑文件相关命令
-###### whereis test.sh --查看shell脚本文件地址，find -name bdeboot.sh --搜索文件，ls -la --查看隐藏文件列表，vi test.sh --打开文件 :set number -- 显示文件的行号，vi/vim test.sh --打开文件之后键（i）进行编辑，编辑完成之后键（Esc）退出编辑，:wq! --保存退出，:q! --不保存退出,如果编辑的文件是环境变量的文件例如:.bash_profile保存之后需要刷新一下使其生效：source .bash_profile。cat test.txt >> $HOME/.bash_profile 把test中的数据拷到bash_profile文件里面
+###### env|grep TNS --搜索关键字,whereis test.sh --查看shell脚本文件地址，find -name bdeboot.sh --搜索文件，ls -la --查看隐藏文件列表，vi test.sh --打开文件 :set number -- 显示文件的行号，vi/vim test.sh --打开文件之后键（i）进行编辑，编辑完成之后键（Esc）退出编辑，:wq! --保存退出，:q! --不保存退出,如果编辑的文件是环境变量的文件例如:.bash_profile保存之后需要刷新一下使其生效：source .bash_profile。cat test.txt >> $HOME/.bash_profile 把test中的数据拷到bash_profile文件里面
 
 #### 连接服务器相关命令
 ###### telnet 10.30.9.98 13088 --telnet ip port测试端口是否连通，
