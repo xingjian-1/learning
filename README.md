@@ -1,7 +1,7 @@
 ###### 始于颜值 陷于才华 忠于人品
 ###### 互联网JAVA工程师进阶知识完全扫盲 涵盖高并发、分布式、高可用、微服务、海量数据处理等领域知识
 ###### Java高级及资深技术
-###### 特别提醒！！！`图片显示不出来 在C:\Windows\System32\drivers\etc 的host文件新增 199.232.68.133 raw.githubusercontent.com 映射配置`
+###### 特别提醒！！！`各知识点描述有插入图片辅助说明，浏览过程当中如果图片显示不出来 在电脑在C:\Windows\System32\drivers\etc 目录下host文件新增 199.232.68.133 raw.githubusercontent.com 映射配置`
 
 ## `基础`
 ##### [数据结构](./doc/数据结构.md)  [算法](./doc/算法.md)  [设计模式](./doc/设计模式.md) [JVM](./doc/jvm.md)  [JAVA基础及集合](./doc/Java基础及集合.md)  [HashMap底层实现和原理](./doc/HashMap底层实现和原理.md)  [多线程](./doc/多线程.md)  [事务](./doc/事务.md)  [网络](./doc/网络.md)  [IO](./doc/IO.md)  [异常](./doc/异常.md)
