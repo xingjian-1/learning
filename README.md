@@ -4,7 +4,7 @@
 ###### 特别提醒！！！`各知识点描述有插入图片辅助说明，浏览过程当中如果图片显示不出来 在电脑在C:\Windows\System32\drivers\etc 目录下host文件新增 199.232.68.133 raw.githubusercontent.com 映射配置`
 
 ### `基础`
-##### [数据结构](./doc/数据结构.md)  [算法](./doc/算法.md)  [集合](./doc/Java基础及集合.md)  [设计模式](./doc/设计模式.md) [事务](./doc/事务.md)  [JVM](./doc/jvm.md)  [HashMap底层实现和原理](./doc/HashMap底层实现和原理.md)  [多线程](./doc/多线程.md)  [网络](./doc/网络.md)  [IO](./doc/IO.md)  [异常](./doc/异常.md)
+##### [数据结构](./doc/数据结构.md)  [算法](./doc/算法.md)  [集合](./doc/Java基础及集合.md)  [设计模式](./doc/设计模式.md) [事务](./doc/事务.md)  [虚拟机](./doc/jvm.md)    [多线程](./doc/多线程.md)  [网络](./doc/网络.md)  [IO](./doc/IO.md)  [异常](./doc/异常.md)
 ### `数据库`
 ##### [MYSQL](./doc/mysql.md)  [MYSQL悲观锁和乐观锁](./doc/悲观锁和乐观锁.md)  [MYSQL索引](./doc/mysql索引.md)
 ### `框架` 
