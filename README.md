@@ -2,7 +2,16 @@
 ###### 特别提醒！！！`各知识点描述有插入图片辅助说明，浏览过程当中如果图片显示不出来 在电脑在C:\Windows\System32\drivers\etc 目录下host文件新增 199.232.68.133 raw.githubusercontent.com 映射配置`
 
 ### `基础`
-##### [数据结构](./doc/数据结构.md)  [算法](./doc/算法.md)  [设计模式](./doc/设计模式.md)  [事务](./doc/事务.md)  [多线程](./doc/多线程.md)  [网络](./doc/网络.md)  [IO](./doc/IO.md)  [异常](./doc/异常.md)  [集合](./doc/Java基础及集合.md)   [虚拟机](./doc/jvm.md)
+- [数据结构](./doc/消息队列.md)
+    - [数组](./doc/消息队列.md)
+    - [链表](./doc/消息队列.md)
+    - [栈](./doc/消息队列.md)
+    - [队列](./doc/消息队列.md)
+    - [哈希表](./doc/消息队列.md)
+    - [树](./doc/消息队列.md)
+    - [堆](./doc/消息队列.md)
+    - [图形](./doc/消息队列.md)
+##### [算法](./doc/算法.md)  [设计模式](./doc/设计模式.md)  [事务](./doc/事务.md)  [多线程](./doc/多线程.md)  [网络](./doc/网络.md)  [IO](./doc/IO.md)  [异常](./doc/异常.md)  [集合](./doc/Java基础及集合.md)   [虚拟机](./doc/jvm.md)
 ### `数据库`
 ##### [MYSQL](./doc/mysql.md)  [ORACLE](./doc/oracle.md)
 ### `框架` 
