@@ -75,6 +75,6 @@
         - [办理承兑汇票]
         - [放单]
     - [出口托收](./doc/ExportCollection.md)
-    - [进口信用证]
+    - [进口信用证](./doc/ImportCredit.md)
     - [出口信用证]
     - [同业代付]
