@@ -71,6 +71,9 @@
 - [票据]
 - [国际结算]
     - [进口代收](./doc/ImportCollection.md)
+        - [付款]
+        - [办理承兑汇票]
+        - [放单]
     - [出口托收](./doc/ExportCollection.md)
     - [进口信用证]
     - [出口信用证]
