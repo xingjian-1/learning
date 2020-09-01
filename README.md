@@ -78,3 +78,5 @@
     - [进口信用证](./doc/ImportCredit.md)
     - [出口信用证]
     - [同业代付](./doc/BankRefinance.md)
+    - [汇出汇款](./doc/OutwardRemittance.md)
+    - [汇入汇款](./doc/InwardRemittance.md)
