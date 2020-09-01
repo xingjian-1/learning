@@ -49,10 +49,8 @@
 - [熔断]
 - [SpringCloud微服务架构]
 
-### `Linux命令`
-- [linux常用命令](./doc/linux.md)
-- [sqluldr.zip](./doc/sqluldr.zip)
-- [ksh](./doc/ksh-20120801-37.el6_9.x86_64.rpm)
+### `LINUX相关`
+- [linux常用命令](./doc/linux.md)  [sqluldr下载](./doc/sqluldr.zip)  [ksh-64下载](./doc/ksh-20120801-37.el6_9.x86_64.rpm)
 ### `系统性能`
 - [如何提升系统性能]
 - [系统性能指标](./doc/性能测试指标.md)
