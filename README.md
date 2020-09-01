@@ -50,7 +50,7 @@
 - [SpringCloud微服务架构]
 
 ### `LINUX相关`
-- [linux常用命令](./doc/linux.md)  [sqluldr下载](./doc/sqluldr.zip)  [ksh-64下载](./doc/ksh-20120801-37.el6_9.x86_64.rpm)
+- [linux常用命令](./doc/linux.md)  [sqluldr数据导出工具下载](./doc/sqluldr.zip)  [ksh-64位命令解释器下载](./doc/ksh-20120801-37.el6_9.x86_64.rpm)
 ### `系统性能`
 - [如何提升系统性能]
 - [系统性能指标](./doc/性能测试指标.md)
