@@ -1,12 +1,12 @@
-## Linux命令：
-#### 日志查看相关命令
+## `Linux系统命令`
+#### 查看日志常用命令
 * cd -进当前用户主目录, cd home/ap/ -进入到指定目录 cd .. -返回上级目录
 * ls -当前目录下文件列表, ll -详细列表的目录, 
 * tail -f xx.log -打开动态日志文件，tail -100f xx.log -查看最近100行， 
 * less xx.log -打开文件, /108084 -搜索关键字, N -向上搜索，n -向下搜索，g -从第一条记录开始，G -到最近一条记录，h -帮助，f -向下一页搜索，b -向上一页搜索，
 * grep A0335G13S app_mSrv1.log -文件中搜索关键字
 * q -退出，
-#### 环境配置相关命令
+#### 环境配置常用命令
 * useradd nft -d /home/ap/nft -指定目录下创建用户，
 * passwd nft -设置密码，
 * su - niss -切换到niss用户，
@@ -28,6 +28,7 @@
 * cat test.txt >> $HOME/.bash_profile 把test中的数据拷到bash_profile文件里面
 * echo $JAVA_HOME --查看jdkJAVA_HOME的地址，file test.sh --查看文件编码，ls -lrt --表示按修改时间倒序输出，最新修改的文件会排在下面(没有加 -r 的时候排在上面)，查询文件个数：ls lrt|wc -l,查看文件大小：ls -lh
 
-#### 连接服务器相关命令
-###### telnet 10.30.9.98 13088 --telnet ip port测试端口是否连通，
+#### 服务器连接相关命令
+* telnet 10.30.9.98 13088 -telnet ip port测试端口是否连通
+* sqlpuls username/password@ServiceName -sqlpuls连接oracle数据库
 
