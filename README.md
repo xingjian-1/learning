@@ -61,9 +61,9 @@
 - 信贷
 - 票据
     - [汇票](./doc/BillOfExchange.md)
-        -[贴现]
-        -[转贴现]
-        -[再贴现]
+        - [贴现]
+        - [转贴现]
+        - [再贴现]
     - [本票](./doc/PromissoryNotes.md)
     - [支票](./doc/cheque.md)
     - [旅行支票](./doc/TravelerCheque.md)
