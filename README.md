@@ -60,10 +60,10 @@
 - 理财
 - 信贷
 - 票据
-    -[汇票](./doc/BillOfExchange.md)
-    -[本票](./doc/PromissoryNotes.md)
-    -[支票](./doc/cheque.md)
-    -[旅行支票](./doc/Traveler'sCheque.md)
+    - [汇票](./doc/BillOfExchange.md)
+    - [本票](./doc/PromissoryNotes.md)
+    - [支票](./doc/cheque.md)
+    - [旅行支票](./doc/TravelerCheque.md)
 - 国际结算
     - [进口代收](./doc/ImportCollection.md)
     - [出口托收](./doc/ExportCollection.md)
