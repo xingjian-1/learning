@@ -72,7 +72,7 @@
     - [出口托收](./doc/ExportCollection.md)
         - [跟单托收](./doc/OutwardCollection.md)
             - [付款交单](./doc/DocumentsAgainstPayment.md)
-            - [承兑交单]
+            - [承兑交单](./doc/DocumentsAgainstAcceptance.md)
         - [光票托收](./doc/CleanCollection.md)
     - [进口信用证](./doc/ImportCredit.md)
     - [出口信用证](./doc/ExportCredit.md)
