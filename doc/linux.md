@@ -30,5 +30,6 @@
 
 #### 服务器连接相关命令
 * telnet 10.30.9.98 13088 -telnet ip port测试端口是否连通
+* ssh khftp@10.0.0.209 -ssh username@ip 连接目标服务器
 * sqlpuls username/password@ServiceName -sqlpuls连接oracle数据库
 
