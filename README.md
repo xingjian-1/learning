@@ -71,7 +71,7 @@
     - [进口代收](./doc/ImportCollection.md)
     - [出口托收](./doc/ExportCollection.md)
         - [跟单托收](./doc/OutwardCollection.md)
-        - [光票托收](.doc/CleanCollection.md)
+        - [光票托收](./doc/CleanCollection.md)
     - [进口信用证](./doc/ImportCredit.md)
     - [出口信用证](./doc/ExportCredit.md)
     - [同业代付](./doc/BankRefinance.md)
