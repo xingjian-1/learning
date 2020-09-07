@@ -69,6 +69,10 @@
     - [旅行支票](./doc/TravelerCheque.md)
 - 国际结算
     - [进口代收](./doc/ImportCollection.md)
+        - [跟单代收]
+            - [付款代收]
+            - [承兑代收]
+        - [光票代收]
     - [出口托收](./doc/ExportCollection.md)
         - [跟单托收](./doc/OutwardCollection.md)
             - [付款交单](./doc/DocumentsAgainstPayment.md)
