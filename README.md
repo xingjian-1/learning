@@ -70,8 +70,8 @@
 - 国际结算
     - [进口代收](./doc/ImportCollection.md)
         - [跟单代收]
-            - [付款代收]
-            - [承兑代收]
+            - [付款交单]
+            - [承兑交单]
         - [光票代收]
     - [出口托收](./doc/ExportCollection.md)
         - [跟单托收](./doc/OutwardCollection.md)
