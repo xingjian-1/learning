@@ -1,18 +1,18 @@
-## 为什么要使用 spring？
-· spring 提供 ioc 技术，容器会帮你管理依赖的对象，从而不需要自己创建和管理依赖对象了，更轻松的实现了程序的解耦。
+#### 为什么要使用spring？
+· spring 提供IOC技术，容器会帮你管理依赖的对象，从而不需要自己创建和管理依赖对象了，更轻松的实现了程序的解耦。
 · spring 提供了事务支持，使得事务操作变的更加方便。
 · spring 提供了面向切片编程，这样可以更方便的处理某一类的问题。
-· 更方便的框架集成，spring 可以很方便的集成其他框架，比如 MyBatis、hibernate 等。
+· 更方便的框架集成，spring 可以很方便的集成其他框架，比如MyBatis、hibernate等。
 
-## 解释一下什么是 aop？
+#### 解释一下什么是 aop？
 · aop 是面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。
 · 简单来说就是统一处理某一“切面”（类）的问题的编程思想，比如统一处理日志、异常等。
 
-## 解释一下什么是 ioc？
+#### 解释一下什么是 ioc？
 ioc：Inversionof Control（中文：控制反转）是 spring 的核心，对于 spring 框架来说，就是由 spring 来负责控制对象的生命周期和对象间的关系。
 简单来说，控制指的是当前对象对内部成员的控制权；控制反转指的是，这种控制权不由当前对象管理了，由其他（类,第三方容器）来管理。
 
-## spring 有哪些主要模块？
+#### spring 有哪些主要模块？
 · spring core：框架的最基础部分，提供 ioc 和依赖注入特性。
 · spring context：构建于 core 封装包基础上的 context 封装包，提供了一种框架式的对象访问方法。
 · spring dao：Data Access Object 提供了JDBC的抽象层。
@@ -20,12 +20,12 @@ ioc：Inversionof Control（中文：控制反转）是 spring 的核心，对�
 · spring Web：提供了针对 Web 开发的集成特性，例如文件上传，利用 servlet listeners 进行 ioc 容器初始化和针对 Web 的 ApplicationContext。
 · spring Web mvc：spring 中的 mvc 封装包提供了 Web 应用的 Model-View-Controller（MVC）的实现。
 
-## spring 常用的注入方式有哪些？
+#### spring 常用的注入方式有哪些？
 · setter 属性注入
 · 构造方法注入
 · 注解方式注入
 
-## spring 中的 bean 是线程安全的吗？
+#### spring 中的 bean 是线程安全的吗？
 spring 中的 bean 默认是单例模式，spring 框架并没有对单例 bean 进行多线程的封装处理。
 实际上大部分时候 spring bean 无状态的（比如 dao 类），所有某种程度上来说 bean 也是安全的，但如果 bean 有状态的话（比如 view model 对象），
 那就要开发者自己去保证线程安全了，最简单的就是改变 bean 的作用域，把“singleton”变更为“prototype”，这样请求 bean 相当于 new Bean()了，
@@ -33,7 +33,7 @@ spring 中的 bean 默认是单例模式，spring 框架并没有对单例 bean 
 · 有状态就是有数据存储功能。
 · 无状态就是不会保存数据。
 
-## spring 支持几种 bean 的作用域？
+#### spring 支持几种 bean 的作用域？
 spring 支持 5 种作用域，如下：
 · singleton：spring ioc 容器中只存在一个 bean 实例，bean 以单例模式存在，是系统默认值；
 · prototype：每次从容器调用 bean 时都会创建一个新的示例，既每次 getBean()相当于执行 new Bean()操作；
@@ -43,18 +43,18 @@ spring 支持 5 种作用域，如下：
 · global-session：用于 portlet 容器，因为每个 portlet 有单独的 session，globalsession 提供一个全局性的 http session。
 注意： 使用 prototype 作用域需要慎重的思考，因为频繁创建和销毁 bean 会带来很大的性能开销。
 
-## spring 自动装配 bean 有哪些方式？
+#### spring 自动装配 bean 有哪些方式？
 · no：默认值，表示没有自动装配，应使用显式 bean 引用进行装配。
 · byName：它根据 bean 的名称注入对象依赖项。
 · byType：它根据类型注入对象依赖项。
 · 构造函数：通过构造函数来注入依赖项，需要设置大量的参数。
 · autodetect：容器首先通过构造函数使用 autowire 装配，如果不能，则通过 byType 自动装配。
 
-## spring 事务实现方式有哪些？
+#### spring 事务实现方式有哪些？
 · 声明式事务：声明式事务也有两种实现方式，基于 xml 配置文件的方式和注解方式（在类上添加 @Transaction 注解）。
 · 编码方式：提供编码的形式管理和维护事务。
 
-## 说一下 spring 的事务隔离？
+#### 说一下 spring 的事务隔离？
 spring 有五大隔离级别，默认值为 ISOLATION_DEFAULT（使用数据库的设置），其他四个隔离级别和数据库的隔离级别一致：
 ISOLATION_DEFAULT：用底层数据库的设置隔离级别，数据库设置的是什么我就用什么；
 ISOLATIONREADUNCOMMITTED：未提交读，最低隔离级别、事务未提交前，就可被其他事务读取（会出现幻读、脏读、不可重复读）；
@@ -66,7 +66,7 @@ ISOLATION_SERIALIZABLE：序列化，代价最高最可靠的隔离级别，该�
 不可重复读 ：是指在一个事务内，多次读同一数据。
 幻读 ：指同一个事务内多次查询返回的结果集不一样。比如同一个事务 A 第一次查询时候有 n 条记录，但是第二次同等条件下查询却有 n+1 条记录，这就好像产生了幻觉。发生幻读的原因也是另外一个事务新增或者删除或者修改了第一个事务结果集里面的数据，同一个记录的数据内容被修改了，所有数据行的记录就变多或者变少了。
 
-## 说一下 spring mvc 运行流程？
+#### 说一下 spring mvc 运行流程？
 · spring mvc 先将请求发送给 DispatcherServlet。
 · DispatcherServlet 查询一个或多个 HandlerMapping，找到处理请求的 Controller。
 · DispatcherServlet 再把请求提交到对应的 Controller。
@@ -74,15 +74,14 @@ ISOLATION_SERIALIZABLE：序列化，代价最高最可靠的隔离级别，该�
 · Dispathcher 查询一个或多个 ViewResolver 视图解析器，找到 ModelAndView 对象指定的视图对象。
 · 视图对象负责渲染返回给客户端。
 
-## spring mvc 有哪些组件？
+#### spring mvc 有哪些组件？
 · 前置控制器 DispatcherServlet。
 · 映射控制器 HandlerMapping。
 · 处理器 Controller。
 · 模型和视图 ModelAndView。
 · 视图解析器 ViewResolver。
  
-## @RequestMapping 的作用是什么？
-将 http 请求映射到相应的类/方法上。
+#### 注解相关
+* @RequestMapping将http请求映射到相应的类/方法上。
+* @Autowired 它可以对类成员变量、方法及构造函数进行标注，完成自动装配的工作，通过@Autowired 的使用来消除 set/get 方法。
 
-## @Autowired 的作用是什么？
-@Autowired 它可以对类成员变量、方法及构造函数进行标注，完成自动装配的工作，通过@Autowired 的使用来消除 set/get 方法。
