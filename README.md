@@ -25,9 +25,10 @@
 ### `开源框架`
 - [SPRING](./doc/Spring.md)
     - [Spring运行原理](./doc/SpringPrinciple.md)
-    - [Sring配置相关](./doc/SpringSet.md)
-    - [SringIOC]
+    - [Spring配置相关](./doc/SpringSet.md)
+    - [SpringIOC](./doc/SpringIOC.md)
     - [SpringAOP](./doc/SpringAOP.md)
+    - [Spring注解]./doc/SpringAutware.md)
 - [SPRINGMVC](./doc/SpringMVC.md)
 - [SPRINGBOOT](./doc/SpringBoot.md)
 - [HIBERNATE](./doc/Hibernate.md)
