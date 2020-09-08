@@ -75,8 +75,8 @@
           <bean id="book" class="org.jingdong.bean.life.Book">
           <property name="name" value="think in java"></property><property name="place" value="USA"></property><property name="price" value="79"></property>
           </beans>
-* main方法：
-                     public class Main {
+* main方法 <br>
+                    public class Main {
                         public static void main(String[] args) {
                             // 创建IOC容器
                             ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
