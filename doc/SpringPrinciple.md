@@ -89,3 +89,8 @@
                     
  * 运行原理解析：
  当ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext .xml");被执行时，Spring容器对象被创建，同时applicationContext .xml中的bean就会被创建到内存中
+ * BeanFactory和ApplicationContext区别 <br>
+ 配置bean的方式：<br>
+(1).通过ApplicationContext上下文容器：当在加载xml配置文件时，配置文件中的配置的bean已经被实例化<br>
+(2).BeanFactory：在加载配置文件时，配置文件中的bean不被实例化，只有当通过getBean(),获取bean实例的时候才被创建。<br>
+总结：通过BeanFactory配置的bean比通过ApplicationContext配置的节约内存。
