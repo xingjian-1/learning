@@ -75,16 +75,16 @@
           <bean id="book" class="org.jingdong.bean.life.Book">
           <property name="name" value="think in java"></property><property name="place" value="USA"></property><property name="price" value="79"></property>
           </beans>
- * main方法：
-           public class Main {
-              public static void main(String[] args) {
-                  // 创建IOC容器
-                  ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-                  //从容器中获取bean实例
-                  Person person = (Person) ac.getBean("person");
-                  //使用bean
-                  System.out.println(person.getName());
-              }
-          }
+* main方法：
+                     public class Main {
+                        public static void main(String[] args) {
+                            // 创建IOC容器
+                            ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+                            //从容器中获取bean实例
+                            Person person = (Person) ac.getBean("person");
+                            //使用bean
+                            System.out.println(person.getName());
+                        }
+                    }
  * 运行原理解析：
  当ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext .xml");被执行时，Spring容器对象被创建，同时applicationContext .xml中的bean就会被创建到内存中
