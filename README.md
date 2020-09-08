@@ -28,7 +28,7 @@
     - [Spring配置相关](./doc/SpringSet.md)
     - [SpringIOC](./doc/SpringIOC.md)
     - [SpringAOP](./doc/SpringAOP.md)
-    - [Spring注解]./doc/SpringAutware.md)
+    - [Spring注解](./doc/SpringAutware.md)
 - [SPRINGMVC](./doc/SpringMVC.md)
 - [SPRINGBOOT](./doc/SpringBoot.md)
 - [HIBERNATE](./doc/Hibernate.md)
