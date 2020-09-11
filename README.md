@@ -43,8 +43,12 @@
 - [SPRINGBOOT](./doc/SpringBoot.md)
     - [SpringBoot原理]
 - [HIBERNATE](./doc/Hibernate.md)
-- [MYBATIS](./doc/MyBatis.md)
-- [GIT](./doc/git.md)
+- [持久层框架]
+    - [MYBATIS](./doc/MyBatis.md)
+    - [IBATIS](./doc/IBatis.md)
+- [版本管理]
+    - [分布式版本管理工具Git](./doc/git.md)
+    - [SVN]
 ### `分布式系统`
 - [消息队列](./doc/消息队列.md)
     - [为什么要使用消息队列？消息队列有哪些？各有什么优缺点](./doc/消息队列.md)
