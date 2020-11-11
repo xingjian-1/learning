@@ -11,7 +11,6 @@
     - [创建型]
     - [结构型]
     - [行为型]
-- [事务](./doc/事务.md)
 - [多线程](./doc/多线程.md)
     - [多线程实现](./doc/多线程的实现.md)  [线程池创建](./doc/线程池.md)
 - [虚拟机](./doc/jvm.md)
@@ -24,10 +23,8 @@
     - [HashMap实现原理]
 ### `数据库`
 - [MYSQL](./doc/mysql.md)
-    - [悲观锁和乐观锁](./doc/消息队列.md)
-    - [Mysql优化]
+    - [事务](./doc/事务.md)  [索引](./doc/索引.md)   [SQL语句]  [性能优化]
 - [ORACLE](./doc/oracle.md)
-     - [Oracle优化]
 ### `开源框架`
 - [常用框架]
     - [Spring](./doc/Spring.md)
