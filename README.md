@@ -23,7 +23,7 @@
     - [HashMap实现原理]
 ### `数据库`
 - [MYSQL](./doc/mysql.md)
-    - [数据库事务](./doc/事务.md)  [索引](./doc/索引.md)   [SQL语句](./doc/SQL.md)  [性能优化]
+    - [数据库事务](./doc/事务.md)  [索引](./doc/索引.md)   [SQL语句](./doc/SQL语句.md)  [性能优化]
 - [ORACLE](./doc/oracle.md)
 ### `开源框架`
 - [常用框架]
