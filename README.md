@@ -14,18 +14,14 @@
 - [事务](./doc/事务.md)
 - [多线程](./doc/多线程.md)
     - [多线程实现](./doc/多线程的实现.md)  [线程池创建](./doc/线程池.md)
+- [虚拟机](./doc/jvm.md)
+    - [JVM内存结构](./doc/JVM内存结构.md)   [JVM垃圾收集策略](./doc/JVM垃圾收集策略.md)   [JVM性能调优](./doc/JVM性能调优.md)   [类文件结构](./doc/类文件结构.md)   [类加载过程](./doc/类加载过程.md)   [类加载器](./doc/类加载器.md)   
 - [网络](./doc/网络.md)
   - [网络监控](./doc/monitor.md)
 - [IO](./doc/IO.md)
 - [异常](./doc/异常.md)
 - [集合](./doc/Java基础及集合.md)
     - [HashMap实现原理]
-- [虚拟机](./doc/jvm.md)
-    - [类的加载机制]
-    - [加载器]
-    - [运行时数据区]
-    - [垃圾回收机制]
-    - [性能调优]
 ### `数据库`
 - [MYSQL](./doc/mysql.md)
     - [悲观锁和乐观锁](./doc/消息队列.md)
@@ -41,8 +37,7 @@
     - [SpringBoot](./doc/SpringBoot.md)
         - [SpringBoot原理]
     - [SpringCloud]
-        - [SpringCloud介绍](./doc/SpringCloud介绍.md)
-        - [SpringCloud五大核心组件](./doc/五大核心组件.md)
+        - [SpringCloud介绍](./doc/SpringCloud介绍.md)   [SpringCloud五大核心组件](./doc/五大核心组件.md)
     - [SpringSecurity]
     - [Netty]
     - [RPC]
