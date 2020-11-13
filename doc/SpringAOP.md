@@ -1,6 +1,13 @@
 ###### 是spring框架中的一个热点和优势,利用AOP可以对业务的各个部分进行隔离,从而使得业务逻辑各个部分之间的耦合度降低.提高代码的复用性,同时提高开发效率，应用场景:日志, 事务管理, 缓存, 性能检测等
 
 #### 说明
+
+              需要导入的jar
+              4+1(4个核心jar + commons-logging)
+              Spring的aop jar
+              nspring-aop
+              laspects的jar
+              nspring-aspects > aspectjweaver
               <!-- 配置aop的代理 -->
               <!--注意:<aop:config proxy-target-class="true"> 如果这样配置则是强制使用CGLIB方式进行代理-->
               <aop:config>
