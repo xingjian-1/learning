@@ -41,7 +41,7 @@
     - [RestFul]
     - [Shiro]
 - [持久层框架]
-    - [MyBaits概述](./doc/MyBatis.md)  [Mybaits缓存机制](./doc/IBatis.md)
+    - [MyBaits原理](./doc/MyBatis.md)  [Mybaits缓存机制](./doc/IBatis.md)
     - [Hibernate](./doc/Hibernate.md)
 - [版本管理]
     - [分布式版本管理工具Git](./doc/git.md)
