@@ -1,15 +1,46 @@
-#### 核心组件
+#### MVC模式的理解
+###### MVC(Model，View，Controller)是一种web应用程序的开发模式，即Servlet+JSP+JavaBean模式。servlet负责处理用户请求，jsp负责数据显示，javabean负责封装数据。
+                        
+                        MVC+三层结构   
+                        MVC指的是Servlet + Jsp + JavaBean。M(Model)对应JavaBean，V（View）对应Jsp，C（Controller）对应Servlet。
+                        三层结构指的是持久层（dao层）、业务逻辑层（service层）、表现层（web层）
+###### SpringMVC架构的特点
+                        
+                        1、Spring MVC在Model、View和Controller方面提供了一个非常清晰的角色划分，这三个方面各司其职，各负其责；
+                        2、灵活的配置。因为Spring的核心是IOC，同样在实现MVC上，也可以把各种类当作Bean来通过XML进行配置；
+                        3、提供了大量的控制器接口和实现类。开发者可以使用Spring提供 的控制器实现类，也可以自己实现控制器接口；
+                        4、真正做到与View的实现无关（JSP、Velocity、XSLT等）。它不会强制开发者使用JSP，也可以根据项目需求使用Velocity、XSLT等技术，使用起来更加灵活；
+                        5、国际化支持；
+                        6、面向接口编程；
+                        7、Spring提供了Web应用开发的一整套流程，不仅仅是MVC它们之间可以很方便地结合一起
 
-            1、HandlerMapping(处理器映射器)
+                        好框架=减轻开发者处理复杂问题的负担+良好内部扩展+支持它的强大的用户群体。
+#### 核心组件
+            1、DispatcherServlet(中央处理器)：用户请求到达前端控制器，它就相当于mvc模式中的c,
+            dispatcherServlet是整个流程控制的中心，由它调用其他组件处理用户的请求，
+            dispatcherServlet的存在降低了组件之间的耦合性。
+            
+            2、HandlerMapping(处理器映射器)：HandlerMapping负责根据用户请求找到Handler（即处理器），
+            springmvc提供了不同的映射器实现不同的映射方式。例如：配置文件方式，实现接口方式，注解方式等
                          BeanNameUrlHandlerMapping(默认)：将请求URL映射到同名的控制器Bean上
                          DefaultAnnotationHandlerMapping：将请求映射到标注@RequestMapping注解的控制和处理方法上
                          RequestMappingHandlerMapping      <mvc:annotation-driven/>
-            2、HandlerAdapter（适配器）：具体使用Handler来做事的人
+              
+            3、HandlerAdapter（适配器）：适配到具体的处理器来处理用户的请求
                          AnnotationHandlerAdapter
                          RequestMappingHandlerMappingAdapter
-            3、ViewResolver(视图解析器)：解析ModeAndView返回View，交给DispatcherServlet返回页面。
+            4、Handler(处理器)：Handler是继DispatcherServlet前端控制器的后端控制器，控制业务逻辑的处理。
+            
+            5、ViewResolver(视图解析器)：解析ModeAndView返回View，交给DispatcherServlet返回页面。
+            ViewReslover负责处理结果生成View视图，ViewReslover首先根据逻辑视图名解析成物理视图名即具体的页面地址，
+            再生成View视图对象，最后对View进行渲染将处理结果通过页面展示给用户。
                          InternalResourceView
-#### Springmvc配置流程
+            
+            6.View(视图)：springmvc框架提供了很多的View视图类型的支持，包括jstView、freemakerView、pdfView等。我们最常用的视图就是jsp。
+            
+            说明：在springmvc的各个组件中，处理器映射器、处理器适配器、视图解析器成为springmvc的三大组件。  
+            需要用户开发的组件有handler、view。
+#### 配置流程
 ###### DispatcherServlet是springMVC框架的核心控制器，一个请求的入口，在web.xml里配置：
   
             <!-- springMVC的核心控制器 -->
@@ -79,7 +110,7 @@
                    http://www.springframework.org/schema/context
                    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
               <!-- 扫描web包，应用Spring的注解 -->
-              <context:component-scan base-package="com.zhong717.web"/>
+              <context:component-scan base-package="com.xingjian007.web"/>
 
               <!-- 配置视图解析器，将ModelAndView及字符串解析为具体的页面 -->
               <bean
