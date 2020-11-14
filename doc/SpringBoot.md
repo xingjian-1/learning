@@ -1,49 +1,56 @@
-## 什么是 spring boot？
-spring boot 是为 spring 服务的，是用来简化新 spring 应用的初始搭建以及开发过程的。
+#### 概述
+###### SpringBoot是由Pivotal团队提供，继Spring、Springmvc框架之后的一个全新框架，默认配置了很多框架的使用方式，就像Maven整合了所有的Jar包，SpringBoot整合了所有的框架。能够简化配置文件，快速构建web应用，内置tomcat，无需打包部署，直接运行。
+###### 解决的问题
+###### 非常方便、快速搭建项目，大大节省工作量，如下：
 
-## 为什么要用 spring boot？
-· 配置简单
-· 独立运行
-· 自动装配
-· 无代码生成和 xml 配置
-· 提供应用监控
-· 易上手
-· 提升开发效率
+    1）配置 web.xml，加载 Spring 和 Spring mvc
+    2）配置数据库连接、配置 Spring 事务
+    3）配置加载配置文件的读取，开启注解
+    4）配置日志文件
+    ...
+    配置完成之后部署Tomcat调试 哪怕是一个小的功能可能都需要，这样操作一遍，实在麻烦！！！
+    springboot的引入将让它成为过去式
+###### 添加依赖
 
-## spring boot 核心配置文件是什么？
-spring boot 核心的两个配置文件：
-· bootstrap (. yml 或者 . properties)：boostrap 由父 ApplicationContext 加载的，比 applicaton 优先加载，且 boostrap 里面的属性不能被覆盖；
-· application (. yml 或者 . properties)：用于 spring boot 项目的自动化配置。
+            <!-- 继承SpringBoot官方指定的父工程 -->	
+            <parent>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>1.5.8.RELEASE</version>
+            </parent>
 
-## spring boot 配置文件有哪几种类型？它们有什么区别？
-配置文件有 . properties 格式和 . yml 格式，它们主要的区别是书法风格不同。
-. properties 配置如下：
-spring. RabbitMQ. port=5672
-. yml 配置如下：
-spring:
-    RabbitMQ:
-        port: 5672
-. yml 格式不支持 @PropertySource 注解导入。
+            <dependencies>
+                <!-- 加入Web开发所需要的场景启动器 -->
+                <dependency>
+                    <!-- 指定groupId和artifactId即可，版本已在父工程中定义 -->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </dependency>
+            </dependencies>
+             
+             spring-boot-starter：核心模块，包括自动配置支持、日志和YAML；
+             spring-boot-starter-test：测试模块，包括JUnit、Hamcrest、Mockito。
+###### 创建主启动类
 
-## spring boot 有哪些方式可以实现热部署？
-· 使用 devtools 启动热部署，添加 devtools 库，在配置文件中把 spring. devtools. restart. enabled 设置为 true；
-· 使用 Intellij Idea 编辑器，勾上自动编译或手动重新编译。
+            @SpringBootApplication 
+            @ComponentScan("com.*")
+            public class SpringBootStudyConfigApplication
+                public static void main(String[] args) {
+                    SpringApplication.run(SpringBootStudyConfigApplication.class, args);
+                }
+            }
+            @SpringBootApplication：表示这是一个springboot应用，实现自动配置功能。
+            @ComponentScan("com.*"):SpringBoot中主启动类会自动扫描该类所在包的子包，相当于xml配置文件中的<mvc:context scan=”包扫描路径”/>
+            注意：要进行扫描的包必须处于主启动类的子包中
+###### 编写Controller内容
+                
+             @RestController
+            public class HelloWorldController {
+                @RequestMapping("/hello")
+                public String index() {
+                    return "Hello World";
+                }
+            }
+            @RestController的意思就是controller里面的方法都以json格式输出
+###### 启动主程序，打开浏览器访问http://localhost:8080/hello
 
-## jpa 和 hibernate 有什么区别？
-jpa 全称 Java Persistence API，是 Java 持久化接口规范，hibernate 属于 jpa 的具体实现。
-
-## 什么是 spring cloud？
-spring cloud 是一系列框架的有序集合。它利用 spring boot 的开发便利性巧妙地简化了分布式系统基础设施的开发，如服务发现注册、配置中心、消息总线、
-负载均衡、断路器、数据监控等，都可以用 spring boot 的开发风格做到一键启动和部署。
-
-## spring cloud 断路器的作用是什么？
-在分布式架构中，断路器模式的作用也是类似的，当某个服务单元发生故障（类似用电器发生短路）之后，通过断路器的故障监控（类似熔断保险丝），
-向调用方返回一个错误响应，而不是长时间的等待。这样就不会使得线程因调用故障服务被长时间占用不释放，避免了故障在分布式系统中的蔓延。
-
- 
-## spring cloud 的核心组件有哪些？
-· Eureka：服务注册于发现。
-· Feign：基于动态代理机制，根据注解和选择的机器，拼接请求 url 地址，发起请求。
-· Ribbon：实现负载均衡，从一个服务的多台机器中选择一台。
-· Hystrix：提供线程池，不同的服务走不同的线程池，实现了不同服务调用的隔离，避免了服务雪崩的问题。
-· Zuul：网关管理，由 Zuul 网关转发请求给对应的服务。
