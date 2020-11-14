@@ -20,7 +20,7 @@
 - [虚拟机](./doc/jvm.md)
     - [JVM内存结构](./doc/JVM内存结构.md)   [JVM垃圾收集策略](./doc/JVM垃圾收集策略.md)   [JVM性能调优](./doc/JVM性能调优.md)   [类文件结构](./doc/类文件结构.md)   [类加载过程](./doc/类加载过程.md)   [类加载器](./doc/类加载器.md)   
 - [集合](./doc/Java基础及集合.md)
-    - [HashMapJDK1.8HASH算法设计思想](/doc/HashMap底层实现和原理.md)
+    - [HashMap底层实现原理](/doc/HashMap底层实现和原理.md)
 - [网络](./doc/网络.md)
   - [网络监控](./doc/monitor.md)
 - [IO](./doc/IO.md)
