@@ -32,7 +32,7 @@
 ### `开源框架`
 - [常用框架]
     - [Spring体系结构](./doc/Spring.md)   [Spring运行原理](./doc/SpringPrinciple.md)   [Spring控制反转](./doc/SpringIOC.md)  [Spring面向切面](./doc/SpringAOP.md)   [Spring配置相关](./doc/SpringSet.md)     [Spring注解](./doc/SpringAutware.md)
-    - [SpringMVC执行流程](./doc/SpringMVC.md)   [Springmvc原理]
+    - [Springmvc体系结构](./doc/SpringMVC体系结构.md)   [SpringMVC运行流程](./doc/SpringMVC.md)
     - [SpringBoot](./doc/SpringBoot.md)   [SpringBoot原理]
     - [SpringCloud](./doc/SpringCloud介绍.md)   [SpringCloud五大核心组件](./doc/五大核心组件.md)
     - [SpringSecurity]
