@@ -4,8 +4,10 @@
 #### docker请求流程
 一个完整的Docker有以下几个部分组成：DockerClient客户端、Docker Daemon守护进程、Docker Image镜像、DockerContainer容器 <br/>
 Docker daemon作为服务端接受来自客户的请求，并处理这些请求（创建、运行、分发容器）。客户端和服务端既可以运行在一个机器上，也可通过socket或者RESTful API来进行通信。
-#### docker部署流程
-
+#### docker部署示例
+###### 我们通过docker将springcloud-ms-eureka-0.0.1-SNAPSHOT.jar工程发布到服务器
+* 在idea中新建一个docker(file->setting->Build,Execution,Deployment->docker)输入服务器地址和端口.
+* 
 #### docker常用命令
 * 进入命令界面：win+R 输入cmd
 * 搜索mysql：docker search mysql
