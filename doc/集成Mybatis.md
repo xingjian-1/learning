@@ -103,7 +103,7 @@
                 <table schema="" tableName="user"></table>③
             </context>
           </generatorConfiguration>
-  * 在Maven build菜单里面配置运行参数：Goals：mybatis-generator:generate -e Profiles：generatorConfig.xml 然后点击run运行成功之后，会生成mapper、实体类文件
+  * 先maven–>update project，在Maven build菜单里面配置运行参数：Goals：mybatis-generator:generate -e Profiles：generatorConfig.xml 然后点击run运行成功之后，会生成mapper、实体类文件
   * applicable.properties文件中添加
                
                 mybatis.typeAliasesPackage=com.didispace.web.jdbc.po  ⑤
