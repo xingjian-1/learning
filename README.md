@@ -41,7 +41,7 @@
     - [SpringBoot体系结构](./doc/SpringBoot.md)    [SpringBoot运行流程](./doc/SpringBoot运行流程.md)
     - [SpringCloud体系结构](./doc/五大核心组件.md)     [SpringCloud运行流程](./doc/SpringCloud介绍.md)   
     - [SpringBoot、SpringCloud集成swagger2](./doc/集成swagger.md)    [SpringBoot、SpringCloud集成Mybatis](./doc/集成Mybatis.md)
-    - [Netty]  [maven](./doc/maven.md) [Motan]  [Dubbo]
+    - [Netty]  [Maven](./doc/maven.md) [Motan]  [Dubbo]
     - [RestFul] [Docker](./doc/docker.md)
 - [持久层框架]
     - [MyBaits简介](./doc/MyBatis.md)  [Mybaits缓存机制](./doc/IBatis.md)
