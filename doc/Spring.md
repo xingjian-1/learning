@@ -1,12 +1,12 @@
 #### 概况
-###### Spring是一个开源框架，Spring是于2003 年兴起的一个轻量级的Java 开发框架，由Rod Johnson 在其著作Expert One-On-One J2EE Development and Design中阐述的部分理念和原型衍生而来。它是为了解决企业应用开发的复杂性而创建的。框架的主要优势之一就是其分层架构，分层架构允许使用者选择使用哪一个组件，同时为 J2EE 应用程序开发提供集成的框架。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情。然而，Spring的用途不仅限于服务器端的开发。从简单性、可测试性和松耦合的角度而言，任何Java应用都可以从Spring中受益。Spring的核心是`控制反转`（IoC）和`面向切面`（AOP）。简单来说，Spring是一个`分层`的JavaSE/EE full-stack(一站式) `轻量级``开源`框架。
+Spring是一个开源框架，Spring是于2003 年兴起的一个轻量级的Java 开发框架，由Rod Johnson 在其著作Expert One-On-One J2EE Development and Design中阐述的部分理念和原型衍生而来。它是为了解决企业应用开发的复杂性而创建的。框架的主要优势之一就是其分层架构，分层架构允许使用者选择使用哪一个组件，同时为 J2EE 应用程序开发提供集成的框架。Spring使用基本的JavaBean来完成以前只可能由EJB完成的事情。然而，Spring的用途不仅限于服务器端的开发。从简单性、可测试性和松耦合的角度而言，任何Java应用都可以从Spring中受益。Spring的核心是`控制反转`（IoC）和`面向切面`（AOP）。简单来说，Spring是一个`分层`的JavaSE/EE full-stack(一站式) `轻量级``开源`框架。
             
             1.web层：struts，spring-MVC
             2.service层：spring
             3.dao层：hibernate，mybatis，jdbcTemplate
 
 #### 体系结构
-###### Spring框架整体被分为五个模块:`核心容器`(core container), `面向切面编程`(aop), `数据访问`(date access), `Web`, `单元测试`Test.Spring4去掉了spring3中的struts,添加了spring-messaging和spring-websocket,其他模块保持不变
+Spring框架整体被分为五个模块:`核心容器`(core container), `面向切面编程`(aop), `数据访问`(date access), `Web`, `单元测试`Test.Spring4去掉了spring3中的struts,添加了spring-messaging和spring-websocket,其他模块保持不变
 * 核心容器
      
         core部分包含4个模块
@@ -48,4 +48,5 @@
        spring-messaging：用于构建基于消息的应用程序
        
        现在Spring最新版本是Spring5.官网：https://spring.io/projects/spring-framework
-   
+       Mybatis是目前国内Java web开发的主流ORM框架。作为一名开发者非常有必要掌握其实现原理，更好地解决我们开发中遇到的问题；同时，Mybatis的架构和源码非常优雅，使用了大量的设计模式实现解耦以及高扩展性对其设计思想也需要深入理解。
+       除了Mybatis之外，与其处在同一重要位置的开源框架还有Spring。比如你是如何理解Spring中的IOC、DI、AOP这些概念的？比如你知道Bean的生命周期吗？说说它有哪些步骤？每个步骤是用来干什么的......
