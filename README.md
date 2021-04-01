@@ -32,7 +32,7 @@
 - [异常](./doc/异常.md)
 ### `数据库`
 - [MySQL]
-    - [事务](./doc/事务.md)  [锁](./doc/悲观锁和乐观锁.md)  [存储引擎](./doc/存储引擎.md)  [索引](./doc/索引.md)  [优化](./doc/SQL语句.md)  [集群](./doc/mysql.md)
+    - [事务](./doc/事务.md)  [锁](./doc/悲观锁和乐观锁.md)  [存储引擎](./doc/存储引擎.md)  [索引](./doc/索引.md)  [关系型数据库调优Sql优化](./doc/SQL语句.md)  [集群](./doc/mysql.md)
 - [Oracle](./doc/oracle.md)
 ### `开源框架`
 - [常用框架]
