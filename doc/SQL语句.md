@@ -33,3 +33,11 @@
         WHERE A.id IS NULL;
         
         union ：用于合并多个 select 语句的结果集，并去掉重复的值。 union all ：作用和 union 类似，但不会去掉重复的值
+#### Sql优化方案
+* 对查询进行优化，应尽量避免全表扫描，首先应考虑在 where及order by涉及的列上建立索引
+* 应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描 例如:select id from t where num is null
+* 应尽量避免在 where 子句中使用!=或<>操作符，否则将引擎放弃使用索引而进行全表扫描。
+* 应尽量避免在 where 子句中使用 or 来连接条件，否则将导致引擎放弃使用索引而进行全表扫描
+* 尽可能的使用 varchar代替char varchar是可变长度，char是不可变长度。 
+* 任何地方都不要使用 select * from t ，用具体的字段列表代替“*”，不要返回用不到的任何字段
+* union all只是合并查询结果，并不会进行去重和排序操作，在没有去重的前提下，使用union all的执行效率要比union高
