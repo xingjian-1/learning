@@ -1,16 +1,16 @@
 ### 如何做MySQL的性能优化？
 为搜索字段创建索引、避免使用 select *，列出需要查询的字段、分库分表、合适的存储引擎
 ### MySQL常用的搜索引擎
-![搜索引擎](img/搜索引擎.png)
+<img src="/img/搜索引擎.png" width = "50%" height = "30%" alt="图片名称" align=center />
 
 ## MySQL索引的实现原理
 索引：高效获取数据的一种数据结构。
 验证索引是否生效：explain select * from table where type=1 查询结果rows列的值是1，说明此查询语句扫描了1条记录
 索引失效情况：
-使用模糊查询，”%“在前面时索引不起作用 explain select * from table where type like '%动物'
-使用模糊查询，”%“在后面索引起作用 explain select * from table where type like '动物%'
-条件查询中使用or关键字时 索引不起作用，> < between等这样的范围查询 索引不起作用
-![B+树](/B+树.png)  
+* 使用模糊查询，”%“在前面时索引不起作用 explain select * from table where type like '%动物'
+* 使用模糊查询，”%“在后面索引起作用 explain select * from table where type like '动物%'
+* 条件查询中使用or关键字时 索引不起作用，> < between等这样的范围查询 索引不起作用
+<br><img src="/img/B+树.png" width = "50%" height = "30%" alt="图片名称" align=center /> 
 
 ## 说一下MySQL的行锁和表锁
 MyISAM 只支持表锁，InnoDB支持表锁和行锁，默认为行锁。
