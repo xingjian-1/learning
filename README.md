@@ -31,9 +31,9 @@
 - [IO](./doc/IO.md)
 - [异常](./doc/异常.md)
 ### `数据库`
-- [MYSQL]
-    - [存储引擎](./doc/存储引擎.md) [索引](./doc/索引.md) [事务](./doc/事务.md)  [悲观锁和乐观锁](./doc/悲观锁和乐观锁.md)   [SQL语句](./doc/SQL语句.md)  [MYSQL集群](./doc/mysql.md)
-- [ORACLE](./doc/oracle.md)
+- [MySQL]
+    - [事务](./doc/事务.md)  [锁](./doc/悲观锁和乐观锁.md)  [存储引擎](./doc/存储引擎.md)  [索引](./doc/索引.md)  [Sql使用](./doc/SQL语句.md)  [MySQL集群](./doc/mysql.md)
+- [Oracle](./doc/oracle.md)
 ### `开源框架`
 - [常用框架]
     - [Spring简介](./doc/Spring.md)   [Spring运行原理](./doc/SpringPrinciple.md)   [Spring控制反转](./doc/SpringIOC.md)  [Spring面向切面](./doc/SpringAOP.md)   [Spring配置相关](./doc/SpringSet.md)     [Spring注解](./doc/SpringAutware.md)
