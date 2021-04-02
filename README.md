@@ -22,7 +22,7 @@
         - [策略模式](./doc/策略模式.md)   [观察者模式](./doc/设计模式.md)   [模板方法模式](./doc/行为型.md)   [状态模式](./doc/结构型.md)
 - [JDK]
     - [Java.util.concurrent]
-        - [多线程实现](./doc/多线程的实现.md)  [线程池](./doc/线程池.md) [并发编程实例](./doc/多线程.md)
+        - [多线程实现](./doc/多线程的实现.md)  [线程池](./doc/线程池.md) [并发编程](./doc/多线程.md)
     - [Java.util]
         - [集合概况](./doc/Java基础及集合.md)   [HashMap底层实现原理](/doc/HashMap底层实现和原理.md)
     - [Java.IO]
