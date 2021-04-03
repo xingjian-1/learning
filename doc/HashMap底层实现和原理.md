@@ -42,20 +42,8 @@ hashmap采用的就是链地址法（拉链法），jdk1.7中，当冲突时，�
             这样假如几个hashCode分别是210、220、2^30，那么寻址结果index就会一样而发生冲突，所以哈希表就不均匀分布了。
 
 ##### 扩容机制的优化
-            
-            void resize(int newCapacity) {
-                    Entry[] oldTable = table;
-                    int oldCapacity = oldTable.length;
-                    if (oldCapacity == MAXIMUM_CAPACITY) {
-                        threshold = Integer.MAX_VALUE;
-                        return;
-                    }
-
-                    Entry[] newTable = new Entry[newCapacity];
-                    transfer(newTable, initHashSeedAsNeeded(newCapacity));
-                    table = newTable;
-                    threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
-            }
+HashMap底层是一个数组，当这个数组满了之后，他就会自动进行扩容，变成一个更大数组
+            待定......
 #### HashMap\HashTable区别
 
             HashMap基于Map接口实现，元素以键值对的方式存储，并且允许使用null键和null值，因为key不允许重复，因此只能有一个键为null,
