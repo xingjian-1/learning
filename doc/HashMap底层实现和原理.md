@@ -77,4 +77,4 @@ hashmap采用的就是链地址法（拉链法），jdk1.7中，当冲突时，�
 
              static int indexFor(int h, int length) {
                     return h & (length-1);
-             }
+             } 
