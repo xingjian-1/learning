@@ -4,8 +4,8 @@
 ###### 特别提醒！！！`各知识点描述有插入图片辅助说明，浏览过程当中如果图片显示不出来 请在电脑C:\Windows\System32\drivers\etc 目录下编辑host文件，增加: 199.232.68.133 raw.githubusercontent.com 映射配置`
 
 ### `基础`
-- [数据结构](./doc/数据结构.md)
-    - [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆]   [图形]
+- [数据结构]
+    - [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆](./doc/数据结构.md)   [图形]
 - [算法](./doc/算法.md)
     - [字符串操作类算法](./doc/字符串操作类算法.md)
     - [查找类算法](./doc/查找类算法.md)  
