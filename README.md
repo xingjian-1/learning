@@ -49,7 +49,7 @@
     - [Shiro权限管理框架](./doc/Shiro.md)  [Maven](./doc/maven.md) [Motan]  [Dubbo]
     - [Kubernetes](./doc/Kubernetes.md) [Docker](./doc/docker.md)
 - [持久层框架]
-    - [MyBaits简介](./doc/MyBatis.md)  [MyBaits缓存机制](./doc/IBatis.md)  [MyBaits代码生成](./doc/生成工具.md)
+    - [MyBaits工作原理](./doc/MyBatis.md)  [MyBaits缓存机制](./doc/IBatis.md)  [MyBaits代码生成](./doc/生成工具.md)
     - [Hibernate](./doc/Hibernate.md)
 - [版本管理]
     - [分布式版本管理工具Git](./doc/git.md)
