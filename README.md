@@ -41,17 +41,17 @@
     - [Oracle数据库](./doc/oracle.md)
 ### `开源框架`
 - [常用框架]
-    - [Spring工作原理](./doc/SpringPrinciple.md)   [Spring控制反转](./doc/SpringIOC.md)  [Spring面向切面](./doc/SpringAOP.md)  [SpringBoot工作原理](./doc/SpringBoot.md)   [SpringCloud工作原理](./doc/五大核心组件.md)  [Springmvc体系结构](./doc/SpringMVC体系结构.md)   [SpringMVC运行流程](./doc/SpringMVC.md) 
-    - [SpringBoot/SpringCloud集成swagger2](./doc/集成swagger.md)   [SpringBoot/SpringCloud集成Mybatis](./doc/集成Mybatis.md)
-    - [Shiro权限管理框架](./doc/Shiro.md)  [Maven](./doc/maven.md) [Motan]  [Dubbo]
-    - [Kubernetes](./doc/Kubernetes.md) [Docker](./doc/docker.md)
+    - [Spring工作原理](./doc/SpringPrinciple.md)   [Spring控制反转](./doc/SpringIOC.md)  [Spring面向切面](./doc/SpringAOP.md)  [SpringBoot工作原理](./doc/SpringBoot.md)   [SpringCloud工作原理](./doc/五大核心组件.md)  [Springmvc工作原理](./doc/SpringMVC体系结构.md)
+    - [SpringBoot/SpringCloud集成swagger2](./doc/集成swagger.md)   [SpringBoot/SpringCloud集成Mybatis](./doc/集成Mybatis.md)  [Shiro权限管理框架集成](./doc/Shiro.md)  
     - [无](./doc/Spring.md)    [无](./doc/SpringSet.md)     [无](./doc/SpringAutware.md)    [无](./doc/SpringBoot运行流程.md)    [无](./doc/SpringCloud介绍.md)  
-- [持久层框架]
+- [持久层框架]  [无](./doc/SpringMVC.md) 
     - [MyBaits工作原理](./doc/MyBatis.md)  [MyBaits缓存机制](./doc/IBatis.md)  [MyBaits代码生成](./doc/生成工具.md)
     - [Hibernate](./doc/Hibernate.md)
-- [版本管理]
+- [管理辅助工具类]
     - [分布式版本管理工具Git](./doc/git.md)
     - [SVN]
+    - [Maven](./doc/maven.md) [Motan]  [Dubbo]
+    - [Kubernetes](./doc/Kubernetes.md) [Docker](./doc/docker.md)
 ### `分布式系统`
 - [消息队列](./doc/消息队列.md)
     - [为什么要使用消息队列？消息队列有哪些？各有什么优缺点](./doc/消息队列.md)
