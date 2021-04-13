@@ -4,59 +4,69 @@
 * List： ArrayList LinkedList Vector Stack
 * Set： HashSet LinkedHashSet TreeSet
 * Map： Hashtable HashMap ConcurrentHashMap LinkedHashMap TreeMap  
-List、Set、Map 的区别主要体现在两个方面：元素是否有序、是否允许元素重复。
+List、Set、Map 的区别主要体现在两个方面：元素是否有序、是否允许元素重复。Vector、Hashtable、Stack 都是线程安全的，HashMap是非线程安全的，不过在 JDK 1.5 之后随着 Java.util.concurrent并发包的出现，它们也有了自己对应的线程安全类，比如HashMap对应的线程安全类就是 ConcurrentHashMap。
 
-##### HashMap和Hashtable的区别 
-存储：HashMap允许key和value为null，而Hashtable不允许。线程安全：Hashtable是线程安全的，而HashMap是非线程安全的。推荐使用：在 Hashtable 的类注释可以看到，Hashtable是保留类不建议使用，推荐在单线程环境下使用HashMap替代，如果需要多线程使用则用ConcurrentHashMap替代。
+##### Map 
+* HashMap和Hashtable的区别
 
-##### 如何决定使用HashMap还是TreeMap
-对于在 Map 中插入、删除、定位一个元素这类操作，HashMap 是最好的选择，因为相对而言HashMap的插入会更快，但如果你要对一个key集合进行有序的遍历，那TreeMap是更好的选择。
+           1.存储：HashMap允许key和value为null，而Hashtable不允许，会抛出NullPointerException异常。
+           2.线程安全：Hashtable是线程安全的，而HashMap是非线程安全的，效率上高于Hashtable。如果多线程下使用ConcurrentHashMap替代。
+           3.HashMap中hash数组的默认大小是16，而且一定是2的指数。HashTable中hash数组默认大小是11，增加的方式是oldCapacity*2+1。 
+           4.HashMap是Map接口的实现，Hashtable 继承于Dictionary类。
+           HashMap实现同步方式：Map m = Collections.synchronizeMap(hashMap);
+* HashTable和ConcurrentHashMap区别
+ 
+           锁分段技术：首先将数据分成一段一段的存储，然后给每一段数据配一把锁，当一个线程占用锁访问其中一个段数据的时候，
+           其他段的数据也能被其他线程访问。 
+           ConcurrentHashMap提供了与Hashtable和SynchronizedMap不同的锁机制。Hashtable中采用的锁机制是一次锁住整个hash表，
+           从而在同一时刻只能由一个线程对其进行操作；而ConcurrentHashMap中则是一次锁住一个桶。
+           ConcurrentHashMap默认将hash表分为16个桶，诸如get、put、remove等常用操作只锁住当前需要用到的桶。
+           原来只能一个线程进入，现在却能同时有16个写线程执行，并发性能的提升是显而易见的。
+* HashMap和TreeMap区别
 
-##### HashMap的实现原理 
-jdk1.8中HashMap存储结构是：数组+链表+红黑树，HashMap基于Hash算法实现的，我们通过put(key,value)存储，get(key)来获取。当传入 key时，HashMap会根据key.hashCode()计算出hash值，根据hash值定位到具体的数组存储位置，如果相同的位置已经存在相同的hash值，称为hash冲突，内容是否相同，不相同放到链表的尾部，当链表长度大于8时会转换为红黑树。[HashMap底层实现和原理](./doc/HashMap底层实现和原理.md)
+           插入、删除、定位一个元素这类操作，HashMap是最好的选择，因为相对而言HashMap的插入会更快，
+           如果输出的结果要有序，那就选TreeMap，TreeMap会对结果进行有序的遍历。
+* HashMap实现原理
 
-##### HashSet的实现原理
-HashSet是基于HashMap实现的，HashSet底层使用HashMap来保存所有元素，实现比较简单，相关HashSet的操作，基本上都是直接调用底层HashMap的相关方法来完成，HashSet不允许重复的值。
+           jdk1.8中HashMap存储结构是：数组+链表+红黑树，HashMap基于Hash算法实现的，我们通过put(key,value)存储，get(key)来获取。
+           当传入 key时，HashMap会根据key.hashCode()计算出hash值，根据hash值定位到具体的数组存储位置，如果相同的位置已经存在
+           相同的hash值，称为hash冲突，内容是否相同，不相同放到链表的尾部，当链表长度大于8时会转换为红黑树。
+           [HashMap底层实现和原理](./doc/HashMap底层实现和原理.md)
 
-##### ArrayList和LinkedList的区别
-* 查询：ArrayList 是动态数组的数据结构实现，而LinkedList是双向链表的数据结构实现。随机访问效率：ArrayList比LinkedList在随机访问的时候效率要高，因为LinkedList是线性的数据存储方式，所以需要移动指针从前往后依次查找。
-* 增加和删除效率：在非首尾的增加和删除操作，LinkedList要比ArrayList效率要高，因为ArrayList增删操作要影响数组内的其他数据的下标。综合来说，在需要频繁读取集合中的元素时，更推荐使用ArrayList，而在插入和删除操作较多时，更推荐使用LinkedList。
+* HashSet的实现原理
 
-##### 如何实现数组和List之间的转换
-* 数组转List：使用Arrays. asList(array)进行转换。
-* List转数组：使用List自带的toArray()方法。
+           HashSet是基于HashMap实现的，HashSet底层使用HashMap来保存所有元素，实现比较简单，相关HashSet的操作，
+           基本上都是直接调用底层HashMap的相关方法来完成，HashSet不允许重复的值。
 
-                     List<String> list = new ArrayList<String>();
-                             //list to array
-                             list. add("小傻瓜");
-                             list. add("的世界");
-                             list. toArray();
-                             //array to list
-                             String[] array = new String[]{"小傻瓜","的世界"};
-                             Arrays. asList(array);
-##### ArrayList和Vector的区别
-* 线程安全：Vector使用了Synchronized来实现线程同步，是线程安全的，而ArrayList是非线程安全的。
-* 性能：ArrayList在性能方面要优于 Vector。
-* 扩容：ArrayList和Vector都会根据实际的需要动态的调整容量，只不过在Vector扩容每次会增加 1 倍，而ArrayList只会增加50%。
-##### Array和ArrayList区别
-* Array可以存储基本数据类型和对象，ArrayList只能存储对象。
-* Array是指定固定大小的，而ArrayList大小是自动扩展的。Array 内置方法没有 ArrayList 多，比如 addAll、removeAll、iteration 等方法只有 ArrayList 有。
-##### 在Queue中poll()和remove()区别
-* 相同点：都是返回第一个元素，并在队列中删除返回的对象。
-* 不同点：如果没有元素 poll()会返回 null，而 remove()会直接抛出 NoSuchElementException 异常。
-           
-                    Queue<String> queue = new LinkedList<String>();
-                            queue. offer("string"); // add
-                            System. out. println(queue. poll());
-                            System. out. println(queue. remove());
-                            System. out. println(queue. size());
-##### 哪些集合类是线程安全的
-Vector、Hashtable、Stack 都是线程安全的，HashMap是非线程安全的，不过在 JDK 1.5 之后随着 Java.util.concurrent并发包的出现，它们也有了自己对应的线程安全类，比如HashMap对应的线程安全类就是 ConcurrentHashMap。
+##### List
+* ArrayList和LinkedList的区别
 
+          ArrayList的数据结构是数组，LinkedList是双向链表的数据结构实现，查询时LinkedList需要移动指针从前往后依次查找，
+          ArrayList根据数组下标直接查找更快一些，所以ArrayList比LinkedList查询效率高。
+          ArrayList底层是数组结构来实现的，数组结构采用连续的存储单元，增删操作会涉及到数组的移动，链表采用非连续的存储单元
+          所以效率要高于ArrayList。在需要频繁读取集合中的元素时，使用ArrayList，在插入和删除操作时，使用LinkedList。
+* ArrayList和Vector的区别
+
+          线程安全：Vector使用了Synchronized来实现线程同步，是线程安全的，而ArrayList是非线程安全的。
+          性能：ArrayList在性能方面要优于Vector。
+          扩容：ArrayList和Vector都会根据实际的需要动态的调整容量，只不过在Vector扩容每次会增加1倍，而ArrayList只会增加50%。
+
+* 如何实现数组和List之间的转换
+
+          //数组转List：使用Arrays. asList(array)进行转换。
+          //List转数组：使用List自带的toArray()方法。
+          List<String> list = new ArrayList<String>();
+                   //list to array
+                   list. add("小傻瓜");
+                   list. add("的世界");
+                   list. toArray();
+                   //array to list
+                   String[] array = new String[]{"小傻瓜","的世界"};
+                   Arrays. asList(array);
 ##### 迭代器Iterator
 Iterator 接口提供遍历任何Collection的接口。我们可以从一个Collection中使用迭代器方法来获取迭代器实例。迭代器取代了Java集合框架中的Enumeration，迭代器允许调用者在迭代过程中移除元素。
 
-##### Iterator怎么使用？有什么特点？
+* Iterator怎么使用？有什么特点？
         
                     List<String> list = new ArrayList<>();
                             Iterator<String> it = list. iterator();
@@ -67,11 +77,12 @@ Iterator 接口提供遍历任何Collection的接口。我们可以从一个Coll
                     Iterator 的特点是更加安全，因为它可以确保，在当前遍历的集合元素被更改的时候，
                     就会抛出ConcurrentModificationException异常。
 
-##### Iterator和ListIterator区别
-* Iterator可以遍历Set和List集合，而ListIterator只能遍历List。
-* Iterator只能单向遍历，而ListIterator可以双向遍历（向前/后遍历）。
-* ListIterator 从 Iterator 接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。
-##### 怎么确保一个集合不能被修改？
+* Iterator和ListIterator区别
+
+                  Iterator可以遍历Set和List集合，而ListIterator只能遍历List。
+                  Iterator只能单向遍历，而ListIterator可以双向遍历（向前/后遍历）。
+                  ListIterator 从 Iterator 接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。
+* 怎么确保一个集合不能被修改？
 
                    可以使用 Collections. unmodifiableCollection(Collection c) 方法来创建一个只读集合，这样改变集合的任何操作都会抛出
                    Java. lang. UnsupportedOperationException 异常。
