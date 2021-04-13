@@ -26,6 +26,7 @@
                                                           initialCapacity);
                    }
                }
+               
               /**
                *如果指定的集合为null，throws NullPointerException。
                */
