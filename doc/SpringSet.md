@@ -82,3 +82,33 @@
                 }
 如果新容量大于 MAX_ARRAY_SIZE,进入(执行) hugeCapacity() 方法来比较 minCapacity 和 MAX_ARRAY_SIZE，如果minCapacity大于最大容量，则新容量则为Integer.MAX_VALUE，否则，新容量大小则为 MAX_ARRAY_SIZE 即为 Integer.MAX_VALUE - 8。
 #### 泛型
+泛型就是可以适应不同的类型，这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口、泛型方法。
+* 保证了类型的安全性：泛型约束了变量的类型，保证了类型的安全性。例如List<int>和ArrayList。List<int>集合只能加入int类型的变量，ArrayList可以Add任何常用类型，编译的时候不会提示错误。
+* 泛型能够省去类型强制转换。
+* 提高方法、算法的重用性。
+
+##### 泛型类
+  
+          public class GenericClass<T> {
+            private T value;
+            public GenericClass(T value) {
+                this.value = value;
+            }
+            public T getValue() {
+                return value;
+            }
+            public void setValue(T value) {
+                this.value = value;
+            }
+           }
+##### 泛型接口
+   
+           public interface GenericInterface<T> {
+            void show(T value);
+          }
+##### 泛型方法
+
+          public class GenericFun {
+              public void show(String value) { }
+              public void show(Integer value) { }
+          }
