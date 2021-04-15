@@ -47,6 +47,10 @@
         WHERE A.id IS NULL;
         
         union ：用于合并多个 select 语句的结果集，并去掉重复的值。 union all ：作用和 union 类似，但不会去掉重复的值
+#### drop、truncate和delete的区别
+* DELETE语句执行删除的过程是每次从表中删除一行，并且同时将该行的删除操作作为事务记录在日志中保存以便进行进行回滚操作。
+* TRUNCATE TABLE 则一次性地从表中删除所有的数据并不把单独的删除操作记录记入日志保存，删除行是不能恢复的。并且在删除的过程中不会激活与表有关的删除触发器。执行速度快。
+* drop语句将表所占用的空间全释放掉。TRUNCATE 和DELETE只删除数据， DROP则删除整个表（结构和数据）。
 #### Sql优化方案
 * 对查询进行优化，应尽量避免全表扫描，首先应考虑在 where及order by涉及的列上建立索引
 * 应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描 例如:select id from t where num is null
