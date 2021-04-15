@@ -39,7 +39,7 @@
     - [Oracle数据库](./doc/oracle.md)
 ### `开源框架`
 - [常用框架]
-    - [Spring工作原理](./doc/SpringPrinciple.md)   [Spring控制反转](./doc/SpringIOC.md)     [Spring面向切面](./doc/SpringAOP.md)    [SpringBoot工作原理](./doc/SpringBoot.md)   [SpringCloud工作原理](./doc/五大核心组件.md)    [Springmvc工作原理](./doc/SpringMVC体系结构.md)
+    - [Spring工作原理](./doc/SpringPrinciple.md)   [Spring控制反转](./doc/SpringIOC.md)     [Spring面向切面](./doc/SpringAOP.md)    [SpringBoot工作原理](./doc/SpringBoot.md)      [Springmvc工作原理](./doc/SpringMVC体系结构.md)
     - [SpringBoot/SpringCloud集成swagger2](./doc/集成swagger.md)   [SpringBoot/SpringCloud集成Mybatis](./doc/集成Mybatis.md)  [Shiro权限管理框架集成](./doc/Shiro.md)  
     - [无](./doc/Spring.md)     [无](./doc/SpringAutware.md)    [无](./doc/SpringCloud介绍.md)  [无](./doc/SpringMVC.md) 
 - [持久层框架]  
@@ -48,7 +48,7 @@
 - [管理辅助工具类]
     - [分布式版本管理工具Git](./doc/git.md)
     - [SVN]
-    - [Maven](./doc/maven.md) [Motan]  [Dubbo]
+    - [Maven](./doc/maven.md) [Motan]
     - [Kubernetes](./doc/Kubernetes.md) [Docker](./doc/docker.md)
 ### `分布式系统`
 - [消息队列](./doc/消息队列.md)
@@ -59,12 +59,13 @@
     - [如何保证消息的顺序性？](./doc/消息消费顺序.md)
     - [如何解决消息队列的延时以及过期失效问题？消息队列满了如何处理？有几百万条数据持续积压几小时，如何解决？](./doc/消息过期失效.md)
     - [如果让你写一个消息队列，如何架构？大致思路。。。]
-- [缓存](./doc/缓存.md)
-- [分布式服务框架]
-- [分布式事务]   [分布式锁](./doc/分布式锁.md)   [分布式会话]
-- [分库分表]   [读写分离]
-- [搜索引擎]
-- [限流]   [熔断]
+- [redis](./doc/缓存.md)
+- [SpringCloud核心组件](./doc/五大核心组件.md)
+- [Dubbo]
+- [分布式搜索引擎]
+- [分布式事务]  [分布式锁](./doc/分布式锁.md)   [分布式会话]
+- [分库分表]  [读写分离]
+- [降级]  [熔断]
 - [微服务]
     - [分布式事务+DDD+负载均衡+服务治理](./doc/MicroService.md)
 ### `LINUX相关`
