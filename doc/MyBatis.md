@@ -9,19 +9,208 @@
 * API接口层：提供一些API接口，通过这些API接口来操纵数据库,接口层收到调用请求会调用数据处理层来完成具体的数据处理。
 * 数据处理层：负责具体的SQL查找、SQL解析、SQL执行和执行结果映射处理等,主要目的是根据调用的请求完成一次数据库操作。
 * 基础支撑层：负责最基础的功能支撑，包括连接管理、事务管理、配置加载和缓存处理，这些都是共用的功能，将他们抽取出来作为最基础的组件，为上层的数据处理层提供最基础的支撑。           
-#### 工作流程
-* (1)加载配置：配置来源于两个地方，一处是配置文件，一处是Java代码的注解，将SQL的配置信息加载成为一个个MappedStatement对象（包括了传入参数映射配置、执行的SQL语句、结果映射配置），存储在内存中。
-* (2)SQL解析：当API接口层接收到调用请求时，会接收到传入SQL的ID和传入对象（可以是Map、JavaBean或者基本数据类型），Mybatis会根据SQL的ID找到对应的MappedStatement，然后根据传入参数对象对MappedStatement进行解析，解析后可以得到最终要执行的SQL语句和参数。
-* (3)SQL执行：将最终得到的SQL和参数拿到数据库进行执行，得到操作数据库的结果。
-* (4)结果映射：将操作数据库的结果按照映射的配置进行转换，可以转换成HashMap、JavaBean或者基本数据类型，并将最终结果返回。sql映射文件:采用mapper接口式的编程，sql映射文件与mapper接口类的名称要相同，并且sql映射文件中namespace的值为对应mapper接口的全类名形式。
+#### 工作原理      
+* 加载配置：加载配置文件里面数据库连接信息和mapper里面的那些映射文件，生成一个个的MappedStatement对象，然后调用方法addMappedStatement()方法以Id为主键保存在了configuration中一个map变量里面。
 
-            处理过程：
-            (A)根据SQL的ID查找对应的MappedStatement对象。
-            (B)根据传入参数对象解析MappedStatement对象，得到最终要执行的SQL和执行传入参数。
-            (C)获取数据库连接，根据得到的最终SQL语句和执行传入参数到数据库执行，并得到执行结果。
-            (D)根据MappedStatement对象中的结果映射配置对得到的执行结果进行转换处理，并得到最终的处理结果。
-            (E)释放连接资源。
-            (F)返回处理结果将最终的处理结果返回。
+            <?xml version="1.0" encoding="UTF-8" ?>
+            <!DOCTYPE configuration
+            PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+            "http://mybatis.org/dtd/mybatis-3-config.dtd">
+            <configuration>
+                <environments default="development">
+                    <environment id="development">
+                        <transactionManager type="JDBC" />
+                        <dataSource type="POOLED">
+                            <property name="driver" value="com.mysql.jdbc.Driver" />
+                            <property name="url"
+                                value="jdbc:mysql://localhost:3306/test?characterEncoding=utf-8" />
+                            <property name="username" value="root" />
+                            <property name="password" value="123456" />
+                        </dataSource>
+                    </environment>
+                </environments>
+                <mappers>
+                   <mapper  resource="sqlMapper/userMapper.xml"/>
+                </mappers>
+            </configuration>
+            
+            public MappedStatement addMappedStatement(
+                  String id,
+                  SqlSource sqlSource,
+                  StatementType statementType,
+                  SqlCommandType sqlCommandType,
+                  Integer fetchSize,
+                  Integer timeout,
+                  String parameterMap,
+                  Class<?> parameterType,
+                  String resultMap,
+                  Class<?> resultType,
+                  ResultSetType resultSetType,
+                  boolean flushCache,
+                  boolean useCache,
+                  boolean resultOrdered,
+                  KeyGenerator keyGenerator,
+                  String keyProperty,
+                  String keyColumn,
+                  String databaseId,
+                  LanguageDriver lang,
+                  String resultSets) {
+                if (unresolvedCacheRef) throw new IncompleteElementException("Cache-ref not yet resolved");
+                id = applyCurrentNamespace(id, false);
+                boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
+                MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id,
+                sqlSource, sqlCommandType);
+                statementBuilder.resource(resource);
+                statementBuilder.fetchSize(fetchSize);
+                statementBuilder.statementType(statementType);
+                statementBuilder.keyGenerator(keyGenerator);
+                statementBuilder.keyProperty(keyProperty);
+                statementBuilder.keyColumn(keyColumn);
+                statementBuilder.databaseId(databaseId);
+                statementBuilder.lang(lang);
+                statementBuilder.resultOrdered(resultOrdered);
+                statementBuilder.resulSets(resultSets);
+                setStatementTimeout(timeout, statementBuilder);
+                setStatementParameterMap(parameterMap, parameterType, statementBuilder);
+                setStatementResultMap(resultMap, resultType, resultSetType, statementBuilder);
+                setStatementCache(isSelect, flushCache, useCache, currentCache, statementBuilder);
+                MappedStatement statement = statementBuilder.build();
+                configuration.addMappedStatement(statement);
+                return statement;
+              }
+* 创建sqlSessionFactory
+上面的一切操作都是为了生成一个sqlSessionFactory
+
+            public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
+                try {
+                  XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
+                  return build(parser.parse());
+                } catch (Exception e) {
+                  throw ExceptionFactory.wrapException("Error building SqlSession.", e);
+                } finally {
+                  ErrorContext.instance().reset();
+                  try {
+                    inputStream.close();
+                  } catch (IOException e) {
+                    // Intentionally ignore. Prefer previous error.
+                  }
+                }
+              }
+
+              public SqlSessionFactory build(Configuration config) {
+                return new DefaultSqlSessionFactory(config);
+              }
+* 创建sqlSession
+
+            public SqlSession openSession() {
+                return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, false);
+              }
+            private SqlSession openSessionFromDataSource(ExecutorType execType, 
+            TransactionIsolationLevel level, boolean autoCommit) {
+                Transaction tx = null;
+                try {
+                  final Environment environment = configuration.getEnvironment();
+                  final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+                  tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+                  final Executor executor = configuration.newExecutor(tx, execType);
+                  return new DefaultSqlSession(configuration, executor, autoCommit);
+                } catch (Exception e) {
+                  closeTransaction(tx); // may have fetched a connection so lets call close()
+                  throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);
+                } finally {
+                  ErrorContext.instance().reset();
+                }
+              }
+            //返回一个SqlSession，默认使用DefaultSqlSession
+             public DefaultSqlSession(Configuration configuration, Executor executor, boolean autoCommit) {
+                this.configuration = configuration;
+                this.executor = executor;
+                this.dirty = false;
+                this.autoCommit = autoCommit;
+              }
+* 执行具体的SQL
+
+            要执行User user = sqlSession.selectOne("test.findUserById", 1);
+            public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds) {
+                try {
+                 //1.根据Statement Id，在mybatis 配置对象Configuration中查找和配置文件相对应的MappedStatement
+                  MappedStatement ms = configuration.getMappedStatement(statement);
+                  //2. 将查询任务委托给MyBatis的执行器Executor
+                  List<E> result = executor.query(ms, wrapCollection(parameter), rowBounds, Executor.NO_RESULT_HANDLER);
+                  return result;
+                } catch (Exception e) {
+                  throw ExceptionFactory.wrapException("Error querying database.  Cause: " + e, e);
+                } finally {
+                  ErrorContext.instance().reset();
+                }
+              }
+              
+             //再继续看query()和queryFromDatabase()这两个方法
+            @SuppressWarnings("unchecked")
+              public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds,
+              ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+                ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
+                if (closed) throw new ExecutorException("Executor was closed.");
+                if (queryStack == 0 && ms.isFlushCacheRequired()) {
+                  clearLocalCache();
+                }
+                List<E> list;
+                try {
+                  queryStack++;
+                  list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;
+                  if (list != null) {
+                    handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
+                  } else {
+                    list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
+                  }
+                } finally {
+                  queryStack--;
+                }
+                if (queryStack == 0) {
+                  for (DeferredLoad deferredLoad : deferredLoads) {
+                    deferredLoad.load();
+                  }
+                  deferredLoads.clear(); // issue #601
+                  if (configuration.getLocalCacheScope() == LocalCacheScope.STATEMENT) {
+                    clearLocalCache(); // issue #482
+                  }
+                }
+                return list;
+              }
+            private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds,
+            ResultHandler resultHandler,CacheKey key, BoundSql boundSql) throws  SQLException {
+                List<E> list;
+                localCache.putObject(key, EXECUTION_PLACEHOLDER);
+                try {
+                  list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);
+                } finally {
+                  localCache.removeObject(key);
+                }
+                localCache.putObject(key, list);
+                if (ms.getStatementType() == StatementType.CALLABLE) {
+                  localOutputParameterCache.putObject(key, parameter);
+                }
+                return list;
+              }
+              在这两个方法里面会为当前的查询创建一个缓存key，如果缓存中没有值，直接从数据库中读取，
+              执行查询后将得到的list结果放入缓存之中。
+            
+            doQuery()在SimpleExecutor类中重写的方法
+            public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds,
+            ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
+                Statement stmt = null;
+                try {
+                  Configuration configuration = ms.getConfiguration();
+                  StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, 
+                  rowBounds, resultHandler, boundSql);
+                  stmt = prepareStatement(handler, ms.getStatementLog());
+                  return handler.<E>query(stmt, resultHandler);
+                } finally {
+                  closeStatement(stmt);
+                }
+              }
+              Executor的作用之一就是创建Statement了，创建完后又把Statement丢给StatementHandler返回List查询结果.
+* 释放连接资源
 #### MyBatis分页方式
 * 逻辑分页：使用MyBatis自带的RowBounds进行分页，一次性查询很多数据，然后在结果中检索分页的数据。这样弊端是需要消耗大量的内存、有内存溢出的风险、对数据库压力较大。
 * 物理分页：自己手写SQL分页或使用分页插件PageHelper，从数据库查询指定条数的数据，弥补了一次性全部查出的所有数据的种种缺点，比如需要大量的内存，对数据库查询压力较大等问题。
