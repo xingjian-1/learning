@@ -211,6 +211,46 @@
               }
               Executor的作用之一就是创建Statement了，创建完后又把Statement丢给StatementHandler返回List查询结果.
 * 释放连接资源
+#### MyBatis执行器Executor
+三种基本的Executor执行器：
+* SimpleExecutor：每执行一次 update或select就开启一个Statement对象，用完立刻关闭Statement对象；
+* ReuseExecutor：执行update或select，以SQL作为key查找Statement对象，存在就使用，不存在就创建，用完后不关闭Statement对象，而是放置于Map内供下一次使用。简言之，就是重复使用Statement对象；
+* BatchExecutor：执行update（没有select，jdbc批处理不支持select），将所有SQL都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个Statement对象，每个Statement对象都是addBatch()完毕后，等待逐一执行executeBatch()批处理，与jdbc批处理相同。
+#### MyBatis如何编写一个自定义插件
+自定义插件实现原理
+MyBatis自定义插件针对MyBatis四大对象（Executor、StatementHandler、ParameterHandler、ResultSetHandler）进行拦截：
+* Executor：拦截内部执行器，它负责调用StatementHandler 操作数据库，并把结果集通过ResultSetHandler进行自动映射，另外它还处理了二级缓存的操作；
+* StatementHandler：拦截SQL语法构建的处理，它是MyBatis直接和数据库执行SQL脚本的对象，另外它也实现了MyBatis的一级缓存；
+* ParameterHandler：拦截参数的处理；
+* ResultSetHandler：拦截结果集的处理。
+ 
+                        MyBatis 插件要实现 Interceptor 接口，接口包含的方法，如下：
+                        public interface Interceptor {   
+                           Object intercept(Invocation invocation) throws Throwable;       
+                           Object plugin(Object target);    
+                           void setProperties(Properties properties);
+                        }
+* setProperties 方法是在MyBatis进行配置插件的时候可以配置自定义相关属性，即：接口实现对象的参数配置；
+* plugin 方法是插件用于封装目标对象的，通过该方法我们可以返回目标对象本身，也可以返回一个它的代理，可以决定是否要进行拦截进而决定要返回一个什么样的
+目标对象，官方提供了示例：return Plugin. wrap(target, this)；
+* intercept 方法就是要进行拦截的时候要执行的方法。
+
+                        //插件实现：
+                        @Intercepts({@Signature(type = Executor. class, method = "query",
+                        args = {MappedStatement. class, Object. class, RowBounds. class, ResultHandler. class})})
+                        public class TestInterceptor implements Interceptor{
+                           public Object intercept(Invocation invocation) throws Throwable {
+                             Object target = invocation. getTarget(); //被代理对象
+                             Method method = invocation. getMethod(); //代理方法
+                             Object[] args = invocation. getArgs(); //方法参数
+                             // do something . . . . . .  方法拦截前执行代码块
+                             Object result = invocation. proceed();
+                             // do something . . . . . . . 方法拦截后执行代码块
+                             return result;  }
+                           public Object plugin(Object target) {
+                             return Plugin. wrap(target, this);
+                           }
+                        }
 #### MyBatis分页方式
 * 逻辑分页：使用MyBatis自带的RowBounds进行分页，一次性查询很多数据，然后在结果中检索分页的数据。这样弊端是需要消耗大量的内存、有内存溢出的风险、对数据库压力较大。
 * 物理分页：自己手写SQL分页或使用分页插件PageHelper，从数据库查询指定条数的数据，弥补了一次性全部查出的所有数据的种种缺点，比如需要大量的内存，对数据库查询压力较大等问题。
@@ -268,44 +308,3 @@
 * 优化上：在sql优化上，mybatis要比hibernate方便一些，由于mybatis的sql都是写在xml里，因此优化sql比hibernate方便很多。而hibernate的sql很多都是自动生成的，无法直接维护sql；虽有hql，但功能还是不及sql强大，见到报表等变态需求时，hql也歇菜，也就是说hql是有局限的；hibernate虽然也支持原生sql，但开发模式上却与orm不同，需要转换思维，因此使用上不是非常方便。总之写sql的灵活度上hibernate不及mybatis
 * 学习和使用门槛：MyBatis入门比较简单，使用门槛也更低。
 * 二级缓存：hibernate拥有更好的二级缓存，它的二级缓存可以自行更换为第三方的二级缓存。
-
-#### MyBatis执行器Executor
-三种基本的Executor执行器：
-* SimpleExecutor：每执行一次 update或select就开启一个Statement对象，用完立刻关闭Statement对象；
-* ReuseExecutor：执行update或select，以SQL作为key查找Statement对象，存在就使用，不存在就创建，用完后不关闭Statement对象，而是放置于Map内供下一次使用。简言之，就是重复使用Statement对象；
-* BatchExecutor：执行update（没有select，jdbc批处理不支持select），将所有SQL都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个Statement对象，每个Statement对象都是addBatch()完毕后，等待逐一执行executeBatch()批处理，与jdbc批处理相同。
-#### MyBatis如何编写一个自定义插件
-自定义插件实现原理
-MyBatis自定义插件针对MyBatis四大对象（Executor、StatementHandler、ParameterHandler、ResultSetHandler）进行拦截：
-* Executor：拦截内部执行器，它负责调用StatementHandler 操作数据库，并把结果集通过ResultSetHandler进行自动映射，另外它还处理了二级缓存的操作；
-* StatementHandler：拦截SQL语法构建的处理，它是MyBatis直接和数据库执行SQL脚本的对象，另外它也实现了MyBatis的一级缓存；
-* ParameterHandler：拦截参数的处理；
-* ResultSetHandler：拦截结果集的处理。
- 
-                        MyBatis 插件要实现 Interceptor 接口，接口包含的方法，如下：
-                        public interface Interceptor {   
-                           Object intercept(Invocation invocation) throws Throwable;       
-                           Object plugin(Object target);    
-                           void setProperties(Properties properties);
-                        }
-* setProperties 方法是在MyBatis进行配置插件的时候可以配置自定义相关属性，即：接口实现对象的参数配置；
-* plugin 方法是插件用于封装目标对象的，通过该方法我们可以返回目标对象本身，也可以返回一个它的代理，可以决定是否要进行拦截进而决定要返回一个什么样的
-目标对象，官方提供了示例：return Plugin. wrap(target, this)；
-* intercept 方法就是要进行拦截的时候要执行的方法。
-
-                        //插件实现：
-                        @Intercepts({@Signature(type = Executor. class, method = "query",
-                        args = {MappedStatement. class, Object. class, RowBounds. class, ResultHandler. class})})
-                        public class TestInterceptor implements Interceptor{
-                           public Object intercept(Invocation invocation) throws Throwable {
-                             Object target = invocation. getTarget(); //被代理对象
-                             Method method = invocation. getMethod(); //代理方法
-                             Object[] args = invocation. getArgs(); //方法参数
-                             // do something . . . . . .  方法拦截前执行代码块
-                             Object result = invocation. proceed();
-                             // do something . . . . . . . 方法拦截后执行代码块
-                             return result;  }
-                           public Object plugin(Object target) {
-                             return Plugin. wrap(target, this);
-                           }
-                        }
