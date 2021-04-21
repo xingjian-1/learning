@@ -3,7 +3,7 @@
 
 ### `基础`
 - [数据结构]
-    - [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆](./doc/数据结构.md)   [图形]
+    - [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆](./doc/数据结构.md)   [图形](./doc/Graph.md)
 - [算法](./doc/算法.md)
     - [字符串算法]
         - [KMP匹配](./doc/字符串操作类算法.md)  [暴力匹配](./doc/排序类算法.md)   [BM匹配算法](./doc/查找类算法.md)
