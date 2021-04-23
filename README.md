@@ -2,10 +2,10 @@
 ###### 特别提醒！！！`各知识点描述有插入图片辅助说明，浏览过程当中如果图片显示不出来 请在电脑C:\Windows\System32\drivers\etc 目录下编辑host文件，增加: 199.232.68.133 raw.githubusercontent.com 映射配置` `如果github网站经常连接不上在host文件再增加：140.82.114.4 github.com 199.232.69.194 github.global.ssl.fastly.net 配置`
 
 ### `基础`
-`数据结构`- [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆](./doc/数据结构.md)   [图形](./doc/Graph.md)
-- [算法](./doc/算法.md)
-`字符串算法`-[KMP匹配](./doc/字符串操作类算法.md)  [暴力匹配](./doc/排序类算法.md)   [BM匹配算法](./doc/查找类算法.md)
-`查找类算法`- [顺序查找](./doc/顺序查找.md)   [二分查找](./doc/二分查找.md)   [哈希算法](./doc/哈希算法.md)   [分布式寻址算法]   [斐波那契查找]   [树表查找]   [分块查找]
+`数据结构` [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆](./doc/数据结构.md)   [图形](./doc/Graph.md) <br>
+`算法`    <br>
+`字符串算法`[算法](./doc/算法.md)  [KMP匹配](./doc/字符串操作类算法.md)  [暴力匹配](./doc/排序类算法.md)   [BM匹配算法](./doc/查找类算法.md)   <br>
+`查找类算法`- [顺序查找](./doc/顺序查找.md)   [二分查找](./doc/二分查找.md)   [哈希算法](./doc/哈希算法.md)   [分布式寻址算法]  <br>
 `排序类算法`  - [冒泡排序](./doc/冒泡排序.md)   [快速排序](./doc/快速排序.md)   [选择排序](./doc/选择排序.md)  [插入法排序](./doc/插入法排序.md)  [计数排序](./doc/计数排序.md)  [堆排序](./doc/堆排序.md)  [归并排序](./doc/归并排序.md)   [桶排序](./doc/桶排序.md) 
     - [CAS算法](./doc/cas.md)
 - [设计模式]
