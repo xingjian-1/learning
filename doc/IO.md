@@ -270,6 +270,61 @@ BufferedReader：字符缓冲流，从字符输入流中读取文本，缓冲各
                 void newLine() 
 * FileReader、FileWriter
  FileReader：InputStreamReader类的直接子类，用来读取字符文件的便捷类，使用默认字符编码。 FileWriter：OutputStreamWriter类的直接子类，用来写入字符文件的便捷类，使用默认字符编码。 
+
+#### 高效流效率比对
+读取f盘下的一个视频文件到项目中：文件大小29.5 MB
+* 读取方式一
+
+                  FileInputStream inputStream = new FileInputStream("f://滑板//HEEL_FLIP.mp4");
+                  FileOutputStream outputStream = new FileOutputStream("HEEL_FLIP.mp4");
+                  int len;
+                  // 开始时间
+                  long begin = System.currentTimeMillis();
+                  // 一次读取一个字节
+                  while ((len = inputStream.read()) != -1) {
+                      outputStream.write(len);
+                  }
+                  // 用时毫秒
+                  System.out.println(System.currentTimeMillis() - begin);// 213195
+                  //关闭流释放资源
+                  inputStream.close();
+                  outputStream.close();
+* 读取方式二
+        
+                  FileInputStream inputStream = new FileInputStream("f://滑板//HEEL_FLIP.mp4");
+                  FileOutputStream outputStream = new FileOutputStream("HEEL_FLIP.mp4");
+                  int len;
+                  byte[] bs = new byte[1024];
+                  // 开始时间
+                  long begin = System.currentTimeMillis();
+                  // 一次读取一个字节数组
+                  while ((len = inputStream.read(bs)) != -1) {
+                      outputStream.write(bs, 0, len);
+                  }
+                  // 用时毫秒
+                  System.out.println(System.currentTimeMillis() - begin);// 281
+
+                  inputStream.close();
+                  outputStream.close();
+* 读取方式三
+        
+                  FileInputStream inputStream = new FileInputStream("f://滑板//HEEL_FLIP.mp4");
+                  BufferedInputStream bis = new BufferedInputStream(inputStream);
+                  FileOutputStream outputStream = new FileOutputStream("HEEL_FLIP.mp4");
+                  BufferedOutputStream bos = new BufferedOutputStream(outputStream);
+                  int len;
+                  byte[] bs = new byte[1024];
+                  // 开始时间
+                  long begin = System.currentTimeMillis();
+                  while ((len = bis.read(bs)) != -1) {
+                      bos.write(bs, 0, len);
+                  }
+                  // 用时毫秒
+                  System.out.println(System.currentTimeMillis() - begin);// 78
+
+                  bis.close();
+                  bos.close();
+                  由此可以看出高效缓冲流读写速度是最快的。
 #### FileInputStream和FileOutputStream
 这是在拷贝文件操作的时候，经常用到的两个类。在处理小文件的时候，它们性能表现还不错，在大文件的时候，最好使用BufferedInputStream (或 BufferedReader) 和 BufferedOutputStream (或 BufferedWriter)
 #### Files的常用方法都有哪些？
