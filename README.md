@@ -57,26 +57,19 @@
 ### `海量数据处理`
 - [如何从大量的URL中找出相同的URL]
 ### `对金融业务的理解`
-- 理财
-- 信贷
-- 票据
-    - [汇票](./doc/BillOfExchange.md)
-        - [贴现]
-        - [转贴现]
-        - [再贴现]
+- `理财`
+- `信贷`
+- `票据`
+    - [汇票](./doc/BillOfExchange.md) [贴现]  [转贴现]  [再贴现]
     - [本票](./doc/PromissoryNotes.md)
     - [支票](./doc/cheque.md)
     - [旅行支票](./doc/TravelerCheque.md)
-- 国际结算
+- `国际结算`
     - [进口代收](./doc/ImportCollection.md)
-        - [跟单代收]
-            - [付款交单]
-            - [承兑交单]
+        - [跟单代收]  [付款交单]  [承兑交单]
         - [光票代收]
     - [出口托收](./doc/ExportCollection.md)
-        - [跟单托收](./doc/OutwardCollection.md)
-            - [付款交单](./doc/DocumentsAgainstPayment.md)
-            - [承兑交单](./doc/DocumentsAgainstAcceptance.md)
+        - [跟单托收](./doc/OutwardCollection.md) [付款交单](./doc/DocumentsAgainstPayment.md) [承兑交单](./doc/DocumentsAgainstAcceptance.md)
         - [光票托收](./doc/CleanCollection.md)
     - [进口信用证](./doc/ImportCredit.md)
     - [出口信用证](./doc/ExportCredit.md)
@@ -84,3 +77,4 @@
     - [同业代付](./doc/BankRefinance.md)
     - [汇出汇款](./doc/OutwardRemittance.md)
     - [汇入汇款](./doc/InwardRemittance.md)
+###### 读后有收获可以支付宝请作者喝咖啡啊
