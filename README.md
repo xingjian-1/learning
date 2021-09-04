@@ -14,8 +14,13 @@
 - `行为型` [策略模式](./doc/策略模式.md)   [观察者模式](./doc/观察者模式.md)  [责任链模式](./doc/责任链模式.md)  [模板方法模式](./doc/模板方法模式.md)   [状态模式](./doc/状态模式.md)
 - `框架涉及到的相关设计模式`  [Spring中用到的设计模式](./doc/设计模式.md)  [MyBatis中用到的设计模式](./doc/行为型.md) <br>
 ##### `JDK`
-- `[Java.util.concurrent]` [多线程](./doc/多线程的实现.md)  [线程池](./doc/线程池.md) [TreadLocal原理](./doc/多线程.md) [synchronized锁升级过程](./doc/SpringBoot运行流程.md)     [Lock锁](./doc/结构型.md)
 - `[Java.util]` [集合](./doc/Java基础及集合.md)   [HashMap实现原理](/doc/HashMap底层实现和原理.md)     [CurrentHashMap实现原理](./doc/创建型.md)    [ArrayList实现原理](./doc/SpringSet.md)
+- `[Java.util.concurrent]` [多线程](./doc/多线程的实现.md)  [线程池](./doc/线程池.md) [TreadLocal原理](./doc/多线程.md) [synchronized锁升级过程](./doc/SpringBoot运行流程.md)     [Lock锁](./doc/结构型.md)
+- `[Java.util.function]`
+- `[Java.util.jar]`
+- `[Java.util.zip]`
+- `[Java.util.regex]`
+- `[Java.util.spi]`
 - `[Java.io]` [IO流](./doc/IO.md)
 - `[Java.lang]` [异常](./doc/异常.md)  [反射](./doc/SpringAutware.md) 
 - `[Java.net]` [网络编程](./doc/monitor.md) [socket](./doc/socket.md) [IO模型](./doc/多路复用机制.md)  [Http协议状态码](./doc/SpringMVC.md)
