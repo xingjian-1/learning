@@ -6,7 +6,7 @@ Java容器分为Collection和Map两大类，都在Java.util包下面。
            public interface Collection<E> extends Iterable<E> {}
            public abstract class AbstractCollection<E> implements Collection<E> {}
   
-##### List 
+#### List 
 List特点是元素有序，且可重复。实现的常用集合类有ArrayList、LinkedList，和Vector（线程安全）。
 
            public interface List<E> extends Collection<E> 
@@ -36,7 +36,7 @@ ArrayList的数据结构是数组，LinkedList是双向链表的数据结构实�
            public class Stack<E> extends Vector<E> {}
 
 
-##### Set
+#### Set
 Set特点是元素无序，不可重复。实现的常用集合类有HashSet，LinkedHashSet，TreeSet（可排序）。
 
            public interface Set<E> extends Collection<E> {}
@@ -56,7 +56,7 @@ Set特点是元素无序，不可重复。实现的常用集合类有HashSet，L
            public class TreeSet<E> extends AbstractSet<E>
            implements NavigableSet<E>, Cloneable, java.io.Serializable{}
                     
-##### Map 
+#### Map 
 
            public interface Map<K,V> {}
            public abstract class AbstractMap<K,V> implements Map<K,V> {}
@@ -75,10 +75,81 @@ Set特点是元素无序，不可重复。实现的常用集合类有HashSet，L
 
            public class HashMap<K,V> extends AbstractMap<K,V>
            implements Map<K,V>, Cloneable, Serializable {}
-           
-HashMap实现原理：jdk1.8中HashMap存储结构是：数组+链表+红黑树，HashMap基于Hash算法实现的，我们通过put(key,value)存储，get(key)来获取。当传入 key时，HashMap会根据key.hashCode()计算出hash值，根据hash值定位到具体的数组存储位置，如果相同的位置已经存在相同的hash值，称为hash冲突，内容是否相同，不相同放到链表的尾部，当链表长度大于8时会转换为红黑树。         
+ 
+HashMap基于Map接口实现，元素以键值对的方式存储，并且允许使用null键和null值，因为key不允许重复，因此只能有一个键为null,另外HashMap不能保证放入元素的顺序，它是无序的，和放入的顺序并不能相同。
+HashMap是线程不安全的，多线程环境中推荐使用ConcurrentHashMap。HashMap的扩容操作是一项很耗时的任务，所以如果能估算Map的容量，最好给它一个默认初始值，避免进行多次扩容。HashMap的初始容量为16，Hashtable初始容量为11，两者的填充因子默认都是0.75。HashMap扩容时是当前容量翻倍即:capacity*2，Hashtable扩容时是容量翻倍+1即:capacity*2+1。
+            Hashtable计算hash是直接使用key的hashcode对table数组的长度直接进行取模：
+            
+            int hash = key.hashCode();
+            int index = (hash & 0x7FFFFFFF) % tab.length;
+            
+            HashMap计算hash对key的hashcode进行了二次hash，以获得更好的散列值，然后对table数组长度取摸：
+            int hash = hash(key.hashCode());
+            int i = indexFor(hash, table.length);
+            static int hash(int h) {
+                    h ^= (h >>> 20) ^ (h >>> 12);
+                    return h ^ (h >>> 7) ^ (h >>> 4);
+                }
+
+             static int indexFor(int h, int length) {
+                    return h & (length-1);
+             } 
+             
+HashMap实现原理：jdk1.8中HashMap存储结构是：数组+链表+红黑树，HashMap基于Hash算法实现的，我们通过put(key,value)存储，get(key)来获取。当传入 key时，HashMap会根据key.hashCode()计算出hash值，根据hash值定位到具体的数组存储位置，如果相同的位置已经存在hash值，称为hash冲突，这里处理hash冲突的办法是链表法，判断内容是否相同，不相同放到链表的尾部，当链表长度大于8时会转换为红黑树。<br>
+HashMap扩容机制：hashmap什么时候进行扩容呢？当hashmap中的元素个数超过数组大小*loadFactor时，就会进行数组扩容，loadFactor的默认值为0.75，也就是说，默认情况下，数组大小为16，当hashmap中元素个数超过16*0.75=12的时候，就把数组的大小扩展为2*16=32，即扩大一倍，然后重新计算每个元素在数组中的位置，而这是一个非常消耗性能的操作，所以如果我们已经预知hashmap中元素的个数，那么预设元素的个数能够有效的提高hashmap的性能。比如说，我们有1000个元素new HashMap(1000), 但是理论上来讲new HashMap(1024)更合适，不过上面annegu已经说过，即使是1000，hashmap也自动会将其设置为1024。 但是new HashMap(1024)还不是更合适的，因为0.75*1000 < 1000, 也就是说为了让0.75 * size > 1000, 我们必须这样new HashMap(2048)才最合适，既考虑了&的问题，也避免了resize的问题。 
+HashMap数组的初始容量16和负载因子为0.75。<br>
+HashMap1.8之前并发下的死循环：在Jdk1.7中，并发扩容时，同时执行transfer方法，如果原始链表相邻的两个元素，扩容后仍是相邻的两个元素，由于采用了头插入，会造成两个元素形成互为首尾,形成死循环。举例：
+            
+            头插法：相当于后来居上， 后面的结点不断往前插，而最后创建的结点在第一个结点处， 第一个创建的结点变成了尾结点。
+            1.hashmap的初始大小为2^n（n=1）, 那么hashmap的数组size是2， 插入两个元素3和7，利用取模算法（3%2=1，7%2=1）两个元素的位置都在数组下标1上，
+            链表头部依次插入7和3.
+            2.两个线程对hashmap进行扩容(调用transfer)7%4=3，3%4=3， 假设线程一执行到获取第一个元素3，CPU调度到第二个线程, 第二个线程完成了全部的扩容操作,由于扩容采用了头插法，元素7插入到元             素3之前，并作为链表的第一个元素。此刻时间片正好用完，内部的table还没有设置成新的newTable,数组下标为3的位置上数值排列顺序是：7在前 3在后
+            3.第一个线程开始执行，在数组下标为3的位置上数值排列的顺序是：3在前 7在后，形成死循环
+            所以在并发的情况，发生扩容时，可能会产生循环链表，在执行get的时候，会触发死循环，引起CPU的100%问题，所以一定要避免在并发环境下使用HashMap。
+
+            曾经有人把这个问题报给了Sun，不过Sun不认为这是一个bug，因为在HashMap本来就不支持多线程使用，要并发就用ConcurrentHashmap。<br>
+HashMapJDK1.8的优化:
+1.数据结构上的优化<br>
+由原本的数组+链表的结构引入了红黑树，当链表长度大于8时，整个数组长度大于64时链表转换为红黑树，反之链表长度小于6时再转换回来，好处是避免链表过长，降低查询复杂度，提升查询速度。
+原本hash冲突时在链表头部插入数据，现在改为尾部插入，好处是避免扩容后链表产生相对位置倒序，避免在并发环境下扩容产生循环链表，导致死循环。<br>
+2.Hash碰撞问题解决方案的优化 <br>
+当key的hash碰撞频率高，导致链表内的数据过多，影响查询效率， 时间复杂度为O(n)。hashmap采用的就是链地址法（拉链法），jdk1.7中，当冲突时，在冲突的地址上生成一个链表，将冲突的元素的key，通过equals进行比较，相同即覆盖，不同则添加到链表上，此时如果链表过长，效率就会大大降低，查找和添加操作的时间复杂度都为O(n)；但是在jdk1.8中如果链表长度大于8，链表就会转化为红黑树，时间复杂度也降为了O(logn)，性能得到了很大的优化。
+
+            链表法就是将相同hash值的对象组织成一个链表放在hash值对应的槽位。
+            开放地址法是通过一个探测算法，当某个槽位已经被占据的情况下继续查找下一个可以使用的槽位。java.util.HashMap采用的链表法的方式，链表是单向链表
+3.Hash值算法的优化 <br>
+对每个hash值，在它的低16位中，让高低16位进行异或，让它的低16位同时保持了高低16位的特征，尽量避免一些hash值后续出现冲突，大家可能会进入数组的同一位置
+
+            static final int hash(Object key) {
+                    int h;
+                    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+                }
+                有一个key的Hash值：1111 1111 1111 1111 1111 1010 0111 1100
+                h >>> 16 //表示对该hash值右移16位
+                右移后的结果为：0000 0000 0000 0000 1111 1111 1111 1111
+                两个值进行异或：
+                Hash_1: 1111 1111 1111 1111 1111 1010 0111 1100
+                Hash_2: 0000 0000 0000 0000 1111 1111 1111 1111
+                =====>: 1111 1111 1111 1111 0000 0101 1000 0011 =====> 转为10进制int值，这个值就是这个key的hash值
+                
+3.寻址算法的优化 <br>
+用与运算替代取模，提升性能。
+
+            (p = tab[i = (n - 1) & hash] 
+            // (n-1) & hash ==> 数组里的一个位置
+            hash & (n-1) 效果是跟hash对n取模是一样的，但是与运算的性能要比hash对n取模要高很多。
+            数组的长度会一直是2的n次方，只要他保持数组长度是2的n次方。
+            1.寻址为什么不用取模，对于上面寻址算法，由于计算机对比取模，与运算会更快。所以为了效率，HashMap中规定了哈希表长度为2的k次方，
+            而2^k-1转为二进制就是k个连续的1，那么hash& (k个连续的1) 返回的就是hash的低k个位，该计算结果范围刚好就是0到2^k-1，即0到length - 1，跟取模结果一样
+            2.为什么不直接用 hashCode()而是用它的高16位进行异或计算新hash值？int类型占32位，可以表示2^32种数（范围：-2^31 到 2^31-1），而哈希表长度一般不大，
+            在HashMap中哈希表的初始化长度是16（HashMap 中的 DEFAULT_INITIAL_CAPACITY），如果直接用hashCode来寻址，那么相当于只有低4位有效，其他高位不会有影响。
+            这样假如几个hashCode分别是210、220、2^30，那么寻址结果index就会一样而发生冲突，所以哈希表就不均匀分布了。
+
+4.扩容机制的优化
+HashMap底层是一个数组，当这个数组满了之后，他就会自动进行扩容，变成一个更大数组.
 * ConcurrentHashMap
-ConcurrentHashMap采用锁分段技术：首先将数据分成一段一段的存储，然后给每一段数据配一把锁，当一个线程占用锁访问其中一个段数据的时候，其他段的数据也能被其他线程访问。 ConcurrentHashMap提供了与Hashtable和SynchronizedMap不同的锁机制。Hashtable中采用的锁机制是一次锁住整个hash表，从而在同一时刻只能由一个线程对其进行操作；而ConcurrentHashMap中则是一次锁住一个桶。ConcurrentHashMap默认将hash表分为16个桶，诸如get、put、remove等常用操作只锁住当前需要用到的桶。原来只能一个线程进入，现在却能同时有16个写线程执行，并发性能的提升是显而易见的。
+ConcurrentHashMap采用锁分段技术：首先将数据分成一段一段的存储，然后给每一段数据配一把锁，当一个线程占用锁访问其中一个段数据的时候，其他段的数据也能被其他线程访问。 ConcurrentHashMap提供了与Hashtable和SynchronizedMap不同的锁机制。Hashtable中采用的锁机制是一次锁住整个hash表，从而在同一时刻只能由一个线程对其进行操作；而ConcurrentHashMap中则是一次锁住一个桶。ConcurrentHashMap默认将hash表分为16个桶，诸如get、put、remove等常用操作只锁住当前需要用到的桶。原来只能一个线程进入，现在却能同时有16个写线程执行，并发性能的提升是显而易见的。<br>
+
 
            public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
            implements ConcurrentMap<K,V>, Serializable {}//jdk1.8版本这个类在Java.util.concurrent包里面
@@ -92,7 +163,7 @@ ConcurrentHashMap采用锁分段技术：首先将数据分成一段一段的存
            public class TreeMap<K,V> extends AbstractMap<K,V>
            implements NavigableMap<K,V>, Cloneable, java.io.Serializable{}
           
-##### 迭代器Iterator
+#### 迭代器Iterator
 Iterator 接口提供遍历任何Collection的接口。我们可以从一个Collection中使用迭代器方法来获取迭代器实例。迭代器取代了Java集合框架中的Enumeration，迭代器允许调用者在迭代过程中移除元素。
 * Iterator怎么使用？有什么特点？
         
@@ -120,7 +191,7 @@ Iterator 接口提供遍历任何Collection的接口。我们可以从一个Coll
                             Collection<String> clist = Collections. unmodifiableCollection(list);
                             clist. add("y"); // 运行时此行报错
                             System. out. println(list. size());
-##### 关键字、操作类等
+#### 关键字、操作类等
 * final关键字：final修饰的类叫最终类，该类不能被继承。final 修饰的方法不能被重写。final 修饰的变量叫常量，常量必须初始化，初始化之后值就不能被修改。
 * 操作字符串的类有：String、StringBuffer、StringBuilder。String 和 StringBuffer、StringBuilder 的区别在于 String 声明的是不可变的对象，每次操作都会生成新的 String 对象，然后将指针指向新的 String 对象，而 StringBuffer、StringBuilder 可以在原有对象的基础上进行操作，所以在经常改变字符串内容的情况下最好不要使用 String。
 StringBuffer 和 StringBuilder 最大的区别在于，StringBuffer 是线程安全的，而 StringBuilder 是非线程安全的，但 StringBuilder 的性能却高于 
