@@ -338,3 +338,28 @@ StringBuffer，所以在单线程环境下推荐使用 StringBuilder，多线程
                     public void show(String value) { }
                     public void show(Integer value) { }
                 }
+##### 集合类相关
+ 1B(Byte)=8(位)bit，1kb=1024B，
+十进制转二进制：采用除2取余法，比如9的二进制就是1001，一个字节8位，前面补0，0000 1001
+二进制转十进制：从左边第一位数起乘以2的n-1次方，依次相加。n：从数字的右边数起第几位。1001=1*2的4-1次方+0乘以2的3-1次方+0乘以2的2-1次方+1乘以1-1次方=9
+static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;  值为16
+1 << 4：1的二进制是0000 0001,<<表示往左移动四位：0001 0000 表示成十进制数就是16。(1 << n等效于1乘以2的n次方)。
+public native int hashCode();一个native方法就是一个Java调用非Java代码的接口。一个native方法是指该方法的实现由非Java语言实现，比如用C或C++实现。
+在定义一个native方法时，并不提供实现体（比较像定义一个Java Interface），因为其实现体是由非Java语言在外面实现的
+instanceof关键字：
+public static void displayObjectClass(Object o) {
+      if (o instanceof Vector)
+      System.out.println("对象是 java.util.Vector 类的实例");
+      else if (o instanceof ArrayList)
+      System.out.println("对象是 java.util.ArrayList 类的实例");
+      else
+      System.out.println("对象是 " + o.getClass() + " 类的实例");
+   }
+(jdk1.8)HashMap中计算数组下标是HashMap的核心算法
+
+ static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+ }
+这里为什么不直接返回key.hashCode()呢？还要与 (h >>> 16)异或
+异或，就是转化为二进制后相对位比较相同的为0不同的为1
