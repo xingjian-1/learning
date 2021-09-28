@@ -39,12 +39,8 @@
 - `持久层框架`   [MyBaits工作原理](./doc/MyBatis.md)  [MyBaits缓存机制](./doc/IBatis.md)  [MyBaits代码生成](./doc/生成工具.md) [Hibernate](./doc/Hibernate.md)
 - `集成相关` [SpringBoot集成swagger2](./doc/集成swagger.md)   [SpringBoot集成Mybatis](./doc/集成Mybatis.md)  [Shiro权限管理框架集成](./doc/Shiro.md)  
 - `版本控制` [分布式版本管理工具Git](./doc/git.md) [SVN] 
-- `自动化构建/持续集成` [Maven](./doc/maven.md) [Motan] [Jenkins] [Hudson] [JMeter] 
-- `容器` [Docker](./doc/docker.md) [Ubuntu]  [Rocket]  [Supergiant] 
-- `配置管理` [Ansible提供一种最简单的方式用于发布、管理和编排计算机系统的工具]  [RunDeck是用Java/Grails写的开源工具] [Saltstack] 
-- `微服务平台` [Consul适合用于使用微服务构建应用程序当中的服务发现和配置] [Kubernetes](./doc/Kubernetes.md)  [OpenShift构建、测试、运行和管理他们的应用] [Cloud Foundry] 
-- `日志记录` [ELK(Elasticsearch、Logstash和Kibana)是现代IT环境中最常见的日志分析解决方案。它收集来自某个环境中的所有服务、应用程序、网络、工具、服务器及更多系统的日志后，放入到一个集中式位置，以便处理和分析]
-- `监控告警分析` [Nagios是一个监视系统运行状态和网络信息的监视系统，监视所指定的本地或远程主机以及服务，同时提供异常通知功能]  [zabbix是一个基于Web界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案]  [Kibana是一个为Logstash和ElasticSearch提供的日志分析的Web接口，可使用它对日志进行高效的搜索、可视化、分析等各种操作]
+- `持续集成·自动化构建·服务管理·配置管理·容器` [Maven](./doc/maven.md) [Motan] [Jenkins] [Hudson] [JMeter] [Consul] [Kubernetes](./doc/Kubernetes.md)  [OpenShift] [Cloud Foundry] [Ansible]  [RunDeck]  [Saltstack] [Docker](./doc/docker.md) [Ubuntu]  [Rocket]  [Supergiant] 
+- `日志记录分析·监控告警分析·分布式系统监视` [ELK(Elasticsearch、Logstash和Kibana)] [Nagios]  [zabbix]  [Kibana]
 ### `分布式系统`
 - [消息队列](./doc/消息队列.md)
     - [为什么要使用消息队列？消息队列有哪些？各有什么优缺点](./doc/消息队列.md)
