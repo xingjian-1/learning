@@ -33,12 +33,18 @@
 - `[MySql]` [数据库存储引擎](./doc/存储引擎.md)  [数据库事务](./doc/事务.md)  [数据库锁](./doc/悲观锁和乐观锁.md) [数据库索引](./doc/索引.md)    [数据库设计相关](./doc/SQL语句.md)   [分库分表](./doc/mysql.md)
 [数据库客户端连接工具](./doc/client.md)
 - `[Oracle]` [Oracle数据库](./doc/oracle.md)
-### `开源框架`
+### `开源框架及开发相关工具`
 - `常用框架` [Spring工作原理](./doc/SpringPrinciple.md)   [控制反转](./doc/SpringIOC.md)  [面向切面](./doc/SpringAOP.md)    [SpringBoot工作原理](./doc/SpringBoot.md)      [Springmvc工作原理](./doc/SpringMVC体系结构.md)   [注解](./doc/网络.md) 
 - [面向对象思想](./doc/Spring.md)   [Spring配置数据源](./doc/SpringCloud介绍.md) 
 - `持久层框架`   [MyBaits工作原理](./doc/MyBatis.md)  [MyBaits缓存机制](./doc/IBatis.md)  [MyBaits代码生成](./doc/生成工具.md) [Hibernate](./doc/Hibernate.md)
 - `集成相关` [SpringBoot集成swagger2](./doc/集成swagger.md)   [SpringBoot集成Mybatis](./doc/集成Mybatis.md)  [Shiro权限管理框架集成](./doc/Shiro.md)  
-- `管理辅助工具类` [分布式版本管理工具Git](./doc/git.md) [SVN] [Maven](./doc/maven.md) [Motan] [Kubernetes](./doc/Kubernetes.md) [Docker](./doc/docker.md)
+- `版本控制` [分布式版本管理工具Git](./doc/git.md) [SVN] 
+- `自动化构建/持续集成` [Maven](./doc/maven.md) [Motan] [Jenkins] [Hudson] [JMeter] 
+- `容器` [Docker](./doc/docker.md) [Ubuntu]  [Rocket]  [Supergiant] 
+- `配置管理` [Ansible提供一种最简单的方式用于发布、管理和编排计算机系统的工具]  [RunDeck是用Java/Grails写的开源工具] [Saltstack] 
+- `微服务平台` [Consul适合用于使用微服务构建应用程序当中的服务发现和配置] [Kubernetes](./doc/Kubernetes.md)  [OpenShift构建、测试、运行和管理他们的应用] [Cloud Foundry] 
+- `日志记录` [ELK(Elasticsearch、Logstash和Kibana)是现代IT环境中最常见的日志分析解决方案。它收集来自某个环境中的所有服务、应用程序、网络、工具、服务器及更多系统的日志后，放入到一个集中式位置，以便处理和分析]
+- `监控告警分析` [Nagios是一个监视系统运行状态和网络信息的监视系统，监视所指定的本地或远程主机以及服务，同时提供异常通知功能]  [zabbix是一个基于Web界面的提供分布式系统监视以及网络监视功能的企业级的开源解决方案]  [Kibana是一个为Logstash和ElasticSearch提供的日志分析的Web接口，可使用它对日志进行高效的搜索、可视化、分析等各种操作]
 ### `分布式系统`
 - [消息队列](./doc/消息队列.md)
     - [为什么要使用消息队列？消息队列有哪些？各有什么优缺点](./doc/消息队列.md)
