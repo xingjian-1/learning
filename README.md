@@ -59,8 +59,8 @@
     - [分布式事务+DDD+负载均衡+服务治理](./doc/MicroService.md)
 ### `LINUX相关`
 - [linux常用命令](./doc/linux.md)  [sqluldr数据导出工具下载](./doc/sqluldr.zip)  [ksh-64位命令解释器下载](./doc/ksh-20120801-37.el6_9.x86_64.rpm)
-### `系统性能`
-- [如何提升系统性能]
+### `开发相关规范`
+- [代码精简之道](./doc/simplifiedVersion.md)
 - [系统性能指标](./doc/性能测试指标.md)
 ### `海量数据处理`
 - [如何从大量的URL中找出相同的URL]
