@@ -375,16 +375,272 @@ Spring的@NonNull注解，用于标注参数或返回值非空。
               }
               return map;
           }
-#####
+##### Map的computeIfAbsent
+利用Map的computeIfAbsent方法，可以保证获取到的对象非空，从而避免了不必要的空判断和重新设置值
 
-#####
+          普通：
+          Map<Long, List<UserDO>> roleUserMap = new HashMap<>();
+          for (UserDO userDO : userDOList) {
+              Long roleId = userDO.getRoleId();
+              List<UserDO> userList = roleUserMap.get(roleId);
+              if (Objects.isNull(userList)) {
+                  userList = new ArrayList<>();
+                  roleUserMap.put(roleId, userList);
+              }
+              userList.add(userDO);
+          }
+          
+          精简：
+          Map<Long, List<UserDO>> roleUserMap = new HashMap<>();
+          for (UserDO userDO : userDOList) {
+              roleUserMap.computeIfAbsent(userDO.getRoleId(), key -> new ArrayList<>())
+                  .add(userDO);
+          }
+##### 链式编程
+链式编程，也叫级联式编程，调用对象的函数时返回一个this对象指向对象本身，达到链式效果，可以级联调用。链式编程的优点是：编程性强、可读性强、代码简洁。
 
-#####
+          普通
+          StringBuilder builder = new StringBuilder(96);
+          builder.append("select id, name from ");
+          builder.append(T_USER);
+          builder.append(" where id = ");
+          builder.append(userId);
+          builder.append(";");
+          
+          精简：
+          StringBuilder builder = new StringBuilder(96);
+          builder.append("select id, name from ")
+              .append(T_USER)
+              .append(" where id = ")
+              .append(userId)
+              .append(";");
+#### 工具方法
+##### 避免空值判断
 
-#####
+          普通：
+          if (userList != null && !userList.isEmpty()) {
+              // TODO
+          }
+          
+          精简：
+          if (CollectionUtils.isNotEmpty(userList)) {
+              // TODO
+          }
+##### 避免条件判断
 
-#####
+          普通：
+          double result;
+          if (value <= MIN_LIMIT) {
+              result = MIN_LIMIT;
+          } else {
+              result = value;
+          }
+          
+          精简：
+          double result = Math.max(MIN_LIMIT, value);
+##### 简化赋值语句
 
-#####
+          普通：
+          public static final List<String> ANIMAL_LIST;
+          static {
+              List<String> animalList = new ArrayList<>();
+              animalList.add("dog");
+              animalList.add("cat");
+              animalList.add("tiger");
+              ANIMAL_LIST = Collections.unmodifiableList(animalList);
+          }
+          
+          精简：
+          // JDK流派
+          public static final List<String> ANIMAL_LIST = Arrays.asList("dog", "cat", "tiger");
+          // Guava流派
+          public static final List<String> ANIMAL_LIST = ImmutableList.of("dog", "cat", "tiger");
+          注意：Arrays.asList 返回的 List 并不是 ArrayList ，不支持 add 等变更操作。
+##### 简化数据拷贝
 
+          普通：
+
+          UserVO userVO = new UserVO();
+          userVO.setId(userDO.getId());
+          userVO.setName(userDO.getName());
+          ...
+          userVO.setDescription(userDO.getDescription());
+          userVOList.add(userVO);
+          
+          精简：
+          UserVO userVO = new UserVO();
+          BeanUtils.copyProperties(userDO, userVO);
+          userVOList.add(userVO);
+##### 简化异常断言
+
+          普通：
+          if (Objects.isNull(userId)) {
+              throw new IllegalArgumentException("用户标识不能为空");
+          }
+          
+          精简：
+          Assert.notNull(userId, "用户标识不能为空");
+          注意：可能有些插件不认同这种判断，导致使用该对象时会有空指针警告。
+          
+##### 简化测试用例
+把测试用例数据以JSON格式存入文件中，通过JSON的parseObject和parseArray方法解析成对象。虽然执行效率上有所下降，但可以减少大量的赋值语句，从而精简了测试代码。
+
+          普通：
+          @Test
+          public void testCreateUser() {
+              UserCreateVO userCreate = new UserCreateVO();
+              userCreate.setName("Changyi");
+              userCreate.setTitle("Developer");
+              userCreate.setCompany("AMAP");
+              ...
+              Long userId  = userService.createUser(OPERATOR, userCreate);
+              Assert.assertNotNull(userId, "创建用户失败");
+          }
+          
+          精简：
+          @Test
+          public void testCreateUser() {
+              String jsonText = ResourceHelper.getResourceAsString(getClass(), "createUser.json");
+              UserCreateVO userCreate = JSON.parseObject(jsonText, UserCreateVO.class);
+              Long userId  = userService.createUser(OPERATOR, userCreate);
+              Assert.assertNotNull(userId, "创建用户失败");
+          }
+#### 利用数据结构
+##### 利用数组简化
+对于固定上下限范围的 if-else 语句，可以用数组+循环来简化
+
+          普通：
+          public static int getGrade(double score) {
+              if (score >= 90.0D) {
+                  return 1;
+              }
+              if (score >= 80.0D) {
+                  return 2;
+              }
+              if (score >= 60.0D) {
+                  return 3;
+              }
+              if (score >= 30.0D) {
+                  return 4;
+              }
+              return 5;
+          }
+          
+          精简：
+          private static final double[] SCORE_RANGES = new double[] {90.0D, 80.0D, 60.0D, 30.0D};
+          public static int getGrade(double score) {
+              for (int i = 0; i < SCORE_RANGES.length; i++) {
+                  if (score >= SCORE_RANGES[i]) {
+                      return i + 1;
+                  }
+              }
+              return SCORE_RANGES.length + 1;
+          }
+##### 利用Map简化
+
+          普通：
+          public static String getBiologyClass(String name) {
+              switch (name) {
+                  case "dog" :
+                      return "animal";
+                  case "cat" :
+                      return "animal";
+                  case "lavender" :
+                      return "plant";
+                  ...
+                  default :
+                      return null;
+              }
+          }
+          
+          精简：
+          private static final Map<String, String> BIOLOGY_CLASS_MAP
+              = ImmutableMap.<String, String>builder()
+                  .put("dog", "animal")
+                  .put("cat", "animal")
+                  .put("lavender", "plant")
+                  ...
+                  .build();
+          public static String getBiologyClass(String name) {
+              return BIOLOGY_CLASS_MAP.get(name);
+          }
+##### 利用容器类简化
+
+          普通：
+          @Setter
+          @Getter
+          @ToString
+          @AllArgsConstructor
+          public static class PointAndDistance {
+              private Point point;
+              private Double distance;
+          }
+
+          public static PointAndDistance getNearest(Point point, Point[] points) {
+              // 计算最近点和距离
+              ...
+
+              // 返回最近点和距离
+              return new PointAndDistance(nearestPoint, nearestDistance);
+          }
+          
+          精简：
+          public static Pair<Point, Double> getNearest(Point point, Point[] points) {
+              // 计算最近点和距离
+              ...
+
+              // 返回最近点和距离
+              return ImmutablePair.of(nearestPoint, nearestDistance);
+          }
+##### 利用ThreadLocal简化
+ThreadLocal提供了线程专有对象，可以在整个线程生命周期中随时取用，极大地方便了一些逻辑的实现。用ThreadLocal保存线程上下文对象，可以避免不必要的参数传递。
+
+          普通：
+          由于 DateFormat 的 format 方法线程非安全（建议使用替代方法），在线程中频繁初始化 DateFormat 性能太低，如果考虑重用只能用参数传入 DateFormat 。例子如下：
+          public static String formatDate(Date date, DateFormat format) {
+              return format.format(date);
+          }
+          public static List<String> getDateList(Date minDate, Date maxDate, DateFormat format) {
+              List<String> dateList = new ArrayList<>();
+              Calendar calendar = Calendar.getInstance();
+              calendar.setTime(minDate);
+              String currDate = formatDate(calendar.getTime(), format);
+              String maxsDate = formatDate(maxDate, format);
+              while (currDate.compareTo(maxsDate) <= 0) {
+                  dateList.add(currDate);
+                  calendar.add(Calendar.DATE, 1);
+                  currDate = formatDate(calendar.getTime(), format);
+              }
+              return dateList;
+          }
+          
+          精简：
+          可能你会觉得以下的代码量反而多了，如果调用工具方法的地方比较多，就可以省下一大堆 DateFormat 初始化和传入参数的代码。
+
+
+          private static final ThreadLocal<DateFormat> LOCAL_DATE_FORMAT = new ThreadLocal<DateFormat>() {
+              @Override
+              protected DateFormat initialValue() {
+                  return new SimpleDateFormat("yyyyMMdd");
+              }
+          };
+
+          public static String formatDate(Date date) {
+              return LOCAL_DATE_FORMAT.get().format(date);
+          }
+
+          public static List<String> getDateList(Date minDate, Date maxDate) {
+              List<String> dateList = new ArrayList<>();
+              Calendar calendar = Calendar.getInstance();
+              calendar.setTime(minDate);
+              String currDate = formatDate(calendar.getTime());
+              String maxsDate = formatDate(maxDate);
+              while (currDate.compareTo(maxsDate) <= 0) {
+                  dateList.add(currDate);
+                  calendar.add(Calendar.DATE, 1);
+                  currDate = formatDate(calendar.getTime());
+              }
+              return dateList;
+          }
+          注意：ThreadLocal 有一定的内存泄露的风险，尽量在业务代码结束前调用 remove 方法进行数据清除。
 #####
