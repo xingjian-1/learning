@@ -6,268 +6,91 @@ MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new windo
 `结构`:
 * API接口层：提供一些API接口，通过这些API接口来操纵数据库,接口层收到调用请求会调用数据处理层来完成具体的数据处理。
 * 数据处理层：负责具体的SQL查找、SQL解析、SQL执行和执行结果映射处理等,主要目的是根据调用的请求完成一次数据库操作。
-* 基础支撑层：负责最基础的功能支撑，包括连接管理、事务管理、配置加载和缓存处理，这些都是共用的功能，将他们抽取出来作为最基础的组件，为上层的数据处理层提供最基础的支撑。
-
-            核心部件：
-            SqlSession
-            Executor
-            StatementHandler
-            ParameterHandler
-            ResultSetHandler
-            TypeHandler
-            MappedStatement
-            Configuration          
-#### 核心组件
-* Configuration加载配置文件信息
-MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方法又会调用XMLConfigBuilder()的parse()方法进行加载配置信息。在parseConfiguration方法中加载的节点：properties、typeAliases、plugins、objectFactory、objectWrapperFactory、settings、environments、databaseIdProvider、typeHandlers、mappers。
-
-            1.Properties属性：
-            <properties resource="org/mybatis/example/config.properties">//这是第一种
-            <property name="username" value="dev_user"/>
-            <property name="password" value="F2Fa3!33TYyg"/>
-            </properties>
-            <dataSource type="POOLED">//
-              <property name="driver" value="${driver}"/>
-              <property name="url" value="${url}"/>
-              <property name="username" value="${username}"/>
-              <property name="password" value="${password}"/>
-            </dataSource>
-
-            2.Settings属性的设置会改变MyBatis运行时的行为。
-            <settings>
-              <setting name="cacheEnabled" value="true"/>//全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存。
-              <setting name="lazyLoadingEnabled" value="true"/>//延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。 特定关联关系中可通过设置fetchType属性来覆盖该项的开关状态。
-              <setting name="multipleResultSetsEnabled" value="true"/>//是否允许单一语句返回多结果集（需要兼容驱动）。
-              <setting name="useColumnLabel" value="true"/>//使用列标签代替列名。不同的驱动在这方面会有不同的表现， 具体可参考相关驱动文档或通过测试这两种不同的模式来观察所用驱动的结果。
-              <setting name="useGeneratedKeys" value="false"/>允许 JDBC 支持自动生成主键，需要驱动兼容。 如果设置为 true 则这个设置强制使用自动生成主键，尽管一些驱动不能兼容但仍可正常工作               （比如 Derby）。
-              <setting name="autoMappingBehavior" value="PARTIAL"/>指定 MyBatis 应如何自动映射列到字段或属性。 NONE 表示取消自动映射；PARTIAL 只会自动映射没有定义嵌套结果集映射的结果                    集。 FULL 会自动映射任意复杂的结果集（无论是否嵌套）。
-              <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
-              @指定发现自动映射目标未知列（或者未知属性类型）的行为。
-                                NONE: 不做任何反应
-                                WARNING: 输出提醒日志 ('org.apache.ibatis.session.AutoMappingUnknownColumnBehavior'的日志等级必须设置为 WARN)
-                                FAILING: 映射失败 (抛出 SqlSessionException)
-              <setting name="defaultExecutorType" value="SIMPLE"/>配置默认的执行器。SIMPLE 就是普通的执行器；REUSE 执行器会重用预处理语句（prepared statements）； BATCH 执行器将重用语                        句并执行批量更新。
-              <setting name="defaultStatementTimeout" value="25"/>设置超时时间，它决定驱动等待数据库响应的秒数。
-              <setting name="defaultFetchSize" value="100"/>为驱动的结果集获取数量（fetchSize）设置一个提示值。此参数只可以在查询设置中被覆盖
-              <setting name="safeRowBoundsEnabled" value="false"/>允许在嵌套语句中使用分页（RowBounds）。如果允许使用则设置为false
-              <setting name="mapUnderscoreToCamelCase" value="false"/>是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。
-              <setting name="localCacheScope" value="SESSION"/>MyBatis 利用本地缓存机制（Local Cache）防止循环引用（circular references）和加速重复嵌套查询。 默认值为 SESSION，这种情                      况下会缓存一个会话中执行的所有查询。 若设置值为 STATEMENT，本地会话仅用在语句执行上，对相同 SqlSession 的不同调用将不会共享数据。
-              <setting name="jdbcTypeForNull" value="OTHER"/>当没有为参数提供特定的 JDBC 类型时，为空值指定 JDBC 类型。 某些驱动需要指定列的 JDBC 类型，多数情况直接用一般类型即可，比如                        NULL、VARCHAR 或 OTHER。
-              <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>指定哪个对象的方法触发一次延迟加载。
-            </settings>
-
-            3.plugins:插件(拦截器)，在已映射语句执行过程中的某一点进行拦截调用。MyBatis允许使用插件来拦截的方法：
-            1.Executor (update, query, flushStatements, commit, rollback, getTransaction, close, isClosed)//  Executor 是负责执行低层映射语句的内部对象,真正执行sql的对象
-            2.ParameterHandler (getParameterObject, setParameters)//参数映射器,处理参数的
-            3.ResultSetHandler (handleResultSets, handleOutputParameters)//结果集映射器,处理返回结果的
-            4.StatementHandler (prepare, parameterize, batch, update, query)//StatementID映射器
-
-            4.environments:环境配置，可配置多个环境变量
-            <environments default="development">
-              <environment id="development">
-                <transactionManager type="JDBC">
-                  <property name="..." value="..."/>
-                </transactionManager>
-                <dataSource type="POOLED">
-                  <property name="driver" value="${driver}"/>
-                  <property name="url" value="${url}"/>
-                  <property name="username" value="${username}"/>
-                  <property name="password" value="${password}"/>
-                </dataSource>
-              </environment>
-            </environments>
-
-            5.事务管理器（transactionManager）
-            transactionManager type="MANAGED">
-              <property name="closeConnection" value="false"/>
-            </transactionManager>
-            如果使用Spring + MyBatis，则没有必要配置事务管理器， Spring自带管理器会覆盖前面的配置。
-
-            6.数据源（dataSource）
-            UNPOOLED，这个数据源的实现只是每次被请求时打开和关闭连接。虽然有点慢，但对于在数据库连接可用性方面没有太高要求的简单应用程序来说，是一个很好的选择
-            POOLED– 这种数据源的实现利用“池”的概念将 JDBC 连接对象组织起来，避免了创建新的连接实例时所必需的初始化和认证时间。
-
-            7.typeHandlers:类型处理器
-            无论是MyBatis在预处理语句（PreparedStatement）中设置一个参数时，还是从结果集中取出一个值时， 都会用类型处理器将获取的值以合适的方式转换成Java类型。
-
-            8.自定义类型处理器
-            可以重写类型处理器或创建自己的类型处理器来处理不支持的或非标准的类型。
-            具体做法为：实现org.apache.ibatis.type.TypeHandler接口，
-            或继承一个很便利的类 org.apache.ibatis.type.BaseTypeHandler，然后可以选择性地将它映射到一个JDBC类型。
-
-            9.处理枚举类型
-            若想映射枚举类型Enum，需要从EnumTypeHandler或者EnumOrdinalTypeHandler中选一个。
-            比如说我们想存储取近似值时用到的舍入模式。默认情况下，MyBatis会利用EnumTypeHandler来把Enum值转换成对应的名字。
-
-            <!-- mybatis-config.xml -->
-            <typeHandlers>
-              <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="java.math.RoundingMode"/>
-            </typeHandlers>
-            但是怎样能将同样的 Enum 既映射成字符串又映射成整形呢？
-
-            自动映射器（auto-mapper）会自动地选用 EnumOrdinalTypeHandler 来处理， 所以如果我们想用普通的 EnumTypeHandler，就必须要显式地为那些 SQL 语句设置要使用的类型处理器。
-            （下一节才开始介绍映射器文件，如果你是首次阅读该文档，你可能需要先跳过这里，过会再来看。）
-            <!DOCTYPE mapper
-                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-            <mapper namespace="org.apache.ibatis.submitted.rounding.Mapper">
-                     <resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap">
-                             <id column="id" property="id"/>
-                             <result column="name" property="name"/>
-                             <result column="funkyNumber" property="funkyNumber"/>
-                             <result column="roundingMode" property="roundingMode"/>
-                     </resultMap>
-                     <select id="getUser" resultMap="usermap">
-                             select * from users
-                     </select>
-                     <insert id="insert">
-                         insert into users (id, name, funkyNumber, roundingMode) values (
-                              #{id}, #{name}, #{funkyNumber}, #{roundingMode}
-                         )
-                     </insert>
-                     <resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap2">
-                             <id column="id" property="id"/>
-                             <result column="name" property="name"/>
-                             <result column="funkyNumber" property="funkyNumber"/>
-                             <result column="roundingMode" property="roundingMode" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
-                     </resultMap>
-                     <select id="getUser2" resultMap="usermap2">
-                             select * from users2
-                     </select>
-                     <insert id="insert2">
-                         insert into users2 (id, name, funkyNumber, roundingMode) values (
-                              #{id}, #{name}, #{funkyNumber}, #{roundingMode, typeHandler=org.apache.ibatis.type.EnumTypeHandler}
-                         )
-                     </insert>
-            </mapper>
-
-            10.定义处理器类
-            // ExampleTypeHandler.java
-            @MappedJdbcTypes(JdbcType.VARCHAR)
-            public class ExampleTypeHandler extends BaseTypeHandler<String> {
-              @Override
-              public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
-                ps.setString(i, parameter);
-
-              @Override
-              public String getNullableResult(ResultSet rs, String columnName) throws SQLException {
-                return rs.getString(columnName);
-              }
-              @Override
-              public String getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-                return rs.getString(columnIndex);
-              }
-              @Override
-              public String getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-                return cs.getString(columnIndex);
-              }
-            }
-            //映射类型
-            <!-- mybatis-config.xml -->
-            <typeHandlers>
-              <typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>
-            </typeHandlers>
-
-            11.@mappers:映射器
-            MyBatis的行为已经由上述元素配置完了，告诉MyBatis到哪去找到这些语句。 告诉MyBatis到哪里去找映射文件。可以使用相对于类路径的资源引用， 或完全限定资源定位符（包括 file:/// 的 U                            RL），或类名和包名等。
- #### MyBatis初始化流程
+* 基础支撑层：负责最基础的功能支撑，包括连接管理、事务管理、配置加载和缓存处理，这些都是共用的功能，将他们抽取出来作为最基础的组件，为上层的数据处理层提供最基础的支撑。        
+#### MyBatis初始化流程代码示例
  
                         String resource = "mybatis-config.xml";
                         InputStream inputStream = Resources.getResourceAsStream(resource);
                         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
                         SqlSession sqlSession = sqlSessionFactory.openSession();
                         List list = sqlSession.selectList("com.foo.bean.BlogMapper.queryAllBlogInfo");
- #### 工作原理      
-            * 加载配置：加载配置文件里面数据库连接信息和mapper里面的那些映射文件，生成一个个的MappedStatement对象，然后调用方法addMappedStatement()方法以Id为主键保存在了configuration中一个map变量里面。
+* 创建Configuration对象
+MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方法调用XMLConfigBuilder()的parse()方法返回Configuration对象。
 
-                        <?xml version="1.0" encoding="UTF-8" ?>
-                        <!DOCTYPE configuration
-                        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-                        "http://mybatis.org/dtd/mybatis-3-config.dtd">
-                        <configuration>
-                            <environments default="development">
-                                <environment id="development">
-                                    <transactionManager type="JDBC" />
-                                    <dataSource type="POOLED">
-                                        <property name="driver" value="com.mysql.jdbc.Driver" />
-                                        <property name="url"
-                                            value="jdbc:mysql://localhost:3306/test?characterEncoding=utf-8" />
-                                        <property name="username" value="root" />
-                                        <property name="password" value="123456" />
-                                    </dataSource>
-                                </environment>
-                            </environments>
-                            <mappers>
-                               <mapper  resource="sqlMapper/userMapper.xml"/>
-                            </mappers>
-                        </configuration>
-
-                        public MappedStatement addMappedStatement(
-                              String id,
-                              SqlSource sqlSource,
-                              StatementType statementType,
-                              SqlCommandType sqlCommandType,
-                              Integer fetchSize,
-                              Integer timeout,
-                              String parameterMap,
-                              Class<?> parameterType,
-                              String resultMap,
-                              Class<?> resultType,
-                              ResultSetType resultSetType,
-                              boolean flushCache,
-                              boolean useCache,
-                              boolean resultOrdered,
-                              KeyGenerator keyGenerator,
-                              String keyProperty,
-                              String keyColumn,
-                              String databaseId,
-                              LanguageDriver lang,
-                              String resultSets) {
-                            if (unresolvedCacheRef) throw new IncompleteElementException("Cache-ref not yet resolved");
-                            id = applyCurrentNamespace(id, false);
-                            boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
-                            MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id,
-                            sqlSource, sqlCommandType);
-                            statementBuilder.resource(resource);
-                            statementBuilder.fetchSize(fetchSize);
-                            statementBuilder.statementType(statementType);
-                            statementBuilder.keyGenerator(keyGenerator);
-                            statementBuilder.keyProperty(keyProperty);
-                            statementBuilder.keyColumn(keyColumn);
-                            statementBuilder.databaseId(databaseId);
-                            statementBuilder.lang(lang);
-                            statementBuilder.resultOrdered(resultOrdered);
-                            statementBuilder.resulSets(resultSets);
-                            setStatementTimeout(timeout, statementBuilder);
-                            setStatementParameterMap(parameterMap, parameterType, statementBuilder);
-                            setStatementResultMap(resultMap, resultType, resultSetType, statementBuilder);
-                            setStatementCache(isSelect, flushCache, useCache, currentCache, statementBuilder);
-                            MappedStatement statement = statementBuilder.build();
-                            configuration.addMappedStatement(statement);
-                            return statement;
-                          }
+                public Configuration parse()
+                {
+                    if (parsed)
+                    {
+                        throw new BuilderException("Each XMLConfigBuilder can only be used once.");
+                    }
+                    parsed = true;
+                    //源码中没有这一句，只有 parseConfiguration(parser.evalNode("/configuration"));
+                    //为了让读者看得更明晰，源码拆分为以下两句
+                    XNode configurationNode = parser.evalNode("/configuration");
+                    parseConfiguration(configurationNode);
+                    return configuration;
+                }
+                /*
+                解析 "/configuration"节点下的子节点信息，然后将解析的结果设置到Configuration对象中
+                */
+              private void parseConfiguration(XNode root) {
+                try {
+                  //1.首先处理properties 节点	
+                  propertiesElement(root.evalNode("properties")); //issue #117 read properties first
+                  //2.处理typeAliases
+                  typeAliasesElement(root.evalNode("typeAliases"));
+                  //3.处理插件
+                  pluginElement(root.evalNode("plugins"));
+                  //4.处理objectFactory
+                  objectFactoryElement(root.evalNode("objectFactory"));
+                  //5.objectWrapperFactory
+                  objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+                  //6.settings
+                  settingsElement(root.evalNode("settings"));
+                  //7.处理environments
+                  environmentsElement(root.evalNode("environments")); // read it after objectFactory and objectWrapperFactory issue #631
+                  //8.database
+                  databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+                  //9. typeHandlers
+                  typeHandlerElement(root.evalNode("typeHandlers"));
+                  //10 mappers
+                  mapperElement(root.evalNode("mappers"));
+                } catch (Exception e) {
+                  throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
+                }
+              }
 * 创建sqlSessionFactory
 上面的一切操作都是为了生成一个sqlSessionFactory
 
-            public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
-                try {
-                  XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
-                  return build(parser.parse());
-                } catch (Exception e) {
-                  throw ExceptionFactory.wrapException("Error building SqlSession.", e);
-                } finally {
-                  ErrorContext.instance().reset();
-                  try {
-                    inputStream.close();
-                  } catch (IOException e) {
-                    // Intentionally ignore. Prefer previous error.
-                  }
-                }
-              }
+             public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties){
+                            try{
+                                //2. 创建XMLConfigBuilder对象用来解析XML配置文件，生成Configuration对象
+                                XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
+                                //3. 将XML配置文件内的信息解析成Java对象Configuration对象
+                                Configuration config = parser.parse();
+                                //4. 根据Configuration对象创建出SqlSessionFactory对象
+                                return build(config);
+                            }catch (Exception e){
+                                throw ExceptionFactory.wrapException("Error building SqlSession.", e);
+                            }finally{
+                                ErrorContext.instance().reset();
+                                try{
+                                    inputStream.close();
+                                }
+                                catch (IOException e){}
+                            }
+                        }
+                        //从此处可以看出，MyBatis通过Configuration对象来创建SqlSessionFactory,用户也可以自己通过API构造好Configuration对象，调用此方法创建SqlSessionFactory
+                        public SqlSessionFactory build(Configuration config){
+                            return new DefaultSqlSessionFactory(config);
+                        }
+                        
+                        涉及到了以下几个对象：
 
-              public SqlSessionFactory build(Configuration config) {
-                return new DefaultSqlSessionFactory(config);
-              }
+                        SqlSessionFactoryBuilder ： SqlSessionFactory的构造器，用于创建SqlSessionFactory，采用了Builder设计模式
+                        Configuration ：mybatis-config.xml文件中mybatis配置信息
+                        SqlSessionFactory：SqlSession工厂类，以工厂形式创建SqlSession对象，采用了Factory工厂设计模式
+                        XmlConfigParser ：负责将mybatis-config.xml配置文件解析成Configuration对象
 * 创建sqlSession
 
             public SqlSession openSession() {
@@ -379,46 +202,14 @@ MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方
               }
               Executor的作用之一就是创建Statement了，创建完后又把Statement丢给StatementHandler返回List查询结果.
 * 释放连接资源
-#### MyBatis执行器Executor
-三种基本的Executor执行器：
-* SimpleExecutor：每执行一次 update或select就开启一个Statement对象，用完立刻关闭Statement对象；
-* ReuseExecutor：执行update或select，以SQL作为key查找Statement对象，存在就使用，不存在就创建，用完后不关闭Statement对象，而是放置于Map内供下一次使用。简言之，就是重复使用Statement对象；
-* BatchExecutor：执行update（没有select，jdbc批处理不支持select），将所有SQL都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个Statement对象，每个Statement对象都是addBatch()完毕后，等待逐一执行executeBatch()批处理，与jdbc批处理相同。
-#### MyBatis如何编写一个自定义插件
-自定义插件实现原理
-MyBatis自定义插件针对MyBatis四大对象（Executor、StatementHandler、ParameterHandler、ResultSetHandler）进行拦截：
-* Executor：拦截内部执行器，它负责调用StatementHandler 操作数据库，并把结果集通过ResultSetHandler进行自动映射，另外它还处理了二级缓存的操作；
-* StatementHandler：拦截SQL语法构建的处理，它是MyBatis直接和数据库执行SQL脚本的对象，另外它也实现了MyBatis的一级缓存；
-* ParameterHandler：拦截参数的处理；
-* ResultSetHandler：拦截结果集的处理。
- 
-                        MyBatis 插件要实现 Interceptor 接口，接口包含的方法，如下：
-                        public interface Interceptor {   
-                           Object intercept(Invocation invocation) throws Throwable;       
-                           Object plugin(Object target);    
-                           void setProperties(Properties properties);
-                        }
-* setProperties 方法是在MyBatis进行配置插件的时候可以配置自定义相关属性，即：接口实现对象的参数配置；
-* plugin 方法是插件用于封装目标对象的，通过该方法我们可以返回目标对象本身，也可以返回一个它的代理，可以决定是否要进行拦截进而决定要返回一个什么样的
-目标对象，官方提供了示例：return Plugin. wrap(target, this)；
-* intercept 方法就是要进行拦截的时候要执行的方法。
-
-                        //插件实现：
-                        @Intercepts({@Signature(type = Executor. class, method = "query",
-                        args = {MappedStatement. class, Object. class, RowBounds. class, ResultHandler. class})})
-                        public class TestInterceptor implements Interceptor{
-                           public Object intercept(Invocation invocation) throws Throwable {
-                             Object target = invocation. getTarget(); //被代理对象
-                             Method method = invocation. getMethod(); //代理方法
-                             Object[] args = invocation. getArgs(); //方法参数
-                             // do something . . . . . .  方法拦截前执行代码块
-                             Object result = invocation. proceed();
-                             // do something . . . . . . . 方法拦截后执行代码块
-                             return result;  }
-                           public Object plugin(Object target) {
-                             return Plugin. wrap(target, this);
-                           }
-                        }
+#### 执行器Executor
+SqlSession执行增删改查都是委托给Executor完成的。主要的工作内容：处理缓存，包括一级缓存和二级缓存、获取数据库连接、创建Statement或者PrepareStatement对象、访问数据库执行SQL语句处理数据库返回结果。
+* CachingExecutor：用于处理二级缓存，如果缓存中不存在要查询的数据，那么将查询请求委托给其他的Executor。如果是执行SQL的增删改，那么CachingExecutor将清空二级缓存。
+* BaseExecutor：是除CachingExecutor之外，其他Executor实现类的基类。该类主要处理一级缓存。该类中属性localCache表示一级缓存。采用模板方法的设计模式。
+* SimpleExecutor：当执行增删改查时，该类获取数据库连接，创建PrepareStatement或者Statement对象，执行SQL语句，最后将数据库返回结果转化为设定的对象。
+* BatchExecutor：当执行查询时，BatchExecutor与SimpleExecutor的处理逻辑是一样的。不同的是执行更新方法（mybatis认为delete和insert都是update）。执行更新方法时，BatchExecutor不是直接执行SQL语句，而是将其放到批次里面，等到提交的时候一起执行。
+* ReuseExecutor：
+* ClosedExecutor：是ResultLoaderMap内部类，外部无法使用，调用其方法会抛出异常。
 #### MyBatis分页方式
 * 逻辑分页：使用MyBatis自带的RowBounds进行分页，一次性查询很多数据，然后在结果中检索分页的数据。这样弊端是需要消耗大量的内存、有内存溢出的风险、对数据库压力较大。
 * 物理分页：自己手写SQL分页或使用分页插件PageHelper，从数据库查询指定条数的数据，弥补了一次性全部查出的所有数据的种种缺点，比如需要大量的内存，对数据库查询压力较大等问题。
