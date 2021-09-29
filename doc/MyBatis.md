@@ -1,3 +1,5 @@
+###### 生如蝼蚁 当立鸿鹄之志 命薄如纸 应有不屈之心 大丈夫生于天地间 岂能郁郁久居人下 乾坤未定 你我皆是黑马
+---------------
 #### 框架概述
 MyBatis本是apache的一个开源项目iBatis, 2010年这个项目由apache software foundation 迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Github。iBATIS一词来源于“internet”和“abatis”的组合，是一个基于Java的持久层框架。使用XML或注解来配置和映射原生信息，将接口和Java的POJO(Plain Ordinary Java Object,普通的Java对象)映射成数据库中的记录 --来源自百度百科 https://mybatis.org/mybatis-3/getting-started.html<br>
 MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new window)的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。https://mp.baomidou.com/guide/
@@ -213,7 +215,7 @@ SqlSession执行增删改查都是委托给Executor完成的。主要的工作�
 #### MyBatis分页方式
 * 逻辑分页：使用MyBatis自带的RowBounds进行分页，一次性查询很多数据，然后在结果中检索分页的数据。这样弊端是需要消耗大量的内存、有内存溢出的风险、对数据库压力较大。
 * 物理分页：自己手写SQL分页或使用分页插件PageHelper，从数据库查询指定条数的数据，弥补了一次性全部查出的所有数据的种种缺点，比如需要大量的内存，对数据库查询压力较大等问题。
-* 原理：分页插件的基本原理是使用 MyBatis 提供的插件接口，实现自定义插件，在插件的拦截方法内拦截待执行的 SQL，然后重写 SQL，根据dialect方言，
+* 原理：分页插件的基本原理是使用MyBatis提供的插件接口，实现自定义插件，在插件的拦截方法内拦截待执行的SQL，然后重写SQL，根据dialect方言，
 添加对应的物理分页语句和物理分页参数。
 
             RowBounds不是一次性查询全部结果，因为MyBatis是对jdbc的封装，在jdbc驱动中有一个Fetch Size的配置，
