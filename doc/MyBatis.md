@@ -170,6 +170,13 @@ MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方
 
             11.@mappers:映射器
             MyBatis的行为已经由上述元素配置完了，告诉MyBatis到哪去找到这些语句。 告诉MyBatis到哪里去找映射文件。可以使用相对于类路径的资源引用， 或完全限定资源定位符（包括 file:/// 的 U                            RL），或类名和包名等。
+ #### MyBatis初始化流程
+ 
+                        String resource = "mybatis-config.xml";
+                        InputStream inputStream = Resources.getResourceAsStream(resource);
+                        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+                        SqlSession sqlSession = sqlSessionFactory.openSession();
+                        List list = sqlSession.selectList("com.foo.bean.BlogMapper.queryAllBlogInfo");
  #### 工作原理      
             * 加载配置：加载配置文件里面数据库连接信息和mapper里面的那些映射文件，生成一个个的MappedStatement对象，然后调用方法addMappedStatement()方法以Id为主键保存在了configuration中一个map变量里面。
 
