@@ -1,10 +1,8 @@
 #### 框架概述
-`简介`：MyBatis是一款优秀的持久层框架，它支持定制化SQL、存储过程以及高级映射。避免了JDBC代码和手动设置参数以及获取结果集。MyBatis使用XML或注解来配置和映射原生信息，将接口和Java的POJO(Plain Ordinary Java Object,普通的Java对象)映射成数据库中的记录。<br>
-`特点`：轻量级、解耦(业务逻辑和数据访问分离，使系统结构更清晰，易维护，更易单元测试)、提供xml标签，支持编写动态sql<br>
+MyBatis本是apache的一个开源项目iBatis, 2010年这个项目由apache software foundation 迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Github。iBATIS一词来源于“internet”和“abatis”的组合，是一个基于Java的持久层框架。使用XML或注解来配置和映射原生信息，将接口和Java的POJO(Plain Ordinary Java Object,普通的Java对象)映射成数据库中的记录 --来源自百度百科 <br>
+MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new window)的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
-            MyBatis最强大的特性之一就是它的动态语句功能。如果以前有使用JDBC或者类似框架的经历，
-            就会明白把SQL语句条件连接在一起是多么的痛苦，要确保不能忘记空格或者不要在columns列后面省略一个逗号等。
-            动态语句解决掉了这些问题。
+`特点`：轻量级、解耦(业务逻辑和数据访问分离，使系统结构更清晰，易维护，更易单元测试)<br>
 `结构`:
 * API接口层：提供一些API接口，通过这些API接口来操纵数据库,接口层收到调用请求会调用数据处理层来完成具体的数据处理。
 * 数据处理层：负责具体的SQL查找、SQL解析、SQL执行和执行结果映射处理等,主要目的是根据调用的请求完成一次数据库操作。
