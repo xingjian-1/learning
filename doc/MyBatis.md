@@ -1,6 +1,6 @@
 #### 框架概述
-MyBatis本是apache的一个开源项目iBatis, 2010年这个项目由apache software foundation 迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Github。iBATIS一词来源于“internet”和“abatis”的组合，是一个基于Java的持久层框架。使用XML或注解来配置和映射原生信息，将接口和Java的POJO(Plain Ordinary Java Object,普通的Java对象)映射成数据库中的记录 --来源自百度百科 <br>
-MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new window)的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
+MyBatis本是apache的一个开源项目iBatis, 2010年这个项目由apache software foundation 迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Github。iBATIS一词来源于“internet”和“abatis”的组合，是一个基于Java的持久层框架。使用XML或注解来配置和映射原生信息，将接口和Java的POJO(Plain Ordinary Java Object,普通的Java对象)映射成数据库中的记录 --来源自百度百科 https://mybatis.org/mybatis-3/getting-started.html<br>
+MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new window)的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。https://mp.baomidou.com/guide/
 
 `特点`：轻量级、解耦(业务逻辑和数据访问分离，使系统结构更清晰，易维护，更易单元测试)<br>
 `结构`:
