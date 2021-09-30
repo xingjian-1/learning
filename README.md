@@ -14,7 +14,7 @@
 - `行为型` [策略模式](./doc/策略模式.md)   [观察者模式](./doc/观察者模式.md)  [责任链模式](./doc/责任链模式.md)  [模板方法模式](./doc/模板方法模式.md)   [状态模式](./doc/状态模式.md)
 - `框架涉及到的相关设计模式`  [Spring中用到的设计模式](./doc/设计模式.md)  [MyBatis中用到的设计模式](./doc/行为型.md) <br>
 ##### `JDK`
-- `[Java.util]` [集合类](./doc/Java基础及集合.md)  [CurrentHashMap实现原理](./doc/创建型.md)
+- `[Java.util]` [集合类](./doc/Java基础及集合.md)  [CurrentHashMap实现原理](./doc/创建型.md) [ArrayList源码解析](./doc/ArrayList.md)
 - `[Java.util.concurrent]` [多线程](./doc/多线程的实现.md)  [线程池](./doc/线程池.md) [TreadLocal原理](./doc/多线程.md) [synchronized锁升级过程](./doc/SpringBoot运行流程.md)     [Lock锁和atomic](./doc/结构型.md)
 - `[Java.util.function]` [函数式接口](/doc/HashMap底层实现和原理.md) 
 - `[Java.util.jar]`  [读写jar文件]
