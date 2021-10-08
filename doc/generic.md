@@ -117,20 +117,15 @@ dst类型 “大于等于” src 的类型，这里的“大于等于”是指 d
 
                 ? extends A
                 ? super A
-                | Class<T>和 Class<?>区别
-                前面介绍了 ？和 T 的区别，那么对于，Class<T>和 <Class<?>又有什么区别呢？Class<T>和 Class<?>
+* Class<T>和 Class<?>区别
+最常见的是在反射场景下的使用。
 
-                最常见的是在反射场景下的使用，这里以用一段发射的代码来说明下。
-
-                // 通过反射的方式生成  multiLimit
-                // 对象，这里比较明显的是，我们需要使用强制类型转换
+                // 通过反射的方式生成multiLimit对象，这里比较明显的是，我们需要使用强制类型转换
                 MultiLimit multiLimit = (MultiLimit)
                 Class.forName("com.glmapper.bridge.boot.generic.MultiLimit").newInstance();
-                对于上述代码，在运行期，如果反射的类型不是 MultiLimit 类，那么一定会报 java.lang.ClassCastException 错误。
+                对于上述代码，在运行期，如果反射的类型不是MultiLimit类，那么一定会报 ava.lang.ClassCastException错误。
 
                 对于这种情况，则可以使用下面的代码来代替，使得在在编译期就能直接 检查到类型的问题：
-
-                图片
                 Class<T>在实例化的时候，T 要替换成具体类。Class<?>它是个通配泛型，? 可以代表任何类型，所以主要用于声明时的限制情况。比如，我们可以这样做申明：
 
                 // 可以
@@ -139,9 +134,7 @@ dst类型 “大于等于” src 的类型，这里的“大于等于”是指 d
                 public Class<T> clazzT;
                 所以当不知道定声明什么类型的 Class 的时候可以定义一 个Class<?>。
 
-                图片
                 那如果也想 public Class<T> clazzT;这样的话，就必须让当前的类也指定 T ，
-
                 public class Test3<T> {
                     public Class<?> clazz;
                     // 不会报错
