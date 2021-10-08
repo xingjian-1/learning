@@ -7,7 +7,7 @@ E (element) 代表Element
 
 * ？无界通配符
 
-            我有一个父类Animal和几个子类，如狗、猫等，现在我需要一个动物的列表，我的第一个想法是像这样的：
+            有一个父类Animal和几个子类，如狗、猫等，现在需要一个动物的列表，第一个想法是这样的：
             List<Animal> listAnimals
             但是老板的想法确是这样的：
             List<? extends Animal> listAnimals
@@ -36,14 +36,13 @@ E (element) 代表Element
              // 报错
                 countLegs1(dogs);
             }
-当调用 countLegs1 时，就会飘红，提示的错误信息：
-所以，对于不确定或者不关心实际要操作的类型，可以使用无限制通配符（尖括号里一个问号，即 <?> ），表示可以持有任何类型。像 countLegs 方法中，限定了上界，但是不关心具体类型是什么，所以对于传入的 Animal 的所有子类都可以支持，并且不会报错。而 countLegs1 就不行。
+对于不确定或者不关心实际要操作的类型，可以使用无限制通配符（尖括号里一个问号，即 <?> ），表示可以持有任何类型。像countLegs方法中，限定了上界，但是不关心具体类型是什么，所以对于传入的Animal的所有子类都可以支持。而countLegs1 就不行。
 
 * 上界通配符 < ? extends E>
-上届：用 extends 关键字声明，表示参数化的类型可能是所指定的类型，或者是此类型的子类。在类型参数中使用 extends 表示这个泛型中的参数必须是 E 或者 E 的子类，这样有两个好处：
+上届：用extends关键字声明，表示参数化的类型可能是所指定的类型，或者是此类型的子类。在类型参数中使用extends表示这个泛型中的参数必须是E或者E的子类，这样有两个好处：
 
-            如果传入的类型不是 E 或者 E 的子类，编译不成功
-            泛型中可以使用 E 的方法，要不然还得强转成 E 才能使用
+            如果传入的类型不是E 或者 E 的子类，编译不成功
+            泛型中可以使用E的方法，要不然还得强转成E才能使用
             private <K extends A, E extends B> E test(K arg1, E arg2){
                 E result = arg2;
                 arg2.compareTo(arg1);
@@ -52,17 +51,14 @@ E (element) 代表Element
             }
             类型参数列表中如果有多个类型参数上限，用逗号分开
 
-            下界通配符 < ? super E>
-            下界: 用 super 进行声明，表示参数化的类型可能是所指定的类型，或者是此类型的父类型，直至 Object
-
+* 下界通配符 < ? super E>
+            下界: 用super进行声明，表示参数化的类型可能是所指定的类型，或者是此类型的父类型，直至Object
             在类型参数中使用 super 表示这个泛型中的参数必须是 E 或者 E 的父类。
-
             private <T> void test(List<? super T> dst, List<T> src){
                 for (T t : src) {
                     dst.add(t);
                 }
             }
-
             public static void main(String[] args) {
                 List<Dog> dogs = new ArrayList<>();
                 List<Animal> animals = new ArrayList<>();
@@ -86,7 +82,7 @@ dst类型 “大于等于” src 的类型，这里的“大于等于”是指 d
 
                 T 是一个 确定的 类型，通常用于泛型类和泛型方法的定义，？是一个 不确定 的类型，通常用于泛型方法的调用代码和形参，不能用于定义类和泛型方法。
 
-                区别1：通过 T 来 确保 泛型参数的一致性
+                区别1：通过 T 来确保泛型参数的一致性
                 // 通过 T 来 确保 泛型参数的一致性
                 public <T extends Number> void
                 test(List<T> dest, List<T> src)
@@ -106,15 +102,12 @@ dst类型 “大于等于” src 的类型，这里的“大于等于”是指 d
                 上面的代码在编译器并不会报错，但是当进入到 testNon 方法内部操作时（比如赋值），对于 dest 和 src 而言，就还是需要进行类型转换。
 
                 区别2：类型参数可以多重限定而通配符不行
-                图片
                 使用 & 符号设定多重边界（Multi Bounds)，指定泛型类型 T 必须是 MultiLimitInterfaceA 和 MultiLimitInterfaceB 的共有子类型，此时变量 t 就具有了所有限定的方法和属性。对于通配                  符来说，因为它不是一个确定的类型，所以不能进行多重限定。
 
                 区别3：通配符可以使用超类限定而类型参数不行
-                类型参数 T 只具有 一种 类型限定方式：
-
+                类型参数 T只具有一种类型限定方式：
                 T extends A
                 但是通配符 ? 可以进行 两种限定：
-
                 ? extends A
                 ? super A
 * Class<T>和 Class<?>区别
