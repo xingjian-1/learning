@@ -23,7 +23,7 @@
 - `[Java.util.spi]` [spi机制]
 - `[Java.io]` [输入输出流](./doc/IO.md)
 - `[Java.nio]` [IO模型](./doc/IOModel.md)
-- `[Java.lang]` [异常](./doc/异常.md)  [反射](./doc/SpringAutware.md) 
+- `[Java.lang]` [异常](./doc/异常.md)  [反射](./doc/SpringAutware.md) [泛型](./doc/generic.md) 
 - `[Java.net]` [网络编程](./doc/monitor.md) [socket](./doc/socket.md) [IO模型](./doc/多路复用机制.md)  [Http协议状态码](./doc/SpringMVC.md)
 - `[Java.security]` [security机制]
 - `[Java.time]` [日期时间类]
