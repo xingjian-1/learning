@@ -1,18 +1,14 @@
 ##### 泛型
 Java泛型（generics）是JDK5中引入的一个新特性，指所操作的数据类型被指定为一个参数。在没有泛型的情况的下，通过对类型Object的引用来实现参数的“任意化”，“任意化”带来的缺点是要做显式的强制类型转换，而这种转换是要求开发者对实际参数类型可以预知的情况下进行的。对于强制类型转换错误的情况，编译器可能不提示错误，在运行的时候才出现异常，这是本身就是一个安全隐患。那么泛型的好处就是在编译的时候能够检查类型安全，并且所有的强制转换都是自动和隐式的。
-？表示不确定的java类型
-T (type) 表示具体的一个java类型
-K V (key value) 分别代表java键值中的Key Value
-E (element) 代表Element
+
+            ？ 表示不确定的java类型
+            T (type) 表示具体的一个java类型
+            K V (key value) 分别代表java键值中的Key Value
+            E (element) 代表Element
 
 * ？无界通配符
 
-            有一个父类Animal和几个子类，如狗、猫等，现在需要一个动物的列表，第一个想法是这样的：
-            List<Animal> listAnimals
-            但是老板的想法确是这样的：
-            List<? extends Animal> listAnimals
-            为什么要使用通配符而不是简单的泛型呢？通配符其实在声明局部变量时是没有什么意义的，但是当你为一个方法声明一个参数时，它是非常重要的。
-
+            有一个父类Animal和N个子类：
             static int countLegs (List<? extends Animal > animals ) {
                 int retVal = 0;
                 for (Animal animal : animals){
@@ -78,23 +74,14 @@ dst类型 “大于等于” src 的类型，这里的“大于等于”是指 d
 
                 // 不可以
                 ？car = operate();
-                简单总结下：
+                T是一个确定的类型，通常用于泛型类和泛型方法的定义，？是一个不确定的类型，通常用于泛型方法的调用代码和形参，不能用于定义类和泛型方法。
 
-                T 是一个 确定的 类型，通常用于泛型类和泛型方法的定义，？是一个 不确定 的类型，通常用于泛型方法的调用代码和形参，不能用于定义类和泛型方法。
+                区别1：通过T来确保泛型参数的一致性
+                public <T extends Number> void test(List<T> dest, List<T> src)
 
-                区别1：通过 T 来确保泛型参数的一致性
-                // 通过 T 来 确保 泛型参数的一致性
-                public <T extends Number> void
-                test(List<T> dest, List<T> src)
-
-                //通配符是 不确定的，所以这个方法不能保证两个 List 具有相同的元素类型
-                public void
-                test(List<? extends Number> dest, List<? extends Number> src)
-                像下面的代码中，约定的 T 是 Number 的子类才可以，但是申明时是用的 String ，所以就会飘红报错。
-
-                图片
-                不能保证两个 List 具有相同的元素类型的情况
-
+                //通配符是不确定的，所以这个方法不能保证两个List具有相同的元素类型
+                public void test(List<? extends Number> dest, List<? extends Number> src)
+                不能保证两个List具有相同的元素类型的情况
                 GlmapperGeneric<String> glmapperGeneric = new GlmapperGeneric<>();
                 List<String> dest = new ArrayList<>();
                 List<Number> src = new ArrayList<>();
