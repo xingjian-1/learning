@@ -6,7 +6,7 @@ Java泛型（generics）是JDK5中引入的一个新特性，指所操作的数�
             K V (key value) 分别代表java键值中的Key Value
             E (element) 代表Element
 
-* ？无界通配符
+##### ？无界通配符
 
             有一个父类Animal和N个子类：
             static int countLegs (List<? extends Animal > animals ) {
@@ -32,13 +32,12 @@ Java泛型（generics）是JDK5中引入的一个新特性，指所操作的数�
              // 报错
                 countLegs1(dogs);
             }
-对于不确定或者不关心实际要操作的类型，可以使用无限制通配符（尖括号里一个问号，即 <?> ），表示可以持有任何类型。像countLegs方法中，限定了上界，但是不关心具体类型是什么，所以对于传入的Animal的所有子类都可以支持。而countLegs1 就不行。
+对于不确定要操作的类型，可以使用无限制通配符（即 <?>），表示可以持有任何类型。像countLegs方法中，限定了上界，但是不关心具体类型是什么，所以对于传入的Animal的所有子类都可以支持。而countLegs1 就不行。
 
-* 上界通配符 < ? extends E>
+##### 上界通配符 < ? extends E>
 上届：用extends关键字声明，表示参数化的类型可能是所指定的类型，或者是此类型的子类。在类型参数中使用extends表示这个泛型中的参数必须是E或者E的子类，这样有两个好处：
 
-            如果传入的类型不是E 或者 E 的子类，编译不成功
-            泛型中可以使用E的方法，要不然还得强转成E才能使用
+            如果传入的类型不是E 或者 E 的子类，编译不成功        
             private <K extends A, E extends B> E test(K arg1, E arg2){
                 E result = arg2;
                 arg2.compareTo(arg1);
@@ -47,9 +46,9 @@ Java泛型（generics）是JDK5中引入的一个新特性，指所操作的数�
             }
             类型参数列表中如果有多个类型参数上限，用逗号分开
 
-* 下界通配符 < ? super E>
-            下界: 用super进行声明，表示参数化的类型可能是所指定的类型，或者是此类型的父类型，直至Object
-            在类型参数中使用 super 表示这个泛型中的参数必须是 E 或者 E 的父类。
+##### 下界通配符 < ? super E>
+下界: 用super进行声明，表示参数化的类型可能是所指定的类型，或者是此类型的父类型
+
             private <T> void test(List<? super T> dst, List<T> src){
                 for (T t : src) {
                     dst.add(t);
@@ -66,56 +65,39 @@ Java泛型（generics）是JDK5中引入的一个新特性，指所操作的数�
             }
 dst类型 “大于等于” src 的类型，这里的“大于等于”是指 dst 表示的范围比 src 要大，因此装得下 dst 的容器也就能装 src 。
 
-* ？和 T 的区别
-？和 T 都表示不确定的类型，区别在于我们可以对 T 进行操作，但是对 ？不行，比如如下这种 ：
+##### ？和 T 的区别
+T 是一个确定的类型，通常用于泛型类和泛型方法的定义，？是一个 不确定 的类型，通常用于泛型方法的调用代码和形参，不能用于定义类和泛型方法。比如如下这种 ：
+* 区别1：通过T来确保泛型参数的一致性
 
-                // 可以
-                T t = operate();
-
-                // 不可以
-                ？car = operate();
-                T是一个确定的类型，通常用于泛型类和泛型方法的定义，？是一个不确定的类型，通常用于泛型方法的调用代码和形参，不能用于定义类和泛型方法。
-
-                区别1：通过T来确保泛型参数的一致性
                 public <T extends Number> void test(List<T> dest, List<T> src)
-
                 //通配符是不确定的，所以这个方法不能保证两个List具有相同的元素类型
                 public void test(List<? extends Number> dest, List<? extends Number> src)
-                不能保证两个List具有相同的元素类型的情况
-                GlmapperGeneric<String> glmapperGeneric = new GlmapperGeneric<>();
-                List<String> dest = new ArrayList<>();
-                List<Number> src = new ArrayList<>();
-                glmapperGeneric.testNon(dest,src);
-                上面的代码在编译器并不会报错，但是当进入到 testNon 方法内部操作时（比如赋值），对于 dest 和 src 而言，就还是需要进行类型转换。
 
-                区别2：类型参数可以多重限定而通配符不行
-                使用 & 符号设定多重边界（Multi Bounds)，指定泛型类型 T 必须是 MultiLimitInterfaceA 和 MultiLimitInterfaceB 的共有子类型，此时变量 t 就具有了所有限定的方法和属性。对于通配                  符来说，因为它不是一个确定的类型，所以不能进行多重限定。
+* 区别2：类型参数可以多重限定而通配符不行
 
-                区别3：通配符可以使用超类限定而类型参数不行
-                类型参数 T只具有一种类型限定方式：
+              public class Multilimit implements MultilimitInterfaceA,MultilimitInterfaceB{
+                        //使用&符号设定多重边界
+                        public static<T extends MultilimitInterfaceA & MultilimitInterfaceB> void test(T t){
+                                    }
+               }
+
+             interface MultilimitInterfaceA{}
+             interface MultilimitInterfaceB{}
+
+* 区别3：通配符可以使用超类限定而类型参数不行
+类型参数 T只具有一种类型限定方式：
+
                 T extends A
-                但是通配符 ? 可以进行 两种限定：
+但是通配符 ? 可以进行 两种限定：
+
                 ? extends A
                 ? super A
-* Class<T>和 Class<?>区别
-最常见的是在反射场景下的使用。
+#### Class<T>和 Class<?>区别
+常见的是在反射场景下的使用
 
-                // 通过反射的方式生成multiLimit对象，这里比较明显的是，我们需要使用强制类型转换
+                // 通过反射的方式生成multiLimit对象
                 MultiLimit multiLimit = (MultiLimit)
                 Class.forName("com.glmapper.bridge.boot.generic.MultiLimit").newInstance();
                 对于上述代码，在运行期，如果反射的类型不是MultiLimit类，那么一定会报 ava.lang.ClassCastException错误。
 
-                对于这种情况，则可以使用下面的代码来代替，使得在在编译期就能直接 检查到类型的问题：
-                Class<T>在实例化的时候，T 要替换成具体类。Class<?>它是个通配泛型，? 可以代表任何类型，所以主要用于声明时的限制情况。比如，我们可以这样做申明：
-
-                // 可以
-                public Class<?> clazz;
-                // 不可以，因为 T 需要指定类型
-                public Class<T> clazzT;
-                所以当不知道定声明什么类型的 Class 的时候可以定义一 个Class<?>。
-
-                那如果也想 public Class<T> clazzT;这样的话，就必须让当前的类也指定 T ，
-                public class Test3<T> {
-                    public Class<?> clazz;
-                    // 不会报错
-                    public Class<T> clazzT;
+                Class<T>在实例化的时候，T 要替换成具体类。Class<?>它是个通配泛型，? 可以代表任何类型，所以主要用于声明时的限制情况。
