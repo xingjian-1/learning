@@ -269,3 +269,77 @@ SqlSession执行增删改查都是委托给Executor完成的。主要的工作�
 * 优化上：在sql优化上，mybatis要比hibernate方便一些，由于mybatis的sql都是写在xml里，因此优化sql比hibernate方便很多。而hibernate的sql很多都是自动生成的，无法直接维护sql；虽有hql，但功能还是不及sql强大，见到报表等变态需求时，hql也歇菜，也就是说hql是有局限的；hibernate虽然也支持原生sql，但开发模式上却与orm不同，需要转换思维，因此使用上不是非常方便。总之写sql的灵活度上hibernate不及mybatis
 * 学习和使用门槛：MyBatis入门比较简单，使用门槛也更低。
 * 二级缓存：hibernate拥有更好的二级缓存，它的二级缓存可以自行更换为第三方的二级缓存。
+##### tk.mybatis包提供通用的增删改查的方法
+
+            <!-- 通用Mapper -->
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper</artifactId>
+                <version>4.0.4</version>
+            </dependency>
+* 更新：
+
+updateByPrimaryKey(T var1) 根据主键更新数据，更新NULL的字段，<br>
+updateByPrimaryKeySelective(T var1)根据主键更新有值的数据，<br>
+updateByCondition(@Param("record") T var1, @Param("condition") Object var2) 根据Condition条件更新实体`record`包含的全部属性，null值会被更新，<br>
+updateByConditionSelective(@Param("record") T var1, @Param("condition") Object var2) 根据Condition条件更新实体`record`包含的不是null的属性值，<br>
+updateByExampleSelective(@Param("record") T var1, @Param("example") Object var2)根据Example条件更新实体`record`包含的不是null的属性值，<br>
+updateByExample(@Param("record") T var1, @Param("example") Object var2)根据Example条件更新实体`record`包含的全部属性，null值会被更新，<br>
+updateListByPrimaryKey(List<? extends T> recordList);根据主键批量修改。<br>
+<br>
+根据指定条件更新指定字段的情况上面几种方法可能都不满足，就只能自己写sql了。<br>
+
+           updateStatusByPrimaryKey(InsureOrgSchemesInfo insureOrgSchemesInfo)；
+           <update id="updateStatusByPrimaryKey" parameterType="com.xtr.manager.api.domain.insure.InsureOrgSchemesInfo">
+                   update INSURE_ORG_SCHEMES_INFO a
+                   <set>
+                       <if test="state != null and state != ''">
+                           a.state = #{state}
+                       </if>
+                   </set>
+                   where a.id = #{id}
+           </update>
+
+* 插入：
+insertList(List<? extends T> var1)：批量新增<br>
+insert(T var1) 所有的字段都会添加一遍，即使有的字段没有值<br>
+insertSelective(T var1) 只给有值的字段赋值（会对传进来的值做非空判断）<br>
+insert和insertSelective在数据库中的效果是一样的，只是sql语句不同。<br>
+insertUseGeneratedKeys()：<br>
+官网文档：https://dev.mysql.com/doc/refman/5.6/en/insert-on-duplicate.html<br>
+
+* 删除：
+delete(T var1)；<br>
+
+         DELETE FROM db_test.t_test_table 
+         <where>
+          <if test="id != null"> 
+           AND id = #{id}
+          </if>
+          <if test="col != null"> 
+          AND col = #{col}
+          </if>
+         </where>
+deleteByPrimaryKey(Object var1):
+
+        DELETE FROM db_test.t_test_table 
+        <where> 
+         AND id = #{id}
+        </where>
+deleteByExample(Object var1) 根据条件删除<br>
+Example example = new Example(User.class);<br>
+Example.Criteria criteria = example.createCriteria();<br>
+criteria.andEqualTo("name","王小二");//相当于 where name = "王小二"<br>
+deleteByExample(example );<br>
+
+* 查询：
+select(T var1) 根据条件查询，作非空判断。<br>
+selectCount(T var1)根据条件查询 查询行数<br>
+selectAll() 查询全部<br>
+selectByExample(Object var1)根据Example条件查询<br>
+selectCountByExample(Object var1)根据Example条件查询行数<br>
+selectOne(T var1)根据条件查询一个<br>
+selectOneByExample(Object var1)<br>
+selectByExampleAndRowBounds(Object var1, RowBounds var2)根据example条件和RowBounds进行分页查询<br>
+selectByRowBounds(T var1, RowBounds var2)根据实体条件和RowBounds进行分页查询<br>
+selectByPrimaryKey(Object var1) 根据主键查询<br>
