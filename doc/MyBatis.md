@@ -20,8 +20,7 @@ MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new windo
 MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方法调用XMLConfigBuilder()的parse()方法返回Configuration对象。
 
                 public Configuration parse(){
-                    if (parsed)
-                    {
+                    if (parsed){
                         throw new BuilderException("Each XMLConfigBuilder can only be used once.");
                     }
                     parsed = true;
@@ -31,9 +30,7 @@ MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方
                     parseConfiguration(configurationNode);
                     return configuration;
                 }
-                /*
-                解析 "/configuration"节点下的子节点信息，然后将解析的结果设置到Configuration对象中
-                */
+              //configuration"节点下的子节点信息，然后将解析的结果设置到Configuration对象中
               private void parseConfiguration(XNode root) {
                 try {
                   //1.首先处理properties 节点	
@@ -137,7 +134,7 @@ MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方
                 }
               }
               
-             //再继续看query()和queryFromDatabase()这两个方法
+             //继续看query()和queryFromDatabase()这两个方法
             @SuppressWarnings("unchecked")
               public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds,
               ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
@@ -246,8 +243,7 @@ MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方
              #{}的参数替换是发生在DBMS中，而${}发生在动态解析过程中。
              ${}会导致sql注入的问题。
 #### MyBatis和hibernate区别
-* 灵活性：MyBatis更加灵活，自己可以写SQL语句，使用起来比较方便。hibernate是全自动，而mybatis是半自动。hibernate完全可以通过对象关系模型实现对数据库的操作，通过实体对象与数据库的表进行映射来自动生成sql。而mybatis仅有基本的字段映射，对象数据以及对象实际关系仍然需要通过手写sql来实现和管理
+* 灵活性：MyBatis操作灵活，使用起来比较方便。hibernate是全自动，而mybatis是半自动。hibernate可以通过对象关系模型实现对数据库的操作，通过实体对象与数据库的表进行映射来自动生成sql。而mybatis仅有基本的字段映射，对象数据以及对象实际关系仍然需要通过手写sql来实现和管理
 * 可移植性：Hibernate数据库移植性远大于Mybatis。hibernate通过它强大的映射结构和hql语言，大大降低了对象与不同数据库（oracle、MySQL等）的耦合性，而mybatis由于需要手写sql，因此sql中很容易包含一些不同的数据库不兼容的函数或者语法，移植性也会随之降低很多，成本很高.
-* 优化上：在sql优化上，mybatis要比hibernate方便一些，由于mybatis的sql都是写在xml里，因此优化sql比hibernate方便很多。而hibernate的sql很多都是自动生成的，无法直接维护sql；虽有hql，但功能还是不及sql强大，见到报表等变态需求时，hql也歇菜，也就是说hql是有局限的；hibernate虽然也支持原生sql，但开发模式上却与orm不同，需要转换思维，因此使用上不是非常方便。总之写sql的灵活度上hibernate不及mybatis
-* 学习和使用门槛：MyBatis入门比较简单，使用门槛也更低。
+* 优化上：在sql优化上，mybatis要比hibernate方便一些，由于mybatis的sql都是写在xml里，因此优化sql比hibernate方便很多。而hibernate的sql很多都是自动生成的，无法直接维护sql；虽有hql，但功能还是不及sql强大，像报表等需求时，hql满足不了需求；hibernate虽然也支持原生sql，但开发模式上却与orm不同，需要转换思维，因此使用上不是非常方便。总之写sql的灵活度上hibernate不及mybatis。
 * 二级缓存：hibernate拥有更好的二级缓存，它的二级缓存可以自行更换为第三方的二级缓存。
