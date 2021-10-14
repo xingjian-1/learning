@@ -19,8 +19,7 @@ MyBatis-Plus (opens new window)（简称 MP）是一个 MyBatis (opens new windo
 * 创建Configuration对象
 MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方法调用XMLConfigBuilder()的parse()方法返回Configuration对象。
 
-                public Configuration parse()
-                {
+                public Configuration parse(){
                     if (parsed)
                     {
                         throw new BuilderException("Each XMLConfigBuilder can only be used once.");
