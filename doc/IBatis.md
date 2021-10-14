@@ -1,11 +1,118 @@
-#### 前言
-在计算机的世界中，缓存无处不在，操作系统有操作系统的缓存，数据库也会有数据库的缓存，各种中间件如Redis也是用来充当缓存的作用，编程语言中又可以利用内存来作为缓存。
-MyBatis作为一款优秀的ORM框架，也用到了缓存，本文的目的就是探究一下MyBatis的缓存是如何实现的。
 ##### 为什么要用缓存
-在计算机的世界中，CPU的处理速度可谓是一马当先，远远甩开了其他操作，尤其是I/O操作，除了那种CPU密集型的系统，其余大部分的业务系统性能瓶颈最后或多或少都会出现在I/O操作上，所以为了减少磁盘的I/O次数，缓存是必不可少的，通过缓存的使用我们可以大大减少I/O操作次数，从而在一定程度上弥补了I/O操作和CPU处理速度之间的鸿沟。而在我们ORM框架中引入缓存的目的就是为了减少读取数据库的次数，从而提升查询的效率。
+在计算机的世界中，缓存无处不在，操作系统有操作系统的缓存，数据库也会有数据库的缓存，各种中间件如Redis也是用来充当缓存的作用，编程语言中又可以利用内存来作为缓存。
+MyBatis作为一款优秀的ORM框架，也用到了缓存，本文的目的就是探究一下MyBatis的缓存是如何实现的。尤其是I/O操作，除了那种CPU密集型的系统，其余大部分的业务系统性能瓶颈最后或多或少都会出现在I/O操作上，所以为了减少磁盘的I/O次数，缓存是必不可少的，通过缓存的使用我们可以大大减少I/O操作次数，从而在一定程度上弥补了I/O操作和CPU处理速度之间的鸿沟。而在我们ORM框架中引入缓存的目的就是为了减少读取数据库的次数，从而提升查询的效率。
 ##### 一级缓存
-与数据库同一次会话期间的数据会放到一级缓存中，以后如果需要查询相同的数据，直接从缓存中取，不需要到数据库中进行查询。          
-          
+前面了解了SqlSessionFactory、SqlSession、Excutor以及Mpper执行SQL过程，下面来了解下myabtis的缓存，它的缓存分为一级缓存和二级缓存。
+使用MyBatis开启一次和数据库的会话，MyBatis会创建出一个SqlSession对象表示一次数据库会话，在对数据库的一次会话中，
+有可能会反复地执行完全相同的查询语句，每一次查询都会去查一次数据库,为了减少资源浪费，mybaits提供了一种缓存的方式(一级缓存)。
+mybatis的SQL执行最后是交给了Executor执行器来完成的，看下BaseExecutor类的源码：
+
+                         @Override
+                         public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException {
+                           BoundSql boundSql = ms.getBoundSql(parameter);
+                           CacheKey key = createCacheKey(ms, parameter, rowBounds, boundSql);
+                           return query(ms, parameter, rowBounds, resultHandler, key, boundSql);
+                        }
+                         @SuppressWarnings("unchecked")
+                         @Override
+                         public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws                                 SQLException {
+                                     ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
+                                     if (closed) {
+                                       throw new ExecutorException("Executor was closed.");
+                                     }
+                                     if (queryStack == 0 && ms.isFlushCacheRequired()) {
+                                       clearLocalCache();
+                                     }
+                                     List<E> list;
+                                     try {
+                                       queryStack++;
+                                       list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;//localCache 本地缓存
+                                       if (list != null) {
+                                         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
+                                       } else {
+                                         list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);  //如果缓存没有就走DB
+                                       }
+                                     } finally {
+                                       queryStack--;
+                                     }
+                                     if (queryStack == 0) {
+                                       for (DeferredLoad deferredLoad : deferredLoads) {
+                                         deferredLoad.load();
+                                       }
+                                       // issue #601
+                                       deferredLoads.clear();
+                                       if (configuration.getLocalCacheScope() == LocalCacheScope.STATEMENT) {
+                                         // issue #482
+                                         clearLocalCache();
+                                       }
+                                     }
+                                     return list;
+                               }
+
+                        private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql                              boundSql) throws SQLException {
+                         List<E> list;
+                        localCache.putObject(key, EXECUTION_PLACEHOLDER);
+                        try {
+                          list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);
+                        } finally {
+                          localCache.removeObject(key);//清空现有缓存数据
+                        }
+                        localCache.putObject(key, list);//新的结果集存入缓存
+                        if (ms.getStatementType() == StatementType.CALLABLE) {
+                          localOutputParameterCache.putObject(key, parameter);
+                        }
+                        return list;
+                      }
+它的本地缓存使用的是PerpetualCache类，内部是一个HashMap作了一个封装来存数据。<br>
+缓存Key的生成<br>
+
+          CacheKey key = createCacheKey(ms, parameter, rowBounds, boundSql);
+          @Override
+            public CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql) {
+              if (closed) {
+                throw new ExecutorException("Executor was closed.");
+              }
+              CacheKey cacheKey = new CacheKey();
+              cacheKey.update(ms.getId());
+              cacheKey.update(Integer.valueOf(rowBounds.getOffset()));
+              cacheKey.update(Integer.valueOf(rowBounds.getLimit()));
+              cacheKey.update(boundSql.getSql());
+              List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+              TypeHandlerRegistry typeHandlerRegistry = ms.getConfiguration().getTypeHandlerRegistry();
+              // mimic DefaultParameterHandler logic
+              for (int i = 0; i < parameterMappings.size(); i++) {
+                ParameterMapping parameterMapping = parameterMappings.get(i);
+                if (parameterMapping.getMode() != ParameterMode.OUT) {
+                  Object value;
+                  String propertyName = parameterMapping.getProperty();
+                  if (boundSql.hasAdditionalParameter(propertyName)) {
+                    value = boundSql.getAdditionalParameter(propertyName);
+                  } else if (parameterObject == null) {
+                    value = null;
+                  } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+                    value = parameterObject;
+                  } else {
+                    MetaObject metaObject = configuration.newMetaObject(parameterObject);
+                    value = metaObject.getValue(propertyName);
+                  }
+                  cacheKey.update(value);
+                }
+              }
+              if (configuration.getEnvironment() != null) {
+                // issue #176
+                cacheKey.update(configuration.getEnvironment().getId());
+              }
+              return cacheKey;
+            }
+通过statementId,params,rowBounds，BoundSql来构建一个key值，根据这个key值去缓存Cache中取出对应缓存结果。
+##### 一级缓存的生命周期
+* 比如要执行一个查询操作时，Mybatis会创建一个新的SqlSession对象，SqlSession对象找到具体的Executor，
+Executor持有一个PerpetualCache对象；当查询结束(会话结束)时，SqlSession、Executor、PerpetualCache对象占有的资源一并释放掉。
+* 如果SqlSession调用了close()方法，会释放掉一级缓存PerpetualCache对象，一级缓存将不可用。
+* 如果SqlSession调用了clearCache()，会清空PerpetualCache对象中的数据，但是该对象仍可使用。
+* SqlSession中执行了任何一个update操作(update()、delete()、insert()) ，都会清空PerpetualCache对象的数据，但是该对象可以继续使用。
+##### 一级缓存失效情况         
+
           注意：一级缓存为sqlSession级别的缓存，默认开启的，不能关闭。一级缓存失效的四种情况：
           1）sqlSession不同，缓存失效。
           2）sqlSession相同，查询条件不同，缓存失效，因为缓存中可能还没有相关数据。
@@ -16,8 +123,35 @@ MyBatis作为一款优秀的ORM框架，也用到了缓存，本文的目的就�
           如果配置了则会清除一级缓存。
           2、MyBatis全局配置属性localCacheScope配置为Statement时，那么完成一次查询就会清除缓存。
           3、在执行commit，rollback，update方法时会清空一级缓存
-##### 二级缓存（全局缓存）
-一级缓存因为只能在同一个SqlSession中共享，所以会存在一个问题，在分布式或者多线程的环境下，不同会话之间对于相同的数据可能会产生不同的结果，因为跨会话修改了数据是不能互相感知的，所以就有可能存在脏数据的问题，正因为一级缓存存在这种不足，需要一种作用域更大的缓存，这就是二级缓存。
+##### 二级缓存
+Mybatis默认对二级缓存是关闭的，一级缓存默认开启，如果需要开启只需在mapper上加入配置就好了。<br>
+Executor是执行查询的最终接口，它有两个实现类一个是BaseExecutor另外一个是CachingExecutor。CachingExecutor(二级缓存查询)<br>
+一级缓存因为只能在同一个SqlSession中共享，所以会存在一个问题，在分布式或者多线程的环境下，不同会话之间对于相同的数据可能会产生不同的结果，因为跨会话修改了数据是不能互相感知的，所以就有可能存在脏数据的问题，正因为一级缓存存在这种不足，需要一种作用域更大的缓存，这就是二级缓存。<br>
+CachingExecutor实现类里面的query查询方法：<br>
+
+            @Override
+            public  List query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
+                throws SQLException {
+              Cache cache = ms.getCache();//二级缓存对象
+              if (cache != null) {
+                flushCacheIfRequired(ms);
+                if (ms.isUseCache() && resultHandler == null) {
+                  ensureNoOutParams(ms, parameterObject, boundSql);
+                  @SuppressWarnings("unchecked")
+                  List list = (List) tcm.getObject(cache, key);//从缓存中读取
+                  if (list == null) {
+                    //这段走到一级缓存或者DB
+                    list = delegate. query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+                    tcm.putObject(cache, key, list); // issue #578 and #116  //数据放入缓存
+                  }
+                  return list;
+                }
+              }
+              return delegate. query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+            }
+
+一个事务方法运行时，数据查询出来，缓存在一级缓存了，但是没有到二级缓存，当事务提交后(sqlSession.commit())，数据才放到二级缓存。查询的顺序是，先查二级缓存再查一级缓存然后才去数据库查询。
+
 一级缓存作用域是SqlSession级别，所以它存储的SqlSession中的BaseExecutor之中，但是二级缓存目的要实现作用范围更广，所以要实现跨会话共享，MyBatis二级缓存的作用域是namespace，专门用了一个装饰器来维护，这就是：CachingExecutor。
 
           二级缓存相关的配置有三个地方：
