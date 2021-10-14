@@ -30,7 +30,8 @@ updateListByPrimaryKey(List<? extends T> recordList);根据主键批量修改。
                    where a.id = #{id}
            </update>
 
-* 插入：
+* 插入
+
 insertList(List<? extends T> var1)：批量新增<br>
 insert(T var1) 所有的字段都会添加一遍，即使有的字段没有值<br>
 insertSelective(T var1) 只给有值的字段赋值（会对传进来的值做非空判断）<br>
@@ -38,7 +39,8 @@ insert和insertSelective在数据库中的效果是一样的，只是sql语句�
 insertUseGeneratedKeys()：<br>
 官网文档：https://dev.mysql.com/doc/refman/5.6/en/insert-on-duplicate.html<br>
 
-* 删除：
+* 删除
+
 delete(T var1)；<br>
 
          DELETE FROM db_test.t_test_table 
@@ -62,7 +64,8 @@ Example.Criteria criteria = example.createCriteria();<br>
 criteria.andEqualTo("name","王小二");//相当于 where name = "王小二"<br>
 deleteByExample(example );<br>
 
-* 查询：
+* 查询
+
 select(T var1) 根据条件查询，作非空判断。<br>
 selectCount(T var1)根据条件查询 查询行数<br>
 selectAll() 查询全部<br>
