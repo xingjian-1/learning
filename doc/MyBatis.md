@@ -203,23 +203,6 @@ MyBatis初始化时会执行SqlSessionFactoryBuilder中的build()方法,build方
               }
               Executor的作用之一就是创建Statement了，创建完后又把Statement丢给StatementHandler返回List查询结果.
 * 释放连接资源
-#### 执行器Executor
-SqlSession执行增删改查都是委托给Executor完成的。主要的工作内容：处理缓存，包括一级缓存和二级缓存、获取数据库连接、创建Statement或者PrepareStatement对象、访问数据库执行SQL语句处理数据库返回结果。
-* CachingExecutor：用于处理二级缓存，如果缓存中不存在要查询的数据，那么将查询请求委托给其他的Executor。如果是执行SQL的增删改，那么CachingExecutor将清空二级缓存。
-* BaseExecutor：是除CachingExecutor之外，其他Executor实现类的基类。该类主要处理一级缓存。该类中属性localCache表示一级缓存。采用模板方法的设计模式。
-* SimpleExecutor：当执行增删改查时，该类获取数据库连接，创建PrepareStatement或者Statement对象，执行SQL语句，最后将数据库返回结果转化为设定的对象。
-* BatchExecutor：当执行查询时，BatchExecutor与SimpleExecutor的处理逻辑是一样的。不同的是执行更新方法（mybatis认为delete和insert都是update）。执行更新方法时，BatchExecutor不是直接执行SQL语句，而是将其放到批次里面，等到提交的时候一起执行。
-* ReuseExecutor：
-* ClosedExecutor：是ResultLoaderMap内部类，外部无法使用，调用其方法会抛出异常。
-#### MyBatis分页方式
-* 逻辑分页：使用MyBatis自带的RowBounds进行分页，一次性查询很多数据，然后在结果中检索分页的数据。这样弊端是需要消耗大量的内存、有内存溢出的风险、对数据库压力较大。
-* 物理分页：自己手写SQL分页或使用分页插件PageHelper，从数据库查询指定条数的数据，弥补了一次性全部查出的所有数据的种种缺点，比如需要大量的内存，对数据库查询压力较大等问题。
-* 原理：分页插件的基本原理是使用MyBatis提供的插件接口，实现自定义插件，在插件的拦截方法内拦截待执行的SQL，然后重写SQL，根据dialect方言，
-添加对应的物理分页语句和物理分页参数。
-
-            RowBounds不是一次性查询全部结果，因为MyBatis是对jdbc的封装，在jdbc驱动中有一个Fetch Size的配置，
-            它规定了每次最多从数据库查询多少条数据，假如你要查询更多数据，它会在你执行next()的时候，去查询更多的数据。
-
 #### IBatis与MyBatis区别
             
             IBatis就是MyBatis前身，有很多地方相似，在sqlMap里面区别如下
@@ -249,25 +232,6 @@ SqlSession执行增删改查都是委托给Executor完成的。主要的工作�
             <foreach item="item" collection="list" separator="," open="(" close=")" index="">
                   #{item.id}
             </foreach>
-
-#### MyBatis中#{}和${}的区别
-            
-             select * from user where name = #{name};
-             select * from user where name = ${name};
-             解析后结果为
-             select * from user where name = 'zhangsan';
-             但是 #{} 和 ${} 在预编译中的处理是不一样的,#{} 在预处理时，会把参数部分用一个占位符 ? 代替，变成如下的 sql 语句：
-             select * from user where name = ?;
-             而 ${} 则只是简单的字符串替换，在动态解析阶段，sql语句会被解析成
-             select * from user where name = 'zhangsan';
-             #{}的参数替换是发生在DBMS中，而${}发生在动态解析过程中。
-             ${}会导致sql注入的问题。
-#### MyBatis和hibernate区别
-* 灵活性：MyBatis更加灵活，自己可以写SQL语句，使用起来比较方便。hibernate是全自动，而mybatis是半自动。hibernate完全可以通过对象关系模型实现对数据库的操作，通过实体对象与数据库的表进行映射来自动生成sql。而mybatis仅有基本的字段映射，对象数据以及对象实际关系仍然需要通过手写sql来实现和管理
-* 可移植性：Hibernate数据库移植性远大于Mybatis。hibernate通过它强大的映射结构和hql语言，大大降低了对象与不同数据库（oracle、MySQL等）的耦合性，而mybatis由于需要手写sql，因此sql中很容易包含一些不同的数据库不兼容的函数或者语法，移植性也会随之降低很多，成本很高.
-* 优化上：在sql优化上，mybatis要比hibernate方便一些，由于mybatis的sql都是写在xml里，因此优化sql比hibernate方便很多。而hibernate的sql很多都是自动生成的，无法直接维护sql；虽有hql，但功能还是不及sql强大，见到报表等变态需求时，hql也歇菜，也就是说hql是有局限的；hibernate虽然也支持原生sql，但开发模式上却与orm不同，需要转换思维，因此使用上不是非常方便。总之写sql的灵活度上hibernate不及mybatis
-* 学习和使用门槛：MyBatis入门比较简单，使用门槛也更低。
-* 二级缓存：hibernate拥有更好的二级缓存，它的二级缓存可以自行更换为第三方的二级缓存。
 ##### tk.mybatis包提供通用的增删改查的方法
 
             <!-- 通用Mapper -->
@@ -342,3 +306,21 @@ selectOneByExample(Object var1)<br>
 selectByExampleAndRowBounds(Object var1, RowBounds var2)根据example条件和RowBounds进行分页查询<br>
 selectByRowBounds(T var1, RowBounds var2)根据实体条件和RowBounds进行分页查询<br>
 selectByPrimaryKey(Object var1) 根据主键查询<br>
+#### MyBatis中#{}和${}的区别
+            
+             select * from user where name = #{name};
+             select * from user where name = ${name};
+             解析后结果为
+             select * from user where name = 'zhangsan';
+             但是 #{} 和 ${} 在预编译中的处理是不一样的,#{} 在预处理时，会把参数部分用一个占位符 ? 代替，变成如下的 sql 语句：
+             select * from user where name = ?;
+             而 ${} 则只是简单的字符串替换，在动态解析阶段，sql语句会被解析成
+             select * from user where name = 'zhangsan';
+             #{}的参数替换是发生在DBMS中，而${}发生在动态解析过程中。
+             ${}会导致sql注入的问题。
+#### MyBatis和hibernate区别
+* 灵活性：MyBatis更加灵活，自己可以写SQL语句，使用起来比较方便。hibernate是全自动，而mybatis是半自动。hibernate完全可以通过对象关系模型实现对数据库的操作，通过实体对象与数据库的表进行映射来自动生成sql。而mybatis仅有基本的字段映射，对象数据以及对象实际关系仍然需要通过手写sql来实现和管理
+* 可移植性：Hibernate数据库移植性远大于Mybatis。hibernate通过它强大的映射结构和hql语言，大大降低了对象与不同数据库（oracle、MySQL等）的耦合性，而mybatis由于需要手写sql，因此sql中很容易包含一些不同的数据库不兼容的函数或者语法，移植性也会随之降低很多，成本很高.
+* 优化上：在sql优化上，mybatis要比hibernate方便一些，由于mybatis的sql都是写在xml里，因此优化sql比hibernate方便很多。而hibernate的sql很多都是自动生成的，无法直接维护sql；虽有hql，但功能还是不及sql强大，见到报表等变态需求时，hql也歇菜，也就是说hql是有局限的；hibernate虽然也支持原生sql，但开发模式上却与orm不同，需要转换思维，因此使用上不是非常方便。总之写sql的灵活度上hibernate不及mybatis
+* 学习和使用门槛：MyBatis入门比较简单，使用门槛也更低。
+* 二级缓存：hibernate拥有更好的二级缓存，它的二级缓存可以自行更换为第三方的二级缓存。
