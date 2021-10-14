@@ -9,19 +9,21 @@ RowBounds不是一次性查询全部结果，因为MyBatis是对jdbc的封装，
 
 ##### 分页插件(PageHelper) 
 
-maven依赖:
-<dependency>  
-    <groupId>com.github.pagehelper</groupId>  
-    <artifactId>pagehelper</artifactId>  
-    <version>4.1.6</version>  
-</dependency
-具体使用
-分页：
-  SqlSession sqlSession = sessionFactory.openSession();
-   UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-   PageHelper.startPage(1,10,true);  //第一页 每页显示10条
-   Page<User> page=userMapper.findUserAll();
-不分页：
-PageHelper.startPage(1,-1,true);
-查询总条数：
-PageInfo<User>  info=new PageInfo<>(userMapper.findUserAll());
+            maven依赖:
+            <dependency>  
+                <groupId>com.github.pagehelper</groupId>  
+                <artifactId>pagehelper</artifactId>  
+                <version>4.1.6</version>  
+            </dependency
+分页
+
+           SqlSession sqlSession = sessionFactory.openSession();
+           UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+           PageHelper.startPage(1,10,true);  //第一页 每页显示10条
+           Page<User> page=userMapper.findUserAll();
+不分页
+
+           PageHelper.startPage(1,-1,true);
+查询总条数
+
+           PageInfo<User>  info=new PageInfo<>(userMapper.findUserAll());
