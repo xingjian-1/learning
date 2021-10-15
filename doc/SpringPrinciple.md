@@ -50,7 +50,7 @@ Spring框架整体被分为五个模块:`核心容器`(core container), `面向�
        现在Spring最新版本是Spring5.官网：https://spring.io/projects/spring-framework
        Mybatis是目前国内Java web开发的主流ORM框架。作为一名开发者非常有必要掌握其实现原理，更好地解决我们开发中遇到的问题；同时，Mybatis的架构和源码非常优雅，使用了大量的设计模式实现解耦以及高扩展性对其设计思想也需要深入理解。
        除了Mybatis之外，与其处在同一重要位置的开源框架还有Spring。比如你是如何理解Spring中的IOC、DI、AOP这些概念的？比如你知道Bean的生命周期吗？说说它有哪些步骤？每个步骤是用来干什么的......
-
+* Spring5又做了一些改变.............
 #### 框架原理示例
 * 创建一个Person类：
 
