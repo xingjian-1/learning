@@ -13,8 +13,15 @@ RowBounds不是一次性查询全部结果，因为MyBatis是对jdbc的封装，
             <dependency>  
                 <groupId>com.github.pagehelper</groupId>  
                 <artifactId>pagehelper</artifactId>  
-                <version>4.1.6</version>  
+                <version>5.1.8</version>  
             </dependency
+            
+            集成springboot：
+             <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>1.2.10</version>
+            </dependency>
 分页
 
            SqlSession sqlSession = sessionFactory.openSession();
