@@ -53,3 +53,22 @@
       （3）出队操作： Out_Queue(q,x)，初始条件: 队q 存在且非空，操作结果： 删除队首元素，并返回其值，队发生变化；
       （4）读队头元素：Front_Queue(q,x)，初始条件: 队q 存在且非空，操作结果： 读队头元素，并返回其值，队不变；
       （5）判队空操作：Empty_Queue(q)，初始条件： 队q 存在，操作结果： 若q 为空队则返回为1，否则返回为0。
+##### 队列的创建
+
+        //队列的创建1：
+        Queue<Integer> queue = new LinkedList<>();//声明队列,先进先出原则
+        queue.add(1);//添加数据
+        queue.offer(9);//添加数据
+        queue.add(3);
+        queue.add(4);
+        //add() offer()都是向队尾插入数据 区别是add()方法插入数据超出队列界限时候会抛出异常，而offer()方法是返回false
+        queue.poll();//输出队列
+        queue.peek();//输出队列但不删除
+        queue.remove();//输出队列
+        //在队列元素为空的情况下，remove() 方法会抛出NoSuchElementException异常，poll() 方法只会返回 null
+        //队列的创建2：
+        Queue<Integer> queSort = new PriorityQueue<>();//插入的数据会被排序
+        queSort.add(2);
+        queSort.add(16);
+        queSort.add(9);
+        queSort.add(1);
