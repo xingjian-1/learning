@@ -39,3 +39,22 @@
         return(false) {问题无解}
 ##### 退栈（POP）算法
 更新中...
+##### 栈的创建
+
+        //栈的创建：
+        Stack stack1 = new Stack();
+        Stack<String> stackString = new Stack<>();
+        stackString.add("c");
+        stackString.pop();//输出元素，栈为空的时候会抛出异常
+        stackString.add("a");//添加元素
+        stackString.push("b");//添加元素
+        //add是继承自Vector的方法，且返回值类型是boolean。
+        //push是Stack自身的方法，返回值类型是参数类类型
+
+        Map<String, String> map = new HashMap();//创建map,**********HashMap会根据Key值排序。
+        map.put("b", "卫庄");
+        map.put("a", "盖聂");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getValue());
+            System.out.println(entry.getKey());
+        }
