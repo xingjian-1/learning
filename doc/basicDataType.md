@@ -44,6 +44,8 @@ boolean： 占内存大小为1子节(8位)，取值范围 true，false
              temp = 0;
          }
       }
+      
+ ![mq-2](./doc/baseDate.png)
   * 引用类型
   引用数据类型变量，调用方法时作为参数是按引用传递的，传递的是引用的副本   
   
@@ -74,3 +76,5 @@ boolean： 占内存大小为1子节(8位)，取值范围 true，false
                temp.setPrice(99.9);
            }
         }
+
+ ![mq-2](./doc/baseDate.png)
