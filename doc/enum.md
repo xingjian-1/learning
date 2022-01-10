@@ -1,6 +1,6 @@
 ##### 什么是枚举
-Enum关键字在java5中引入，表示一种特殊类型的类，继承自java.lang.Enum类。在enum中，提供了一些基本方法：
-
+Enum关键字在java5中引入，表示一种特殊类型的类，继承自java.lang.Enum类。被enum关键字修饰的类型就是枚举类型，提供了一些基本方法：
+如果枚举值不添加任何方法，默认值从0开始，例如：enum Color { RED, GREEN, BLUE }
 values()：返回 enum 实例的数组，而且该数组中的元素严格保持在 enum 中声明时的顺序。
 
 name()：返回实例名。
