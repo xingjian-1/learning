@@ -32,18 +32,18 @@ boolean： 占内存大小为1子节(8位)，取值范围 true，false
  * 基本数据类型
  在方法中定义的数据类型变量，调用方法时作为参数是按数值传递的。
  
-      //基本数据类型作为方法参数被调用
-      public class Main{
-         public static void main(String[] args){
-             int msg = 100;
-             System.out.println("调用方法前msg的值：\n"+ msg);    //100
-             fun(msg);
-             System.out.println("调用方法后msg的值：\n"+ msg);    //100
-         }
-         public static void fun(int temp){
-             temp = 0;
-         }
-      }
+          //基本数据类型作为方法参数被调用
+          public class Main{
+             public static void main(String[] args){
+                 int msg = 100;
+                 System.out.println("调用方法前msg的值：\n"+ msg);    //100
+                 fun(msg);
+                 System.out.println("调用方法后msg的值：\n"+ msg);    //100
+             }
+             public static void fun(int temp){
+                 temp = 0;
+             }
+          }
       
  ![baseDate](/img/baseDate.png)
   * 引用类型
