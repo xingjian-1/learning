@@ -3,7 +3,7 @@
 
 ### `基础`
 ##### `数据类型`
-- [基本数据类型](./doc/basicDataType.md) [引用类型](./doc/ReferenceTypeMemory.md) 
+- [基本数据类型](./doc/basicDataType.md) [引用类型](./doc/ReferenceTypeMemory.md) [String长度限制](./doc/StringLengthLimit.md) 
 ##### `数据结构` 
 - [数组](./doc/数组.md)  [链表](./doc/链表.md)  [栈](./doc/stack.md)  [队列](./doc/queue.md)  [哈希表](./doc/hash.md)  [树](./doc/tree.md)  [堆](./doc/数据结构.md)   [图形](./doc/Graph.md) [时空复杂度](./doc/TimeSpaceComplexity.md) <br>
 ##### `算法`
